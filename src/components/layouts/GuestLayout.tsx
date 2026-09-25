@@ -8,7 +8,7 @@ export default function GuestLayout() {
   }
   
   if(isSuccess) {
-    return <Navigate to={`/${data?.slug}/projects`} replace/>
+    return <Navigate to={`/${data?.slug}/project-management`} replace/>
   }
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 ">

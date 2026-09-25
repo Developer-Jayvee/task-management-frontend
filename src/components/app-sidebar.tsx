@@ -25,9 +25,13 @@ const data = {
       items: [
         {
           title: "Project Management",
-          url: "projects",
+          url: "project-management",
           isActive: true
         },
+        {
+          title: "User Management",
+          url : "user-management",
+        }
       ],
     },
   ],

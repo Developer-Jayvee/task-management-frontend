@@ -4,7 +4,7 @@ import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import ProjectDetailed from "@/pages/project/detailed/ProjectDetailed";
 import ProjectPage from "@/pages/project/ProjectPage";
-import TicketsPage from "@/pages/tickets/TicketsPage";
+import UserManagementPage from "@/pages/user-management/UserManagementPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 
@@ -33,19 +33,19 @@ const MainRoutes = createBrowserRouter([
         children: [
             {
                 index:true,
-                element:<Navigate to="projects" replace/>
+                element:<Navigate to="project-management" replace/>
             },
             {
-                path:"projects",
+                path:"project-management",
                 element:<ProjectPage/>,
             },
             {
-                path:"projects/:id/tickets",
+                path:"project-management/:id/tickets",
                 element: <ProjectDetailed/>
             },
             {
-                path: "tickets",
-                element: <TicketsPage/>
+                path: "user-management",
+                element:<UserManagementPage/>
             }
         ]
     }
