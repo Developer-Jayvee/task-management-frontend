@@ -47,13 +47,6 @@ export default function ProjectBody() {
         </div>
         <div className="">
           <div className="flex justify-between">
-            <Tabs defaultValue="overview">
-              <TabsList variant="line">
-                <TabsTrigger value="overview">All</TabsTrigger>
-                <TabsTrigger value="analytics">Ongoing</TabsTrigger>
-                <TabsTrigger value="reports">Completed</TabsTrigger>
-              </TabsList>
-            </Tabs>
             <div className="flex items-center gap-10">
               <SearchField />
               <SortFilter />
