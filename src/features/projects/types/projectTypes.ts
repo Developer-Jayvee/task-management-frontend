@@ -1,3 +1,4 @@
+import type { MemberFormData } from "@/features/auth/types/authTypes";
 import type { TicketResponseData } from "@/features/tickets/types/ticket-types";
 import type { Dispatch, SetStateAction } from "react";
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
@@ -35,4 +36,5 @@ export interface ProjectContextI {
     ticketList : TicketResponseData[] | [];
     open ?: boolean;
     setOpen ?: Dispatch<SetStateAction<boolean>>;
+    assigneeList ?: MemberFormData[];
 }

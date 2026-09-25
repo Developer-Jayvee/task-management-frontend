@@ -136,8 +136,9 @@ function TicketDescription({ data }: TicketProps) {
     </>
   );
 }
-
 function TicketMetadata({ data }: TicketProps) {
+  const { assigneeList } = useProjectContext();
+  const assignee = assigneeList?.find((value) => value.user.id === data.assignee_id)
   return (
     <>
       {/* Divider */}
@@ -196,7 +197,7 @@ function TicketMetadata({ data }: TicketProps) {
               <div className="bg-slate-100 p-1 rounded-full border border-slate-200">
                 <User size={14} className="text-slate-400" />
               </div>
-              Unassigned
+              {assignee?.user?.name}
             </div>
           </div>
 
@@ -342,7 +343,7 @@ export default function TicketDetailed({
 
         <TicketMetadata data={details} />
 
-        <TicketComment />
+        {/* <TicketComment /> */}
 
         <TicketFooter
           data={details}

@@ -53,7 +53,8 @@ export default function ProjectDetailed() {
     <ProjectProvider data={{
       fetchList,
       ticketList: ticketList ?? [],
-      setOpen
+      setOpen,
+      assigneeList
     }}>
       <div className="grid grid-rows-[150px_1fr] grid-cols-[1fr_500px] gap-2 flex-1">
         <div className="col-span-2 grid grid-cols-[1fr_auto] items-center-safe ">

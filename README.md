@@ -1,75 +1,132 @@
-# React + TypeScript + Vite
+# Multi-Tenant Ticket Management Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript frontend for managing projects and tickets inside a multi-tenant workspace. Users authenticate into a tenant-specific environment where they can create projects, track tickets, and update ticket status through a streamlined dashboard.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This app is designed for a shared, tenant-aware workflow where each tenant has its own isolated project and ticket set. The frontend handles the user experience for:
 
-## React Compiler
+- authentication and onboarding
+- tenant-scoped navigation
+- project creation and organization
+- ticket tracking and status transitions
+- responsive dashboard layout and form-driven workflows
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Core Features
 
-## Expanding the ESLint configuration
+- User login and registration
+- Tenant-specific route structure
+- Project dashboard with search, filtering, and creation
+- Project detail views with ticket lists
+- Ticket creation and detailed ticket inspection
+- Drag-style or status-based workflow updates
+- Sidebar navigation and authenticated session flow
+- Validation, toast feedback, and modern UI components
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- React 19
+- TypeScript
+- Vite
+- React Router DOM
+- TanStack Query
+- Axios
+- Tailwind CSS
+- React Hook Form
+- Zod
+- shadcn/ui-style component architecture
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Project Structure
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+src/
+├── components/
+│   ├── layouts/
+│   ├── ui/
+│   └── app-sidebar.tsx
+├── contexts/
+├── features/
+│   ├── auth/
+│   ├── common/
+│   ├── projects/
+│   └── tickets/
+├── lib/
+├── pages/
+│   ├── auth/
+│   ├── project/
+│   └── tickets/
+├── routes/
+├── main.tsx
+└── index.css
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 1) Install dependencies
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
+
+### 2) Configure environment variables
+
+Create a `.env.local` file in the project root with your backend URL:
+
+```bash
+VITE_BASE_URL=http://localhost:3000
+```
+
+This value is used by the Axios client for API calls.
+
+### 3) Run the app locally
+
+```bash
+npm run dev
+```
+
+Then open the local Vite URL, typically:
+
+```bash
+http://localhost:5173
+```
+
+## Available Scripts
+
+```bash
+npm run dev      # start the Vite development server
+npm run build    # run TypeScript checks and build the app
+npm run preview  # preview the production build locally
+npm run lint     # lint the project with ESLint
+```
+
+## Routing Pattern
+
+The frontend is built around tenant-aware URLs such as:
+
+```bash
+/:slug/login
+/:slug/projects
+/:slug/projects/:id/tickets
+```
+
+This assumes the backend provides tenant-aware user sessions and project/ticket resources.
+
+## Backend Dependency
+
+This repository is the frontend layer only. It depends on an API service for:
+
+- user login and registration
+- tenant validation and identity checks
+- project CRUD operations
+- ticket CRUD and status updates
+
+## Notes
+
+- Session-based authentication is enabled via cookies.
+- The app expects the backend to be running and reachable through the configured `VITE_BASE_URL`.
+- The frontend is designed to work alongside a multi-tenant backend service rather than as a standalone application.
+
+## License
+
+This project is currently configured for internal or project-specific use unless a repository-level license is added later.
+
