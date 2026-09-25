@@ -25,13 +25,14 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import useLogout from "@/features/auth/hooks/useLogout";
+import { PromptProvider } from "@/contexts/PromptDialogContext";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
-  const { refetch,isSuccess } = useLogout()
+  const { refetch, isSuccess } = useLogout();
 
-  if(isSuccess) {
-    window.location.reload()
+  if (isSuccess) {
+    window.location.reload();
   }
   if (isPending) {
     return null;
@@ -87,13 +88,9 @@ export default function AuthenticatedLayout() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-                <Outlet/>
-          {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-          </div>
-          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" /> */}
+          <PromptProvider>
+            <Outlet />
+          </PromptProvider>
         </div>
       </SidebarInset>
     </SidebarProvider>
