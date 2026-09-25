@@ -15,6 +15,7 @@ export interface PromptDialogI extends Omit<
   description?: string;
   confirmButtonText?: string;
   cancelButtonText?: string;
+ 
 }
 
 export interface PromptDialogContextI {
@@ -22,4 +23,15 @@ export interface PromptDialogContextI {
   setOpen: Dispatch<SetStateAction<boolean>>;
   details: { title: string; description ?: string };
   setDetails: Dispatch<SetStateAction<{ title: string; description ?: string }>>;
-}
+  isConfirm ?: boolean;
+  isCancelled ?: boolean;
+  confirm ?: () => void;
+  cancel ?: () => void;
+  configurePrompt ?: ({ title , description , promptId , callback } :  {
+    title: string;
+    description ?: string;
+    callback : (() => void) | null;
+    promptId : string|null;
+  }) => void;
+  showPrompt ?: () => void;
+} 

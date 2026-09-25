@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { usePromptContext } from "@/contexts/PromptDialogContext"
 import type { PromptDialogI } from "@/features/common/types/componentTypes"
 
 export function PromptDialog({
@@ -18,6 +19,7 @@ export function PromptDialog({
     confirmButtonText = "Continue",
     cancelButtonText = "Cancel"
 } : PromptDialogI) {
+  const { confirm ,cancel } = usePromptContext()
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent >
@@ -28,8 +30,8 @@ export function PromptDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelButtonText}</AlertDialogCancel>
-          <AlertDialogAction>{confirmButtonText}</AlertDialogAction>
+          <AlertDialogCancel onClick={() => cancel?.()}>{cancelButtonText}</AlertDialogCancel>
+          <AlertDialogAction onClick={() => confirm?.()}>{confirmButtonText}</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -7,7 +7,9 @@ export const PromptDialogContext = createContext<PromptDialogContextI>({
   open: false,
   setOpen: () => false,
   details: { title: "" },
-  setDetails: () => {}
+  setDetails: () => {},
+  isCancelled: false,
+  isConfirm: false,
 });
 
 export const usePromptContext = () => {
@@ -18,7 +20,18 @@ export const usePromptContext = () => {
   return context;
 };
 export const PromptProvider = ({ children }: { children: React.ReactNode }) => {
-  const { open, setOpen, promptDetails, setPromptDetails } = usePrompt();
+  const {
+    open,
+    setOpen,
+    promptDetails,
+    setPromptDetails,
+    isCancelled,
+    isConfirm,
+    confirm,
+    cancel,
+    configurePrompt,
+    showPrompt
+  } = usePrompt();
   return (
     <PromptDialogContext.Provider
       value={{
@@ -26,15 +39,21 @@ export const PromptProvider = ({ children }: { children: React.ReactNode }) => {
         setOpen,
         details: promptDetails,
         setDetails: setPromptDetails,
+        isCancelled,
+        isConfirm,
+        confirm,
+        cancel,
+        configurePrompt,
+        showPrompt
       }}
     >
-        <PromptDialog
-            open={open}
-            setOpen={setOpen}
-            title={promptDetails.title}
-            description={promptDetails?.description}
-        />
-        {children}
+      <PromptDialog
+        open={open}
+        setOpen={setOpen}
+        title={promptDetails.title}
+        description={promptDetails?.description}
+      />
+      {children}
     </PromptDialogContext.Provider>
   );
 };

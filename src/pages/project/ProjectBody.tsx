@@ -1,5 +1,4 @@
 import { CustomDialog } from "@/components/custom-dialog";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProjectCardContext } from "@/contexts/ProjectCardContext";
 import CreateForm from "@/features/projects/components/create-form";
 import ProjectCard from "@/features/projects/components/project-card";
@@ -17,7 +16,7 @@ export default function ProjectBody() {
         projectList,
         submitForm
     } = useProjectCardContext()
-
+ 
     return (
         
       <div className="grid grid-rows-[100px_auto_1fr] gap-2 flex-1">
