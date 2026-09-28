@@ -35,10 +35,9 @@ export const deleteProjectQuery = () => {
     });
 }
 
-export const getProjectTicketsQuery = (projectId : string) => {
+export const getProjectTicketsQuery = (projectId : string|undefined|null) => {
     return useQuery({
         queryKey: ['project-tickets',projectId],
         queryFn: () => getProjectTickets(projectId),
-        enabled: false
     })
 }

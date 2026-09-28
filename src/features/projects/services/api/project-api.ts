@@ -34,7 +34,7 @@ export const deleteProject = async (id : string) => {
     return response?.data;
 }
 
-export const getProjectTickets = async (projectId : string) => {
+export const getProjectTickets = async (projectId : string|undefined|null) => {
     const response = await http.get(`project/${projectId}/tickets`);
 
     return response?.data;

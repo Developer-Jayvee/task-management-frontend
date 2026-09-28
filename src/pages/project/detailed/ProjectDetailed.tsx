@@ -4,6 +4,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import useUser from "@/features/common/hooks/useUser";
 import { ProjectTicketsTable } from "@/features/projects/components/project-tickets-table";
+import { getProjectTicketsQuery } from "@/features/projects/services/queryService";
 import TicketForm from "@/features/tickets/components/ticket-form";
 import useTickets from "@/features/tickets/hooks/useTickets";
 import TicketDetailed from "@/pages/tickets/detailed/TicketDetailed";
@@ -28,6 +29,9 @@ export default function ProjectDetailed() {
   } = useTickets();
   const { getAssignees, assigneeList } = useUser();
   const { id } = useParams();
+  const [currentProject , setCurrentProject] = useState<string|undefined>(id);
+
+  const { data: projectTickets } = getProjectTicketsQuery(currentProject);
 
   const setSelectedTicket = (id: string | null) => {
     if (!id) return setSelected(null);
@@ -35,7 +39,6 @@ export default function ProjectDetailed() {
     // const selectedData = ticketList?.find((data) => data.id === id) ?? null;
     // setSelected(selectedData);
   };
-  
   const deleteTicketFn = (id: string) => {
     setSelectedTicket(null);
     deleteTicket(id);
@@ -45,7 +48,9 @@ export default function ProjectDetailed() {
   useEffect(() => {
     fetchList();
     getAssignees();
-    if (id) setProjectId(id);
+    if (id){
+       setProjectId(id);
+    }
   }, []);
 
   
@@ -100,7 +105,7 @@ export default function ProjectDetailed() {
           </div>
           <ProjectTicketsTable
             viewTicketDetails={(id) => setSelectedTicket(id)}
-            data={ticketList ?? []}
+            data={projectTickets ?? []}
           />
         </div>
         <TicketDetailed
