@@ -14,12 +14,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProject, updateProject } from "../services/api/project-api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { usePromptContext } from "@/contexts/PromptDialogContext";
 
 export default function useProjects() {
   const queryClient = useQueryClient();
   const fetchQuery = getProjectsQuery();
   const [open, setIsOpen] = useState<boolean>(false);
-
+  const { configurePrompt , showPrompt } = usePromptContext()
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
   });
@@ -57,7 +58,16 @@ export default function useProjects() {
       toast.error("Error found on delete");
     }
   };
+  const confirmProject = (data : ProjectFormData) => {
+    let title =  (type = 'Create') => `${type} Project?`;
+    configurePrompt?.({ 
+      title: !data.id ? title('Create') : title('Update'),
+      callback : () => submitForm(data),
+      promptId: "#project"
+    });
 
+    showPrompt?.()
+  }
   const submitForm: SubmitHandler<ProjectFormData> = (
     data: ProjectFormData,
   ) => {
@@ -98,5 +108,6 @@ export default function useProjects() {
     getProjectDetails,
     setProjectForm,
     deleteProject,
+    confirmProject
   };
 }

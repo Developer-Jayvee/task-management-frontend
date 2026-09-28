@@ -14,9 +14,8 @@ export default function ProjectBody() {
         open,
         projectForm,
         projectList,
-        submitForm
+        confirmProject
     } = useProjectCardContext()
- 
     return (
         
       <div className="grid grid-rows-[100px_auto_1fr] gap-2 flex-1">
@@ -36,7 +35,7 @@ export default function ProjectBody() {
                 {
                     projectForm && (
                         <FormProvider {...projectForm}>
-                            <CreateForm submitHandler={submitForm ?? (() => {})} />
+                            <CreateForm submitHandler={confirmProject ?? (() => {})} />
                         </FormProvider>
                     )
                 }

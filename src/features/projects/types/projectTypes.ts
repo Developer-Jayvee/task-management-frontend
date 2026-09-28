@@ -27,6 +27,7 @@ export interface ProjectCardContextI {
     setOpen ?: Dispatch<SetStateAction<boolean>>;
     projectForm ?: UseFormReturn<ProjectFormData>;
     submitForm ?: SubmitHandler<ProjectFormData>;
+    confirmProject ?: SubmitHandler<ProjectFormData>;
     setProjectForm ?: (data : ProjectFormData) => void;
     deleteProject ?: (id : string) => void;
 }
