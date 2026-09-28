@@ -1,6 +1,7 @@
 import { Field, FieldContent } from "@/components/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProjectContext } from "@/contexts/ProjectContext";
+import { usePromptContext } from "@/contexts/PromptDialogContext";
 import EmptyTicketDetails from "@/features/tickets/components/ticket-detailed-empty";
 import { TicketStatusData } from "@/features/tickets/data";
 import usePipeline from "@/features/tickets/hooks/usePipeline";
@@ -328,6 +329,18 @@ export default function TicketDetailed({
 }) {
   const { fetchList , ticketList } = useProjectContext();
   const { transition, isPending } = usePipeline()
+  const { configurePrompt , showPrompt } = usePromptContext()
+
+  const deleteTicket = (id : string) => {
+    configurePrompt?.({
+      title:"Are you sure you want to delete this ticket?",
+      promptId: "#deleteticket",
+      callback: () => onDelete(id)
+    })
+    showPrompt?.();
+  }
+
+  
   if (!data) {
     return <EmptyTicketDetails />;
   }
@@ -347,7 +360,7 @@ export default function TicketDetailed({
 
         <TicketFooter
           data={details}
-          onDelete={onDelete}
+          onDelete={deleteTicket}
           onClose={onClose}
           onUpdate={(id) => onUpdate(id)}
         />
