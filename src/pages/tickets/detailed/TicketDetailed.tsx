@@ -330,16 +330,6 @@ export default function TicketDetailed({
   const { fetchList , ticketList } = useProjectContext();
   const { transition, isPending } = usePipeline()
   const { configurePrompt , showPrompt } = usePromptContext()
-
-  const deleteTicket = (id : string) => {
-    configurePrompt?.({
-      title:"Are you sure you want to delete this ticket?",
-      promptId: "#deleteticket",
-      callback: () => onDelete(id)
-    })
-    showPrompt?.();
-  }
-
   
   if (!data) {
     return <EmptyTicketDetails />;
@@ -360,7 +350,7 @@ export default function TicketDetailed({
 
         <TicketFooter
           data={details}
-          onDelete={deleteTicket}
+          onDelete={onDelete}
           onClose={onClose}
           onUpdate={(id) => onUpdate(id)}
         />

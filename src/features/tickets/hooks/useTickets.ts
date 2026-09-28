@@ -11,11 +11,13 @@ import {
 } from "../services/queryService";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { usePromptContext } from "@/contexts/PromptDialogContext";
 
 export default function useTickets() {
   const { list, show } = TicketQueryKeys;
   const [open, setOpen] = useState<boolean>(false);
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
+  const { configurePrompt , showPrompt } = usePromptContext()
   const queryClient = useQueryClient();
   const ticketForm = useForm<TicketFormData>({
     resolver: zodResolver(ticketSchema),
@@ -27,7 +29,14 @@ export default function useTickets() {
   const deleteQuery = deleteTicketQuery();
 
   const ticketList = getQuery.data;
-
+  const confirmPrompt = (data : TicketFormData) => {
+    configurePrompt?.({
+      title: `Are you sure you want to proceed?`,
+      promptId: "#ticketForm",
+      callback: () => submitForm(data)
+    })
+    showPrompt?.()
+  }
   const submitForm: SubmitHandler<TicketFormData> = async (
     data: TicketFormData,
   ) => {
@@ -44,7 +53,10 @@ export default function useTickets() {
       toast.success("Save success");
       setOpen(false);
       ticketForm.reset();
-      fetchList();
+
+      queryClient.invalidateQueries({
+        queryKey: ['project-tickets',projectId]
+      });
     } catch (error) {
       console.warn("Error found in :", error);
     }
@@ -68,11 +80,21 @@ export default function useTickets() {
       due_date: selectedData.due_date,
     });
   };
+  const confirmDelete = async (id : string) => {
+    configurePrompt?.({
+      title:"Are you sure you want to delete this ticket?",
+      promptId: "#deleteticket",
+      callback: async () => await deleteTicket(id)
+    })
+    showPrompt?.();
+  }
   const deleteTicket = async (id: string) => {
     try {
       await deleteQuery.mutateAsync({ id });
       toast.success("Deleted success");
-      fetchList();
+      queryClient.invalidateQueries({
+        queryKey: ['project-tickets',projectId]
+      });
     } catch (error) {
       console.warn(error);
     }
@@ -90,5 +112,7 @@ export default function useTickets() {
     setProjectId,
     deleteTicket,
     onUpdateTIcket,
+    confirmPrompt,
+    confirmDelete
   };
 }

@@ -21,11 +21,12 @@ export default function ProjectDetailed() {
     open,
     setOpen,
     ticketForm,
-    submitForm,
+    confirmDelete,
     setProjectId,
     ticketList,
     deleteTicket,
     onUpdateTIcket,
+    confirmPrompt
   } = useTickets();
   const { getAssignees, assigneeList } = useUser();
   const { id } = useParams();
@@ -41,7 +42,7 @@ export default function ProjectDetailed() {
   };
   const deleteTicketFn = (id: string) => {
     setSelectedTicket(null);
-    deleteTicket(id);
+    confirmDelete(id);
   };
   const closeTicket = () => setSelectedTicket(null);
   
@@ -88,7 +89,7 @@ export default function ProjectDetailed() {
               }
             >
               <FormProvider {...ticketForm}>
-                <TicketForm assigneeList={assigneeList} submitForm={submitForm} />
+                <TicketForm assigneeList={assigneeList} submitForm={confirmPrompt} />
               </FormProvider>
             </CustomDialog>
           </div>
