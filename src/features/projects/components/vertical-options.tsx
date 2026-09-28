@@ -8,8 +8,19 @@ import { useProjectCardContext } from "@/contexts/ProjectCardContext";
 
 import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 import type { ProjectCardI } from "../types/projectTypes";
+import { usePromptContext } from "@/contexts/PromptDialogContext";
 export default function VerticalOptions({ data } : { data : ProjectCardI}) {
   const { setProjectForm, deleteProject } = useProjectCardContext()
+  const { configurePrompt,showPrompt } = usePromptContext();
+  const onDelete = (id : string) => {
+
+    configurePrompt?.({
+      title: "Are you sure you want to delete this project?",
+      promptId:"#deletePrompt",
+      callback: () => deleteProject?.(id)
+    });
+    showPrompt?.()
+  }
   return (
     <>
       <Popover>
@@ -30,7 +41,7 @@ export default function VerticalOptions({ data } : { data : ProjectCardI}) {
           <Button
             variant="ghost"
             className="w-full justify-start text-destructive hover:text-destructive"
-            onClick={() => deleteProject?.(data.id)}
+            onClick={() => onDelete(data.id)}
           >
             <Trash2 className="mr-2 size-4" />
             Delete

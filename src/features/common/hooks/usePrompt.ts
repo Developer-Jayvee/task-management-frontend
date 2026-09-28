@@ -36,10 +36,11 @@ export default function usePrompt() {
   };
   const confirm = () => {
     try {
-      setIsConfirm(true);
-      setIsCancelled(false);
+      setPromptId(prev => null);
+      setIsConfirm(prev => true);
       setOpen(!open);
       afterFn?.();
+      resetAll()
     } catch (error) {
       console.warn("Error found in custom prompt", error);
     }
@@ -53,12 +54,12 @@ export default function usePrompt() {
 
   const resetAll = () => {
     if(! promptId) {
-        setOpen(false);
-        setIsConfirm(false);
-        setIsCancelled(false);
-        setPromptId(null);
-        setPromptDetails({ title: "" });
-        setAfterFn(null);
+        setOpen(prev => false);
+        setIsConfirm(prev => false);
+        setIsCancelled(prev => false);
+        setPromptId(prev => null);
+        setPromptDetails(prev => ({ title: "" , description: undefined}));
+        setAfterFn(prev => null);
     }
   };
   useEffect(() => {
