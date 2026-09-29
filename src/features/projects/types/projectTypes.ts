@@ -30,6 +30,8 @@ export interface ProjectCardContextI {
     confirmProject ?: SubmitHandler<ProjectFormData>;
     setProjectForm ?: (data : ProjectFormData) => void;
     deleteProject ?: (id : string) => void;
+    searchProject ?: (search ?: string) => void;
+    sortProject ?: (sort ?: "asc"|"desc") => void;
 }
 
 export interface ProjectContextI {

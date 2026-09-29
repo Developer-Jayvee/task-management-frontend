@@ -14,13 +14,12 @@ export const createProjectQuery = () => {
     });
 }
 
-export const getProjectsQuery = () => {
+export const getProjectsQuery = ({ search , sort } : { search ?: string; sort ?: "asc" | "desc"}) => {
     return useQuery({
-        queryKey : ['project-list'],
-        queryFn: getProjects
+        queryKey : ['project-list',search,sort],
+        queryFn: () => getProjects(search,sort)
     })
 }
-
 export const getProjectQuery = (id : string) => {
     return useQuery({
         queryKey: ['project',id],

@@ -2,7 +2,7 @@ import { Field, FieldContent } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
-export default function SearchField() {
+export default function SearchField({ onSearch } : { onSearch : (search ?: string) => void; } ) {
   return (
     <Field>
       {/* <FieldLabel htmlFor="search">Search</FieldLabel> */}
@@ -15,6 +15,8 @@ export default function SearchField() {
             type="search"
             placeholder="Search..."
             className="pl-9"
+            onKeyUp={(event) => onSearch(event.currentTarget.value)}
+            
           />
         </div>
       </FieldContent>

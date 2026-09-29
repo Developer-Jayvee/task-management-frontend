@@ -14,7 +14,9 @@ export default function ProjectBody() {
         open,
         projectForm,
         projectList,
-        confirmProject
+        confirmProject,
+        searchProject,
+        sortProject
     } = useProjectCardContext()
     return (
         
@@ -46,8 +48,8 @@ export default function ProjectBody() {
         <div className="">
           <div className="flex justify-between">
             <div className="flex items-center gap-10">
-              <SearchField />
-              <SortFilter />
+              <SearchField onSearch={(value) => searchProject?.(value)} />
+              <SortFilter onChange={(value) => sortProject?.(value)} />
             </div>
           </div>
         </div>

@@ -9,7 +9,8 @@ export const ProjectCardContext = createContext<ProjectCardContextI>({
     projectForm : undefined,
     submitForm : undefined,
     setProjectForm : undefined,
-    deleteProject: undefined
+    deleteProject: undefined,
+    searchProject: undefined
 });
 
 export const useProjectCardContext = (): ProjectCardContextI => {

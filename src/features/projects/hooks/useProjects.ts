@@ -15,11 +15,14 @@ import { createProject, updateProject } from "../services/api/project-api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
-
+import { useDebounce } from 'use-debounce';
 export default function useProjects() {
   const queryClient = useQueryClient();
-  const fetchQuery = getProjectsQuery();
   const [open, setIsOpen] = useState<boolean>(false);
+  const [search,setSearch] = useState<string|undefined>();
+  const [sort,setSort] = useState<"asc"|"desc"|undefined>();
+  const [debounceSearch] = useDebounce(search,500);
+  const fetchQuery = getProjectsQuery({ search : debounceSearch, sort });
   const { configurePrompt , showPrompt } = usePromptContext()
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
@@ -88,6 +91,12 @@ export default function useProjects() {
     });
   };
 
+  const searchProject = (search ?: string) => {
+      setSearch(search);
+  }
+  const sortProject = (sort ?: "asc"|"desc") => {
+    setSort(sort);
+  }
   useEffect(() => {
     if (!open)
       projectForm.reset({
@@ -108,6 +117,8 @@ export default function useProjects() {
     getProjectDetails,
     setProjectForm,
     deleteProject,
-    confirmProject
+    confirmProject,
+    searchProject,
+    sortProject
   };
 }

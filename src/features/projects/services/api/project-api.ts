@@ -4,8 +4,8 @@ import type { ProjectFormData } from "../../types/projectTypes";
 
 const BASE_URL = "project";
 
-export const getProjects = async () => {
-    const response = await http.get(BASE_URL);
+export const getProjects = async (search ?: string, sort ?: "asc" | "desc" ) => {
+    const response = await http.get(BASE_URL, {params : { search , sort }});
 
     return response?.data;
 }

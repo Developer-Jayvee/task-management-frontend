@@ -16,7 +16,9 @@ export default function ProjectPage() {
     projectList,
     setProjectForm,
     deleteProject,
-    confirmProject
+    confirmProject,
+    searchProject,
+    sortProject
   } = useProjects();
 
   useEffect(() => {
@@ -32,7 +34,9 @@ export default function ProjectPage() {
       submitForm: submitForm,
       setProjectForm: setProjectForm,
       deleteProject: deleteProject,
-      confirmProject
+      confirmProject,
+      searchProject,
+      sortProject
      }}>
       <ProjectBody/>
     </ProjectCardProvider>

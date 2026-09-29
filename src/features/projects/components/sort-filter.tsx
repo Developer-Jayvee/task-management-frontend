@@ -10,17 +10,20 @@ import {
 
 const items = [
   { label: "Select sort", value: null },
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
-  { value: "name_asc", label: "Name (A-Z)" },
-  { value: "name_desc", label: "Name (Z-A)" },
+  { value: "desc", label: "Newest" },
+  { value: "asc", label: "Oldest" },
 ];
 
-export function SortFilter() {
+export function SortFilter({ onChange } : { onChange: (sort ?: "asc"|"desc" ) => void; }) {
   return (
   <Field className="w-full max-w-xs">
       {/* <FieldLabel>Department</FieldLabel> */}
-      <Select items={items}>
+       <Select
+        items={items}
+        onValueChange={(value) => {
+          onChange(value as "asc" | "desc");
+        }}
+      >
         <SelectTrigger>
           <SelectValue />
         </SelectTrigger>
