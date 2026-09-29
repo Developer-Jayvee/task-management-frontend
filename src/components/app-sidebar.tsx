@@ -55,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
-                      isActive={item?.isActive}
+                      isActive={window.location.pathname.split('/')[2] === item.url}
                       onClick={() => navigate(`/${slug}/${item.url}`)}
                     >
                       {item.title}
