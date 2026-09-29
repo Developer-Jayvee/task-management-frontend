@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
+import { getProjectTickets } from "@/features/projects/services/api/project-api";
+import { showTicketDetails } from "../services/api/ticket-api";
 
 export default function useTickets() {
   const { list, show } = TicketQueryKeys;
@@ -65,19 +67,19 @@ export default function useTickets() {
   const refetchList = () => queryClient.invalidateQueries({ queryKey: [list] });
   const fetchList = () => getQuery.refetch();
   const showDetails = (id: string) => queryClient.getQueryData([show, id]);
-  const onUpdateTIcket = (id: string) => {
+  const onUpdateTIcket =  async (id: string) => {
+    const ticket  = await showTicketDetails(id);
     setOpen(true);
-    const selectedData = ticketList?.find((data) => data.id === id);
-    if (!selectedData) return;
+    if (!ticket) return;
     ticketForm.reset({
-      id: String(selectedData.id),
-      project_id: String(selectedData.project_id),
-      title: selectedData.title,
-      description: selectedData.description ?? "",
-      status: selectedData.status,
-      priority: selectedData.priority,
-      assignee_id: Number(selectedData.assignee_id),
-      due_date: selectedData.due_date,
+      id: String(ticket.id),
+      project_id: String(ticket.project_id),
+      title: ticket.title,
+      description: ticket.description ?? "",
+      status: ticket.status,
+      priority: ticket.priority,
+      assignee_id: Number(ticket.assignee_id),
+      due_date: ticket.due_date,
     });
   };
   const confirmDelete = async (id : string) => {

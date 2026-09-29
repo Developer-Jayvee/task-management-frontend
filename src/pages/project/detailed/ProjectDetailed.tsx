@@ -17,37 +17,31 @@ export default function ProjectDetailed() {
   const [selected, setSelected] = useState<string | null>(null);
 
   const {
-    fetchList,
     open,
     setOpen,
     ticketForm,
     confirmDelete,
     setProjectId,
-    ticketList,
-    deleteTicket,
     onUpdateTIcket,
     confirmPrompt
   } = useTickets();
   const { getAssignees, assigneeList } = useUser();
   const { id } = useParams();
-  const [currentProject , setCurrentProject] = useState<string|undefined>(id);
+  const [currentProject,] = useState<string|undefined>(id);
 
-  const { data: projectTickets } = getProjectTicketsQuery(currentProject);
+  const { data: projectTickets , refetch } = getProjectTicketsQuery(currentProject);
 
   const setSelectedTicket = (id: string | null) => {
     if (!id) return setSelected(null);
     setSelected(id);
-    // const selectedData = ticketList?.find((data) => data.id === id) ?? null;
-    // setSelected(selectedData);
   };
   const deleteTicketFn = (id: string) => {
     setSelectedTicket(null);
     confirmDelete(id);
   };
   const closeTicket = () => setSelectedTicket(null);
-  
   useEffect(() => {
-    fetchList();
+    refetch()
     getAssignees();
     if (id){
        setProjectId(id);
@@ -57,7 +51,7 @@ export default function ProjectDetailed() {
   
   return (
     <ProjectProvider data={{
-      fetchList,
+      fetchList: () => refetch(),
       ticketList: projectTickets ?? [],
       setOpen,
       assigneeList

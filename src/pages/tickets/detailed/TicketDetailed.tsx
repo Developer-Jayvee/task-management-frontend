@@ -344,7 +344,6 @@ export default function TicketDetailed({
 
         <TicketMetadata data={details} />
 
-        {/* <TicketComment /> */}
 
         <TicketFooter
           data={details}
