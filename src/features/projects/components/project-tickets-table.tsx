@@ -8,13 +8,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { TicketResponseData } from "@/features/tickets/types/ticket-types";
+import type { ProjectDataI } from "../types/projectTypes";
 
 export function ProjectTicketsTable({
   data,
   viewTicketDetails
 }: {
-  data: Array<TicketResponseData>|[];
+  data: ProjectDataI;
     viewTicketDetails: (id: string) => void;
 }) {
   return (
@@ -32,8 +32,8 @@ export function ProjectTicketsTable({
         </TableHeader>
 
         <TableBody>
-          {typeof data === "object" &&
-            data.map((value, index) => {
+          {typeof data.tickets === "object" &&
+            data.tickets.map((value, index) => {
               return (
                 <>
                   <TableRow className="hover:bg-muted/40">

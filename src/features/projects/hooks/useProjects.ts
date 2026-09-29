@@ -37,6 +37,9 @@ export default function useProjects() {
         queryKey: ["project-list"],
       });
     },
+    onError: (err) => {
+      toast.error(`Error found in ${err.message}`)
+    }
   });
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: ProjectFormData }) =>

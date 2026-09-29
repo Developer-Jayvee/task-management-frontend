@@ -37,7 +37,16 @@ export interface ProjectCardContextI {
 export interface ProjectContextI {
     fetchList ?: () => void;
     ticketList : TicketResponseData[] | [];
+    projectData ?: ProjectDataI;
     open ?: boolean;
     setOpen ?: Dispatch<SetStateAction<boolean>>;
     assigneeList ?: MemberFormData[];
+}
+
+export interface ProjectDataI {
+    id : string;
+    tenant_id : string;
+    name: string;
+    description ?: string;
+    tickets: Array<TicketResponseData>;
 }

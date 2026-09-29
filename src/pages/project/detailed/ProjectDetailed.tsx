@@ -5,7 +5,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import useUser from "@/features/common/hooks/useUser";
 import { ProjectTicketsTable } from "@/features/projects/components/project-tickets-table";
-import { getProjectTicketsQuery } from "@/features/projects/services/queryService";
+import {  getProjectTicketsQuery } from "@/features/projects/services/queryService";
+import type { ProjectDataI } from "@/features/projects/types/projectTypes";
 import TicketForm from "@/features/tickets/components/ticket-form";
 import useTickets from "@/features/tickets/hooks/useTickets";
 import { type TicketStatus } from "@/features/tickets/types/ticket-types";
@@ -13,12 +14,15 @@ import TicketDetailed from "@/pages/tickets/detailed/TicketDetailed";
 import { ArrowLeft, FolderKanban, Ticket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
 export default function ProjectDetailed() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  if(!id) return <Navigate to="/" replace/>
 
+  const [selected, setSelected] = useState<string | null>(null);
   const {
     open,
     setOpen,
@@ -29,27 +33,29 @@ export default function ProjectDetailed() {
     confirmPrompt,
   } = useTickets();
   const { getAssignees, assigneeList } = useUser();
-  const { id } = useParams();
   const [currentProject] = useState<string | undefined>(id);
   const [currentStatus,setCurrentStatus] = useState<TicketStatus|"all"|undefined>();
-
   const [debounceStatus] = useDebounce(currentStatus,500);
-  const navigate = useNavigate();
   const { data: projectTickets, refetch } =
     getProjectTicketsQuery(currentProject,debounceStatus);
-
+  const details = projectTickets as ProjectDataI;
   const setSelectedTicket = (id: string | null) => {
     if (!id) return setSelected(null);
     setSelected(id);
   };
   const deleteTicketFn = (id: string) => {
-    setSelectedTicket(null);
-    confirmDelete(id);
+    try {
+      confirmDelete(id);
+    } finally {
+      setSelectedTicket(null);
+    }
   };
   const closeTicket = () => setSelectedTicket(null);
 
-  const filterTickets = (status : TicketStatus|"all" = "to-do") => setCurrentStatus(status);
-
+  const filterTickets = (status : TicketStatus|"all" = "to-do") => {
+    setCurrentStatus(status);
+    setSelectedTicket(null)
+  }
   useEffect(() => {
     refetch();
     getAssignees();
@@ -62,7 +68,8 @@ export default function ProjectDetailed() {
     <ProjectProvider
       data={{
         fetchList: () => refetch(),
-        ticketList: projectTickets ?? [],
+        ticketList:[],
+        projectData : projectTickets,
         setOpen,
         assigneeList,
       }}
@@ -83,11 +90,11 @@ export default function ProjectDetailed() {
 
               <div className="flex-1 space-y-1">
                 <div className="flex items-center gap-2 ">
-                  Title
-                  <Badge variant="default">Actives</Badge>
+                  {details?.name}
+                  {/* <Badge variant="default">Actives</Badge> */}
                 </div>
 
-                <p className="text-sm text-muted-foreground">asdasdasd</p>
+                <p className="text-sm text-muted-foreground">{details?.description}</p>
               </div>
             </div>
             <div>

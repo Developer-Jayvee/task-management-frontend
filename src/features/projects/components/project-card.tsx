@@ -1,11 +1,8 @@
 import {
   CalendarDays,
   FolderKanban,
-  // Users,
 } from "lucide-react";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import VerticalOptions from "./vertical-options";
@@ -25,7 +22,6 @@ export default function ProjectCard({ data }: { data : ProjectCardI}) {
           <div className="min-w-0 flex-1 space-y-1">
             <div className="flex items-center gap-2">
               <CardTitle className="text-xl">{data.name}</CardTitle>
-              <Badge>Active</Badge>
             </div>
 
             <p className="text-sm text-muted-foreground">

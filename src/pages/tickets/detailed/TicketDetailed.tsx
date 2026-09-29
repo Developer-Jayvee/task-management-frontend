@@ -326,14 +326,14 @@ export default function TicketDetailed({
   onClose: () => void;
   onUpdate: (id: string) => void;
 }) {
-  const { fetchList , ticketList } = useProjectContext();
+  const { fetchList , projectData } = useProjectContext();
   const { transition, isPending } = usePipeline()
   
   if (!data) {
     return <EmptyTicketDetails />;
   }
   if(isPending) fetchList?.();
-  const details = ticketList?.find((v) => v.id === data) as TicketResponseData;
+  const details = projectData?.tickets?.find((v) => v.id === data) as TicketResponseData;
   return (
     <div className="bg-[#FDFBF7] flex items-center justify-center p-4 sm:p-8 font-sans text-slate-800">
       {/* Main Card */}

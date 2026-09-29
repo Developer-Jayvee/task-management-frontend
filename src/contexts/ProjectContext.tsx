@@ -2,7 +2,7 @@ import type { ProjectContextI } from "@/features/projects/types/projectTypes";
 import { createContext, useContext } from "react";
 
 export const ProjectContext = createContext<ProjectContextI>({
-  ticketList: []
+  ticketList: [],
 });
 
 export const useProjectContext = () => {
