@@ -35,7 +35,7 @@ export const deleteProjectQuery = () => {
     });
 }
 
-export const getProjectTicketsQuery = (projectId : string|undefined|null , status ?: TicketStatus) => {
+export const getProjectTicketsQuery = (projectId : string|undefined|null , status ?: TicketStatus|"all") => {
     return useQuery({
         queryKey: ['project-tickets',projectId,status],
         queryFn: () => getProjectTickets(projectId,status),

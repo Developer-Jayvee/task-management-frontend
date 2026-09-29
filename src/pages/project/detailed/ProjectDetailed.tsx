@@ -31,7 +31,7 @@ export default function ProjectDetailed() {
   const { getAssignees, assigneeList } = useUser();
   const { id } = useParams();
   const [currentProject] = useState<string | undefined>(id);
-  const [currentStatus,setCurrentStatus] = useState<TicketStatus|undefined>();
+  const [currentStatus,setCurrentStatus] = useState<TicketStatus|"all"|undefined>();
 
   const [debounceStatus] = useDebounce(currentStatus,500);
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export default function ProjectDetailed() {
   };
   const closeTicket = () => setSelectedTicket(null);
 
-  const filterTickets = (status : TicketStatus = "to-do") => setCurrentStatus(status);
+  const filterTickets = (status : TicketStatus|"all" = "to-do") => setCurrentStatus(status);
 
   useEffect(() => {
     refetch();
@@ -111,11 +111,12 @@ export default function ProjectDetailed() {
           </div>
           <div className=" flex flex-col">
             <div>
-              <Tabs defaultValue="overview">
+              <Tabs defaultValue="all">
                 <TabsList variant="line">
-                  <TabsTrigger value="overview" onClick={() => filterTickets('to-do')}>Open</TabsTrigger>
-                  <TabsTrigger value="analytics" onClick={() => filterTickets('in-progress')} >In-progress</TabsTrigger>
-                  <TabsTrigger value="reports" onClick={() => filterTickets('completed')}>Completed</TabsTrigger>
+                  <TabsTrigger value="all" onClick={() => filterTickets('all')}>All</TabsTrigger>
+                  <TabsTrigger value="to-do" onClick={() => filterTickets('to-do')}>Open</TabsTrigger>
+                  <TabsTrigger value="in-progress" onClick={() => filterTickets('in-progress')} >In-progress</TabsTrigger>
+                  <TabsTrigger value="completed" onClick={() => filterTickets('completed')}>Completed</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
