@@ -5,12 +5,13 @@ export const generateLinkAPI = async () => {
   return response?.data;
 };
 
-export const verifyLinkAPI = async (link: string) => {
+export const verifyLinkAPI = async (link: string| undefined) => {
+  if(! link) return null;
   const response = await http.get("link/verify", { params: { link } });
   return response?.data;
 };
 
 export const tenantMembersAPI = async () => {
-  const response = await http.get('users');
+  const response = await http.get('users/list');
   return response?.data;
 }

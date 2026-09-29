@@ -10,7 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import TableOptions from "./table-options";
-export default function UserTable({ users } : { users: any;}) {
+import type { UserResponseData } from "../../types/user-types";
+export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
   return (
     <div className="rounded-md border">
       <Table>
@@ -21,13 +22,12 @@ export default function UserTable({ users } : { users: any;}) {
             </TableHead>
             <TableHead>User</TableHead>
             <TableHead>Role</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead className="hidden md:table-cell">Joined</TableHead>
             <TableHead className="w-17.5 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {data?.map((user) => (
             <TableRow key={user.id}>
               <TableCell>
                 <Checkbox />
@@ -35,35 +35,36 @@ export default function UserTable({ users } : { users: any;}) {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src={user.avatar} alt={user.name} />
+                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
                     <AvatarFallback>
-                      {user.name
+                      {user.user.name
                         .split(" ")
                         .map((n) => n[0])
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium">{user.name}</span>
+                    <span className="text-sm font-medium">
+                      {user.user.name}
+                    </span>
                     <span className="text-xs text-muted-foreground">
-                      {user.email}
+                      {user.user.email}
                     </span>
                   </div>
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant={roleVariant[user.role]}>{user.role}</Badge>
-              </TableCell>
-              <TableCell>
-                <Badge variant={statusVariant[user.status]}>
-                  {user.status}
-                </Badge>
+                <Badge variant="ghost">{user.role}</Badge>
               </TableCell>
               <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                {user.joined}
+                { user.user.created_at && new Date(user.user.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
               </TableCell>
               <TableCell className="text-right">
-                  <TableOptions/>
+                <TableOptions />
               </TableCell>
             </TableRow>
           ))}

@@ -29,14 +29,14 @@ export default function TableOptions() {
                       <Edit className="mr-2 h-4 w-4" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    {/* <DropdownMenuItem>
                       <Shield className="mr-2 h-4 w-4" />
                       Change Role
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                       <Mail className="mr-2 h-4 w-4" />
                       Send Email
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />

@@ -4,20 +4,27 @@ import {
   tenantMembersQuery,
   verifyLinkQuery,
 } from "../services/queryService";
+import { useQueryClient } from "@tanstack/react-query";
 
-export default function useUser() {
+export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
 
+  const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
   const tenantMembers = tenantMembersQuery();
-
+  
   const confirmLink = (url?: string) => {
     if (!url) return false;
     const uri = window.location.pathname.split("/")?.[2];
     if (!uri) return false;
     setLink(uri);
   };
+  const fetchMembers = () => {
+    queryClient.invalidateQueries({
+      queryKey: ['tenant-members']
+    })
+  }
   
   return {
     confirmLink,
@@ -36,5 +43,6 @@ export default function useUser() {
       isSuccess: tenantMembers?.isSuccess,
       isError: tenantMembers?.isError,
     },
+    fetchMembers
   };
 }
