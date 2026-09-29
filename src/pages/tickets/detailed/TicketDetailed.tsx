@@ -1,7 +1,6 @@
 import { Field, FieldContent } from "@/components/ui/field";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useProjectContext } from "@/contexts/ProjectContext";
-import { usePromptContext } from "@/contexts/PromptDialogContext";
 import EmptyTicketDetails from "@/features/tickets/components/ticket-detailed-empty";
 import { TicketStatusData } from "@/features/tickets/data";
 import usePipeline from "@/features/tickets/hooks/usePipeline";
@@ -329,13 +328,12 @@ export default function TicketDetailed({
 }) {
   const { fetchList , ticketList } = useProjectContext();
   const { transition, isPending } = usePipeline()
-  const { configurePrompt , showPrompt } = usePromptContext()
   
   if (!data) {
     return <EmptyTicketDetails />;
   }
-  const details = ticketList?.find((v) => v.id === data) as TicketResponseData;
   if(isPending) fetchList?.();
+  const details = ticketList?.find((v) => v.id === data) as TicketResponseData;
   return (
     <div className="bg-[#FDFBF7] flex items-center justify-center p-4 sm:p-8 font-sans text-slate-800">
       {/* Main Card */}

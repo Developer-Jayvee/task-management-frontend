@@ -58,7 +58,7 @@ export default function ProjectDetailed() {
   return (
     <ProjectProvider data={{
       fetchList,
-      ticketList: ticketList ?? [],
+      ticketList: projectTickets ?? [],
       setOpen,
       assigneeList
     }}>
