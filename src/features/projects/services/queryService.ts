@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createProject, deleteProject, getProjects, getProjectTickets, viewProject } from "./api/project-api"
+import type { TicketStatus } from "@/features/tickets/types/ticket-types";
 
 
 export const createProjectQuery = () => {
@@ -34,9 +35,9 @@ export const deleteProjectQuery = () => {
     });
 }
 
-export const getProjectTicketsQuery = (projectId : string|undefined|null) => {
+export const getProjectTicketsQuery = (projectId : string|undefined|null , status ?: TicketStatus) => {
     return useQuery({
-        queryKey: ['project-tickets',projectId],
-        queryFn: () => getProjectTickets(projectId),
+        queryKey: ['project-tickets',projectId,status],
+        queryFn: () => getProjectTickets(projectId,status),
     })
 }

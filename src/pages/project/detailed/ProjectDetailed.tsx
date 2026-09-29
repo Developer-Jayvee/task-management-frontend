@@ -8,11 +8,13 @@ import { ProjectTicketsTable } from "@/features/projects/components/project-tick
 import { getProjectTicketsQuery } from "@/features/projects/services/queryService";
 import TicketForm from "@/features/tickets/components/ticket-form";
 import useTickets from "@/features/tickets/hooks/useTickets";
+import { type TicketStatus } from "@/features/tickets/types/ticket-types";
 import TicketDetailed from "@/pages/tickets/detailed/TicketDetailed";
 import { ArrowLeft, FolderKanban, Ticket } from "lucide-react";
 import { useEffect, useState } from "react";
 import { FormProvider } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 
 export default function ProjectDetailed() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -29,9 +31,12 @@ export default function ProjectDetailed() {
   const { getAssignees, assigneeList } = useUser();
   const { id } = useParams();
   const [currentProject] = useState<string | undefined>(id);
+  const [currentStatus,setCurrentStatus] = useState<TicketStatus|undefined>();
+
+  const [debounceStatus] = useDebounce(currentStatus,500);
   const navigate = useNavigate();
   const { data: projectTickets, refetch } =
-    getProjectTicketsQuery(currentProject);
+    getProjectTicketsQuery(currentProject,debounceStatus);
 
   const setSelectedTicket = (id: string | null) => {
     if (!id) return setSelected(null);
@@ -42,6 +47,9 @@ export default function ProjectDetailed() {
     confirmDelete(id);
   };
   const closeTicket = () => setSelectedTicket(null);
+
+  const filterTickets = (status : TicketStatus = "to-do") => setCurrentStatus(status);
+
   useEffect(() => {
     refetch();
     getAssignees();
@@ -105,9 +113,9 @@ export default function ProjectDetailed() {
             <div>
               <Tabs defaultValue="overview">
                 <TabsList variant="line">
-                  <TabsTrigger value="overview">Open</TabsTrigger>
-                  <TabsTrigger value="analytics">Ongoing</TabsTrigger>
-                  <TabsTrigger value="reports">Completed</TabsTrigger>
+                  <TabsTrigger value="overview" onClick={() => filterTickets('to-do')}>Open</TabsTrigger>
+                  <TabsTrigger value="analytics" onClick={() => filterTickets('in-progress')} >In-progress</TabsTrigger>
+                  <TabsTrigger value="reports" onClick={() => filterTickets('completed')}>Completed</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>

@@ -1,5 +1,6 @@
 import http from "@/lib/axios";
 import type { ProjectFormData } from "../../types/projectTypes";
+import type { TicketStatus } from "@/features/tickets/types/ticket-types";
 
 
 const BASE_URL = "project";
@@ -34,8 +35,10 @@ export const deleteProject = async (id : string) => {
     return response?.data;
 }
 
-export const getProjectTickets = async (projectId : string|undefined|null) => {
-    const response = await http.get(`project/${projectId}/tickets`);
+export const getProjectTickets = async (projectId : string|undefined|null ,status ?: TicketStatus) => {
+    const response = await http.get(`project/${projectId}/tickets`, {
+        params: { status }
+    });
 
     return response?.data;
 }
