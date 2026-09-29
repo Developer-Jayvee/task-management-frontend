@@ -6,7 +6,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -21,11 +26,19 @@ import type { TicketComponentTypes } from "../types/componentTypes";
 import { Controller, useFormContext } from "react-hook-form";
 import { type TicketFormData } from "../types/ticket-types";
 
-export default function TicketForm({ assigneeList, submitForm }: TicketComponentTypes) {
-  const { register, handleSubmit, control } = useFormContext<TicketFormData>();
+export default function TicketForm({
+  assigneeList,
+  submitForm,
+}: TicketComponentTypes) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useFormContext<TicketFormData>();
   return (
     <DialogContent className="sm:max-w-125">
-      <form onSubmit={handleSubmit(submitForm,(err) => console.log(err))}>
+      <form onSubmit={handleSubmit(submitForm, (err) => console.log(err))}>
         <DialogHeader>
           <DialogTitle>Create Ticket</DialogTitle>
 
@@ -46,6 +59,7 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
                 {...register("title")}
               />
             </FieldContent>
+            <FieldError errors={[errors.title]} />
           </Field>
 
           {/* Description */}
@@ -60,6 +74,7 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
                 {...register("description")}
               />
             </FieldContent>
+            <FieldError errors={[errors.description]} />
           </Field>
 
           {/* Status + Priority */}
@@ -88,6 +103,7 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
                     </Select>
                   )}
                 />
+                <FieldError errors={[errors.status]} />
               </FieldContent>
             </Field>
 
@@ -115,6 +131,7 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
                     </Select>
                   )}
                 />
+                <FieldError errors={[errors.priority]} />
               </FieldContent>
             </Field>
           </div>
@@ -129,32 +146,30 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
                 control={control}
                 render={({ field }) => {
                   const selectedUser = assigneeList?.find(
-                    (user) => user.user.id === field.value
+                    (user) => user.user.id === field.value,
                   );
                   return (
-                  <Select value={field.value} onValueChange={field.onChange}>
-                    <SelectTrigger id="ticket-status" className="w-full">
-                       <SelectValue
-                        placeholder="Select assignee"
-                      >
-                        {selectedUser?.user.name}
-                      </SelectValue>
-                    </SelectTrigger>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="ticket-status" className="w-full">
+                        <SelectValue placeholder="Select assignee">
+                          {selectedUser?.user.name}
+                        </SelectValue>
+                      </SelectTrigger>
 
-                    <SelectContent>
-                      {typeof assigneeList === "object" &&
-                        assigneeList.map((user) => (
-                          <SelectItem key={user.user.id} value={user.user.id}>
-                            {user.user.name}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-
-                  )
+                      <SelectContent>
+                        {typeof assigneeList === "object" &&
+                          assigneeList.map((user) => (
+                            <SelectItem key={user.user.id} value={user.user.id}>
+                              {user.user.name}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  );
                 }}
               />
             </FieldContent>
+            <FieldError errors={[errors.assignee_id]} />
           </Field>
 
           {/* Due Date */}
@@ -162,7 +177,12 @@ export default function TicketForm({ assigneeList, submitForm }: TicketComponent
             <FieldLabel htmlFor="ticket-due-date">Due Date</FieldLabel>
 
             <FieldContent>
-              <Input id="ticket-due-date" type="date" {...register('due_date')}/>
+              <Input
+                id="ticket-due-date"
+                type="date"
+                {...register("due_date")}
+              />
+              <FieldError errors={[errors.due_date]} />
             </FieldContent>
           </Field>
         </div>

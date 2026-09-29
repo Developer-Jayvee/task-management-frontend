@@ -9,17 +9,16 @@ import {
   getTicketListQuery,
   updateTicketQuery,
 } from "../services/queryService";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
-import { getProjectTickets } from "@/features/projects/services/api/project-api";
 import { showTicketDetails } from "../services/api/ticket-api";
 
 export default function useTickets() {
   const { list, show } = TicketQueryKeys;
   const [open, setOpen] = useState<boolean>(false);
   const [projectId, setProjectId] = useState<string | undefined>(undefined);
-  const { configurePrompt , showPrompt } = usePromptContext()
+  const { configurePrompt, showPrompt } = usePromptContext();
   const queryClient = useQueryClient();
   const ticketForm = useForm<TicketFormData>({
     resolver: zodResolver(ticketSchema),
@@ -31,14 +30,14 @@ export default function useTickets() {
   const deleteQuery = deleteTicketQuery();
 
   const ticketList = getQuery.data;
-  const confirmPrompt = (data : TicketFormData) => {
+  const confirmPrompt = (data: TicketFormData) => {
     configurePrompt?.({
       title: `Are you sure you want to proceed?`,
       promptId: "#ticketForm",
-      callback: () => submitForm(data)
-    })
-    showPrompt?.()
-  }
+      callback: () => submitForm(data),
+    });
+    showPrompt?.();
+  };
   const submitForm: SubmitHandler<TicketFormData> = async (
     data: TicketFormData,
   ) => {
@@ -57,7 +56,7 @@ export default function useTickets() {
       ticketForm.reset();
 
       queryClient.invalidateQueries({
-        queryKey: ['project-tickets',projectId]
+        queryKey: ["project-tickets", projectId],
       });
     } catch (error) {
       console.warn("Error found in :", error);
@@ -67,8 +66,8 @@ export default function useTickets() {
   const refetchList = () => queryClient.invalidateQueries({ queryKey: [list] });
   const fetchList = () => getQuery.refetch();
   const showDetails = (id: string) => queryClient.getQueryData([show, id]);
-  const onUpdateTIcket =  async (id: string) => {
-    const ticket  = await showTicketDetails(id);
+  const onUpdateTIcket = async (id: string) => {
+    const ticket = await showTicketDetails(id);
     setOpen(true);
     if (!ticket) return;
     ticketForm.reset({
@@ -82,25 +81,39 @@ export default function useTickets() {
       due_date: ticket.due_date,
     });
   };
-  const confirmDelete = async (id : string) => {
+  const confirmDelete = async (id: string) => {
     configurePrompt?.({
-      title:"Are you sure you want to delete this ticket?",
+      title: "Are you sure you want to delete this ticket?",
       promptId: "#deleteticket",
-      callback: async () => await deleteTicket(id)
-    })
+      callback: async () => await deleteTicket(id),
+    });
     showPrompt?.();
-  }
+  };
   const deleteTicket = async (id: string) => {
     try {
       await deleteQuery.mutateAsync({ id });
       toast.success("Deleted success");
       queryClient.invalidateQueries({
-        queryKey: ['project-tickets',projectId]
+        queryKey: ["project-tickets", projectId],
       });
     } catch (error) {
       console.warn(error);
     }
   };
+  useEffect(() => {
+    if (!open) {
+      ticketForm.reset({
+        id: "",
+        project_id: "",
+        title: "",
+        description: "",
+        status: "",
+        priority: "",
+        assignee_id: undefined,
+        due_date: "",
+      });
+    }
+  }, [open]);
   return {
     submitForm,
     ticketForm,
@@ -115,6 +128,6 @@ export default function useTickets() {
     deleteTicket,
     onUpdateTIcket,
     confirmPrompt,
-    confirmDelete
+    confirmDelete,
   };
 }

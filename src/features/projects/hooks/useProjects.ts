@@ -93,7 +93,7 @@ export default function useProjects() {
       projectForm.reset({
         id: undefined,
         name: "",
-        description: undefined,
+        description: "",
       });
   }, [open]);
 
