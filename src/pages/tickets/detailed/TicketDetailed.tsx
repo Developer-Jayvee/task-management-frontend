@@ -337,7 +337,7 @@ export default function TicketDetailed({
   return (
     <div className="bg-[#FDFBF7] flex items-center justify-center p-4 sm:p-8 font-sans text-slate-800">
       {/* Main Card */}
-      <div className="bg-white w-full max-w-[700px] rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+      <div className="bg-white w-full max-w-175 rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
         <TicketHeader data={details} onStatusUpdate={(status) => transition(data,status)} />
 
         <TicketDescription data={details} />
