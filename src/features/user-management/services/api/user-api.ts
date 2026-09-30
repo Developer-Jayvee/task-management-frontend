@@ -7,7 +7,7 @@ export const generateLinkAPI = async () => {
 
 export const verifyLinkAPI = async (link: string| undefined) => {
   if(! link) return null;
-  const response = await http.get("link/verify", { params: { link } });
+  const response = await http.get("auth/link/verify", { params: { link } });
   return response?.data;
 };
 

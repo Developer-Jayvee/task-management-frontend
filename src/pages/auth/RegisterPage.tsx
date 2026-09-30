@@ -15,14 +15,35 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import useRegister from "@/features/auth/hooks/useRegister"
+import { verifyLinkQuery } from "@/features/user-management/services/queryService"
+
+import { useEffect, useState } from "react"
 
 export default function RegisterForm() {
   const {
     register,
     handleSubmit,
     onSubmit,
-    errors
+    errors,
+    setValue
   } = useRegister()
+  const [link,setLink] = useState<string|undefined>();
+  const verifyLink = verifyLinkQuery(link);
+  const params = new URLSearchParams(window.location.search);
+  const urlLink = params.get('link');
+
+
+  const verifyInvitation = () => {
+    if(! urlLink ) return;
+    setLink(urlLink);
+  }
+  useEffect(() => {
+    verifyInvitation()
+  },[]);
+  if(verifyLink.data && urlLink) {
+    setValue('company',verifyLink.data.slug)
+    setValue('link',urlLink)
+  }
   return (
     <Card>
       <CardHeader>
@@ -75,6 +96,7 @@ export default function RegisterForm() {
             <Field>
               <FieldLabel htmlFor="company">Company</FieldLabel>
               <Input id="company" type="text" placeholder="e.g. Company inc" 
+              readOnly={!!link}
                 {...register('company')}
               />
               <FieldError errors={[errors.company]}/>

@@ -1,18 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  UserPlus,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, User } from "lucide-react";
 import UserTable from "@/features/user-management/components/table/user-table";
 import TableFilters from "@/features/user-management/components/table/table-filters";
 import { useUserContext } from "@/contexts/UserContext";
-
+import { CustomDialog } from "@/components/custom-dialog";
+import LinkGenerationForm from "@/features/user-management/components/form/link-generation-form";
 
 export default function UserManagementContent() {
-  const { list: users } = useUserContext();
-
+  const { list: users, open, setOpen , generateInvitation , generatedLinkData } = useUserContext();
 
   return (
     <div className="min-h-screen bg-background p-6 lg:p-8">
@@ -27,14 +23,20 @@ export default function UserManagementContent() {
               Manage your team members, roles, and permissions.
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button size="sm">
-              <UserPlus className="mr-2 h-4 w-4" />
-              Add User
-            </Button>
+          <div className="">
+            <CustomDialog
+              open={open ?? false}
+              setOpen={setOpen ?? (() => {})}
+              buttonElement={
+                <>
+                  <User size={16} /> Invite User
+                </>
+              }
+            >
+              <LinkGenerationForm link={generatedLinkData?.data}  onGenerate={async () => await generateInvitation?.()}/>
+            </CustomDialog>
           </div>
         </div>
-
 
         {/* Table Card */}
         <Card>

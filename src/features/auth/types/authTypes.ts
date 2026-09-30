@@ -10,7 +10,8 @@ export const registerSchema = z.object({
     email : z.email(),
     password: z.string().min(8,"Password must not be less than 8 characters"),
     cpassword: z.string(),
-    company: z.string()
+    company: z.string(),
+    link: z.string().optional() 
 })
 .refine((data) => data.password === data.cpassword, {
     message : "Password do not match",

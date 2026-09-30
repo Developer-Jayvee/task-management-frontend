@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
-
+  const [open,setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
@@ -16,23 +16,24 @@ export default function useUserManagement() {
   
   const confirmLink = (url?: string) => {
     if (!url) return false;
-    const uri = window.location.pathname.split("/")?.[2];
-    if (!uri) return false;
-    setLink(uri);
+    setLink(url);
   };
   const fetchMembers = () => {
     queryClient.invalidateQueries({
       queryKey: ['tenant-members']
     })
   }
-  
+  const generate = async () => {
+    try {
+      await generateLink.mutateAsync();
+      
+    } catch (error) {
+      
+    }
+  } 
   return {
     confirmLink,
-    generateLinkResponse: {
-      data: generateLink.data,
-      isSuccess: generateLink.isSuccess,
-      isError: generateLink.isError,
-    },
+    generate,
     verifyLinkResponse: {
       data: verifyLink?.data,
       isSuccess: verifyLink?.isSuccess,
@@ -43,6 +44,12 @@ export default function useUserManagement() {
       isSuccess: tenantMembers?.isSuccess,
       isError: tenantMembers?.isError,
     },
-    fetchMembers
+    generatedLinkResponse : {
+      data: generateLink?.data,
+      isSuccess: generateLink?.isSuccess,
+      isError: generateLink?.isError,
+    },
+    fetchMembers,
+    open,setOpen
   };
 }
