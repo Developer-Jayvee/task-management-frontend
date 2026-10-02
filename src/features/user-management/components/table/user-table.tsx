@@ -6,10 +6,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import TableOptions from "./table-options";
 import type { UserResponseData } from "../../types/user-types";
 export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
   return (
@@ -23,7 +22,7 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
             <TableHead>User</TableHead>
             <TableHead>Role</TableHead>
             <TableHead className="hidden md:table-cell">Joined</TableHead>
-            <TableHead className="w-17.5 text-right">Actions</TableHead>
+            {/*<TableHead className="w-17.5 text-right">Actions</TableHead>*/}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -35,13 +34,10 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9">
-                    {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
-                    <AvatarFallback>
-                      {user.user.name
-                        .split(" ")
-                        .map((n) => n[0])
-                        .join("")}
-                    </AvatarFallback>
+                    <AvatarImage
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.user?.name ?? "Unknown")}`}
+                      alt={user.user.name}
+                    />
                   </Avatar>
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">
@@ -57,15 +53,16 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
                 <Badge variant="ghost">{user.role}</Badge>
               </TableCell>
               <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                { user.user.created_at && new Date(user.user.created_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                {user.user.created_at &&
+                  new Date(user.user.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
               </TableCell>
-              <TableCell className="text-right">
+              {/*<TableCell className="text-right">
                 <TableOptions />
-              </TableCell>
+              </TableCell>*/}
             </TableRow>
           ))}
         </TableBody>

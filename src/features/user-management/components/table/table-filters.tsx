@@ -9,7 +9,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUserContext } from "@/contexts/UserContext";
 export default function TableFilters() {
+  const { sortUserList } = useUserContext()
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -23,16 +25,15 @@ export default function TableFilters() {
             className="w-full pl-9 sm:w-[250px]"
           />
         </div>
-        <Select defaultValue="all">
-          <SelectTrigger className="w-full sm:w-[150px]">
+        <Select defaultValue="" onValueChange={(value) => sortUserList?.(value)}>
+          <SelectTrigger className="w-full sm:w-[150px]" >
             <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder="Filter role" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Roles</SelectItem>
-            <SelectItem value="admin">Admin</SelectItem>
-            <SelectItem value="editor">Editor</SelectItem>
-            <SelectItem value="viewer">Viewer</SelectItem>
+            <SelectItem value="">All Roles</SelectItem>
+            <SelectItem value="owner">Owner</SelectItem>
+            <SelectItem value="member">Member</SelectItem>
           </SelectContent>
         </Select>
       </div>

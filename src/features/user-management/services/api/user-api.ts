@@ -11,7 +11,7 @@ export const verifyLinkAPI = async (link: string| undefined) => {
   return response?.data;
 };
 
-export const tenantMembersAPI = async () => {
-  const response = await http.get('users/list');
+export const tenantMembersAPI = async (sort ?: string ) => {
+  const response = await http.get('users/list', {params : { sort }});
   return response?.data;
 }

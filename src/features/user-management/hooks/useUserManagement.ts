@@ -8,11 +8,12 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
-  const [open,setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [sort, setSort] = useState<"owner" | "member" | undefined>();
   const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
-  const tenantMembers = tenantMembersQuery();
+  const tenantMembers = tenantMembersQuery(sort);
   
   const confirmLink = (url?: string) => {
     if (!url) return false;
@@ -26,11 +27,14 @@ export default function useUserManagement() {
   const generate = async () => {
     try {
       await generateLink.mutateAsync();
-      
     } catch (error) {
-      
+      console.warn('Error found in;',error)
     }
   } 
+
+  const sortUserList = (role ?: "owner" | "member") => {
+    setSort(role);
+  };
   return {
     confirmLink,
     generate,
@@ -50,6 +54,7 @@ export default function useUserManagement() {
       isError: generateLink?.isError,
     },
     fetchMembers,
-    open,setOpen
+    open, setOpen,
+    sortUserList
   };
 }
