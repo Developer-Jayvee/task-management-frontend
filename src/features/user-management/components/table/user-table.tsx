@@ -60,9 +60,6 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
                     day: "numeric",
                   })}
               </TableCell>
-              {/*<TableCell className="text-right">
-                <TableOptions />
-              </TableCell>*/}
             </TableRow>
           ))}
         </TableBody>
