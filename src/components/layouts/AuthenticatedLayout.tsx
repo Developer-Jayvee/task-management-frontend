@@ -32,7 +32,7 @@ export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
   const { refetch, isSuccess } = useLogout();
   const authStore = useAuthStore((state) => state.userData);
-
+  const clearAuthStore = useAuthStore((state) => state.clearUserData)
   if (isSuccess) {
     window.location.reload();
   }
@@ -42,6 +42,11 @@ export default function AuthenticatedLayout() {
 
   if (isError) {
     return <Navigate to="/login" replace />;
+  }
+
+  const logoutUser = () => {
+    clearAuthStore?.();
+    refetch()
   }
   return (
     <SidebarProvider>
@@ -82,7 +87,7 @@ export default function AuthenticatedLayout() {
                 <Label>{authStore?.name}</Label>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => refetch()}>
+                <DropdownMenuItem onClick={() => logoutUser()}>
                   <Label>Logout</Label>
                 </DropdownMenuItem>
               </DropdownMenuContent>

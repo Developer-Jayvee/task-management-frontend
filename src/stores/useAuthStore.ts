@@ -8,7 +8,10 @@ export const useAuthStore = create(
     (set) => ({
       userData: undefined,
       setUserData: (userData: UserFormData) => set({ userData }),
-      clearUserData: () => set({userData: undefined})
+      clearUserData: () => {
+        set({ userData: undefined })
+        useAuthStore.persist.clearStorage();
+      }
     }),
     {
       name:"auth-store"

@@ -8,6 +8,5 @@ export default function useLogout() {
         queryKey:['logout-user'],
         queryFn: logoutRequest,
         enabled:false
-        
     })
 }
