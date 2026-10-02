@@ -3,7 +3,7 @@ import UserManagementContent from "./UserManagementContent";
 import useUserManagement from "@/features/user-management/hooks/useUserManagement";
 
 export default function UserManagementPage() {
-  const { tenantMembersResponse, fetchMembers, open, setOpen, generate, generatedLinkResponse, sortUserList } =
+  const { tenantMembersResponse, fetchMembers, open, setOpen, generate, generatedLinkResponse, filterUserList } =
     useUserManagement();
 
   return (
@@ -15,7 +15,7 @@ export default function UserManagementPage() {
         setOpen,
         generateInvitation: generate,
         generatedLinkData: generatedLinkResponse,
-        sortUserList
+        filterUserList
       }}
     >
       <UserManagementContent />

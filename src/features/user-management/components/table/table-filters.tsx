@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useUserContext } from "@/contexts/UserContext";
 export default function TableFilters() {
-  const { sortUserList } = useUserContext()
+  const { filterUserList } = useUserContext()
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -23,9 +23,10 @@ export default function TableFilters() {
           <Input
             placeholder="Search users..."
             className="w-full pl-9 sm:w-[250px]"
+            onKeyUp={(event) => filterUserList({term : event.currentTarget.value})}
           />
         </div>
-        <Select defaultValue="" onValueChange={(value) => sortUserList?.(value)}>
+        <Select defaultValue="" onValueChange={(value) => filterUserList?.({ role : value})}>
           <SelectTrigger className="w-full sm:w-[150px]" >
             <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder="Filter role" />

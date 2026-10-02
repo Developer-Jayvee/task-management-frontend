@@ -16,5 +16,5 @@ export interface UserContextI {
     setOpen ?: Dispatch<SetStateAction<boolean>>;
     generateInvitation ?: () => Promise<void>;
   generatedLinkData?: QueryResponseData;
-  sortUserList ?: (role ?: "owner" | "member" ) => void; 
+  filterUserList ?: ({ role , term  } : { role ?: "owner" | "member"; term ?: string} ) => void; 
 }

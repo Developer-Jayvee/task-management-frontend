@@ -5,15 +5,18 @@ import {
   verifyLinkQuery,
 } from "../services/queryService";
 import { useQueryClient } from "@tanstack/react-query";
+import { useDebounce } from "use-debounce";
 
 export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
   const [open, setOpen] = useState<boolean>(false);
   const [sort, setSort] = useState<"owner" | "member" | undefined>();
+  const [search,setSearch] = useState<string|undefined>();
+  const [debounceSearch] = useDebounce(search,500);
   const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
-  const tenantMembers = tenantMembersQuery(sort);
+  const tenantMembers = tenantMembersQuery({sort, search: debounceSearch});
   
   const confirmLink = (url?: string) => {
     if (!url) return false;
@@ -31,10 +34,10 @@ export default function useUserManagement() {
       console.warn('Error found in;',error)
     }
   } 
-
-  const sortUserList = (role ?: "owner" | "member") => {
-    setSort(role);
-  };
+  const filterUserList = ({ role , term  } : { role ?: "owner" | "member"; term ?: string} ) => {
+    if(role) setSort(role);
+    if(term) setSearch(term);
+  }
   return {
     confirmLink,
     generate,
@@ -55,6 +58,6 @@ export default function useUserManagement() {
     },
     fetchMembers,
     open, setOpen,
-    sortUserList
+    filterUserList
   };
 }
