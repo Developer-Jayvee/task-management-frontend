@@ -22,7 +22,8 @@ export default function useLogin() {
     mutationFn: loginRequest,
     onSuccess: (data) => {
       navigate(`/${data?.tenant}`);
-    }
+    },
+    retry:false
   });
   const setCookie = useQuery({
     queryKey:['set-cookie-device'],

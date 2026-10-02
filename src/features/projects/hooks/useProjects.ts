@@ -15,15 +15,15 @@ import { createProject, updateProject } from "../services/api/project-api";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 export default function useProjects() {
   const queryClient = useQueryClient();
   const [open, setIsOpen] = useState<boolean>(false);
-  const [search,setSearch] = useState<string|undefined>();
-  const [sort,setSort] = useState<"asc"|"desc"|undefined>();
-  const [debounceSearch] = useDebounce(search,500);
-  const fetchQuery = getProjectsQuery({ search : debounceSearch, sort });
-  const { configurePrompt , showPrompt } = usePromptContext()
+  const [search, setSearch] = useState<string | undefined>();
+  const [sort, setSort] = useState<"asc" | "desc" | undefined>();
+  const [debounceSearch] = useDebounce(search, 500);
+  const fetchQuery = getProjectsQuery({ search: debounceSearch, sort });
+  const { configurePrompt, showPrompt } = usePromptContext();
   const projectForm = useForm<ProjectFormData>({
     resolver: zodResolver(projectSchema),
   });
@@ -38,8 +38,9 @@ export default function useProjects() {
       });
     },
     onError: (err) => {
-      toast.error(`Error found in ${err.message}`)
-    }
+      toast.error(`Error found in ${err.message}`);
+    },
+    retry:false,
   });
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: ProjectFormData }) =>
@@ -49,6 +50,7 @@ export default function useProjects() {
       setIsOpen(false);
       queryClient.invalidateQueries({ queryKey: ["project-list"] });
     },
+    retry: false,
   });
   const deleteMutation = deleteProjectQuery();
 
@@ -64,16 +66,16 @@ export default function useProjects() {
       toast.error("Error found on delete");
     }
   };
-  const confirmProject = (data : ProjectFormData) => {
-    let title =  (type = 'Create') => `${type} Project?`;
-    configurePrompt?.({ 
-      title: !data.id ? title('Create') : title('Update'),
-      callback : () => submitForm(data),
-      promptId: "#project"
+  const confirmProject = (data: ProjectFormData) => {
+    let title = (type = "Create") => `${type} Project?`;
+    configurePrompt?.({
+      title: !data.id ? title("Create") : title("Update"),
+      callback: () => submitForm(data),
+      promptId: "#project",
     });
 
-    showPrompt?.()
-  }
+    showPrompt?.();
+  };
   const submitForm: SubmitHandler<ProjectFormData> = (
     data: ProjectFormData,
   ) => {
@@ -94,12 +96,12 @@ export default function useProjects() {
     });
   };
 
-  const searchProject = (search ?: string) => {
-      setSearch(search);
-  }
-  const sortProject = (sort ?: "asc"|"desc") => {
+  const searchProject = (search?: string) => {
+    setSearch(search);
+  };
+  const sortProject = (sort?: "asc" | "desc") => {
     setSort(sort);
-  }
+  };
   useEffect(() => {
     if (!open)
       projectForm.reset({
@@ -122,6 +124,6 @@ export default function useProjects() {
     deleteProject,
     confirmProject,
     searchProject,
-    sortProject
+    sortProject,
   };
 }

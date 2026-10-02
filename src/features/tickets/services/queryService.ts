@@ -15,7 +15,7 @@ export const getTicketListQuery = () => {
   return useQuery({
     queryKey: [list],
     queryFn: getTicketList,
-    enabled: false
+    enabled: false,
   });
 };
 
@@ -29,18 +29,21 @@ export const showTicketQuery = (id: string) => {
 export const createTicketQuery = () => {
   return useMutation({
     mutationFn: ({ data }: { data: TicketFormData }) => createtTicket(data),
+    retry: false,
   });
 };
 
-
 export const deleteTicketQuery = () => {
-    return useMutation({
-        mutationFn: ({ id } : { id : string }) => deleteTicket(id)
-    });
-}
+  return useMutation({
+    mutationFn: ({ id }: { id: string }) => deleteTicket(id),
+    retry: false,
+  });
+};
 
 export const updateTicketQuery = () => {
-    return useMutation({
-        mutationFn: ({ id , data } : { id: string; data: TicketFormData }) => updateTicket(id,data)
-    })
-}
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: TicketFormData }) =>
+      updateTicket(id, data),
+    retry: false,
+  });
+};

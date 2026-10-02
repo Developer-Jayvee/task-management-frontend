@@ -6,5 +6,6 @@ export default function useVerifyIdentity() {
         queryKey: ['identity-verify'],
         queryFn: identityCheck,
         retry:false
+        
     });
 }
