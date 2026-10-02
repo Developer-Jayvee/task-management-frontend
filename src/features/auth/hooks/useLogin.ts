@@ -5,9 +5,12 @@ import { loginRequest, registerDevice } from "../services/api/auth-api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/stores/useAuthStore";
+import type { UserResponseData } from "@/features/user-management/types/user-types";
 // import { loginMutation } from "../services/loginQuery";
 export default function useLogin() {
   const navigate = useNavigate();
+  const authStore = useAuthStore((state) => state.setUserData);
   const {
     register,
     handleSubmit,
@@ -21,6 +24,9 @@ export default function useLogin() {
   const loginMutation = useMutation({
     mutationFn: loginRequest,
     onSuccess: (data) => {
+      if (!data) throw new Error('Error found upon login');
+      
+      authStore(data.user as UserResponseData)
       navigate(`/${data?.tenant}`);
     },
     retry:false

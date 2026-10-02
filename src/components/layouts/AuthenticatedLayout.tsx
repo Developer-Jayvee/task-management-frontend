@@ -26,10 +26,12 @@ import {
 } from "../ui/dropdown-menu";
 import useLogout from "@/features/auth/hooks/useLogout";
 import { PromptProvider } from "@/contexts/PromptDialogContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
   const { refetch, isSuccess } = useLogout();
+  const authStore = useAuthStore((state) => state.userData);
 
   if (isSuccess) {
     window.location.reload();
@@ -56,9 +58,9 @@ export default function AuthenticatedLayout() {
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 {/* <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem> */}
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                  </BreadcrumbItem> */}
               </BreadcrumbList>
             </Breadcrumb>
           </div>
@@ -74,10 +76,10 @@ export default function AuthenticatedLayout() {
                 }
               >
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarImage src={`https://ui-avatars.com/api/?name=${encodeURIComponent(authStore?.name ?? "Unknown")}`} />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <Label>Jayvee Hidlao</Label>
+                <Label>{authStore?.name}</Label>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuItem onClick={() => refetch()}>
