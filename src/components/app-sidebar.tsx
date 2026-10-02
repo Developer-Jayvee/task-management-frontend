@@ -14,6 +14,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { useNavigate, useParams } from "react-router-dom"
+import { useAuthStore } from "@/stores/useAuthStore"
 
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
@@ -29,7 +30,8 @@ const data = {
         },
         {
           title: "User Management",
-          url : "user-management",
+          url: "user-management",
+          except: ['member']
         }
       ],
     },
@@ -38,6 +40,12 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const {slug} = useParams()
   const navigate = useNavigate()
+  const authData = useAuthStore((state) => state.userData)
+  const role = authData?.member?.role;
+  const navList = data.navMain.map(list => ({
+    ...list,
+    items: list.items.filter((item) => !item.except?.includes(role))
+  }))
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -47,7 +55,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         />
       </SidebarHeader>
       <SidebarContent>
-        {data.navMain.map((item) => (
+        {navList.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>

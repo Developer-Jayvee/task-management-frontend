@@ -6,7 +6,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/stores/useAuthStore";
-import type { UserResponseData } from "@/features/user-management/types/user-types";
 // import { loginMutation } from "../services/loginQuery";
 export default function useLogin() {
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ export default function useLogin() {
     onSuccess: (data) => {
       if (!data) throw new Error('Error found upon login');
       
-      authStore(data.user as UserResponseData)
+      authStore(data.user)
       navigate(`/${data?.tenant}`);
     },
     retry:false

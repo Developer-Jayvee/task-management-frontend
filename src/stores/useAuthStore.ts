@@ -1,13 +1,12 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { AuthStoreI } from './types/authStoreTypes';
-import type { UserFormData } from '@/features/auth/types/authTypes';
+import type { AuthStoreI, AuthStoreMemberData, AuthStoreTenantData, AuthStoreUserData } from './types/authStoreTypes';
 export const useAuthStore = create(
   persist<AuthStoreI>(
     (set) => ({
       userData: undefined,
-      setUserData: (userData: UserFormData) => set({ userData }),
+      setUserData: (userData: AuthStoreUserData<AuthStoreMemberData<AuthStoreTenantData>>) => set({ userData }),
       clearUserData: () => {
         set({ userData: undefined })
         useAuthStore.persist.clearStorage();
