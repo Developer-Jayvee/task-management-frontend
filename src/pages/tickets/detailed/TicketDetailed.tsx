@@ -29,7 +29,7 @@ function TicketHeader({ data , onStatusUpdate }: TicketProps) {
       {/* Header Section */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-3">
-          <span className="text-slate-500 font-medium text-sm tracking-wide">
+          <span className="break-all text-slate-500 font-medium text-sm tracking-wide">
             {data.id}
           </span>
 
@@ -76,13 +76,13 @@ function TicketHeader({ data , onStatusUpdate }: TicketProps) {
       </h1>
 
       {/* Meta Row */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="flex items-center gap-2">
+      <div className="mb-6 flex flex-wrap items-center gap-3 sm:gap-4">
+        <div className="flex min-w-0 items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-slate-500 text-white flex items-center justify-center text-xs font-medium">
             JD
           </div>
 
-          <span className="text-sm text-slate-600">
+          <span className="min-w-0 break-words text-sm text-slate-600">
             <span className="font-medium text-slate-900">John Doe</span>{" "}
             reported 2 hours ago
           </span>
@@ -251,14 +251,14 @@ function TicketFooter({
   onUpdate: (id: string) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 mt-6 pt-5 border-t border-slate-100">
+    <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
       {/* Delete */}
       <button
         onClick={() => onDelete(data.id)}
         type="button"
         className="
           inline-flex items-center gap-2
-          px-4 py-2.5
+          px-3 py-2 sm:px-4 sm:py-2.5
           rounded-lg
           border border-red-200
           bg-white
@@ -273,13 +273,13 @@ function TicketFooter({
       </button>
 
       {/* Close + Update */}
-      <div className="flex items-center gap-2">
+      <div className="flex flex-1 justify-end gap-2 sm:flex-none">
         <button
           onClick={() => onClose()}
           type="button"
           className="
             inline-flex items-center gap-2
-            px-4 py-2.5
+            px-3 py-2.5 sm:px-4
             rounded-lg
             border border-slate-200
             bg-white
@@ -298,7 +298,7 @@ function TicketFooter({
           type="button"
           className="
             inline-flex items-center gap-2
-            px-4 py-2.5
+            px-3 py-2.5 sm:px-4
             rounded-lg
             bg-slate-900
             text-white
@@ -335,9 +335,9 @@ export default function TicketDetailed({
   if(isPending) fetchList?.();
   const details = projectData?.tickets?.find((v) => v.id === data) as TicketResponseData;
   return (
-    <div className="bg-[#FDFBF7] flex items-center justify-center p-4 sm:p-8 font-sans text-slate-800">
+    <div className="flex min-w-0 items-start justify-center font-sans text-slate-800">
       {/* Main Card */}
-      <div className="bg-white w-full max-w-175 rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+      <div className="w-full min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
         <TicketHeader data={details} onStatusUpdate={(status) => transition(data,status)} />
 
         <TicketDescription data={details} />

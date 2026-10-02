@@ -1,5 +1,4 @@
 import { CustomDialog } from "@/components/custom-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProjectProvider } from "@/contexts/ProjectContext";
@@ -36,7 +35,7 @@ export default function ProjectDetailed() {
   const [currentProject] = useState<string | undefined>(id);
   const [currentStatus,setCurrentStatus] = useState<TicketStatus|"all"|undefined>();
   const [debounceStatus] = useDebounce(currentStatus,500);
-  const { data: projectTickets, refetch } =
+  const { data: projectTickets, refetch, isPending } =
     getProjectTicketsQuery(currentProject,debounceStatus);
   const details = projectTickets as ProjectDataI;
   const setSelectedTicket = (id: string | null) => {
@@ -74,30 +73,30 @@ export default function ProjectDetailed() {
         assigneeList,
       }}
     >
-      <div className="grid grid-rows-[auto_1fr]">
+      <div className="grid min-w-0 grid-rows-[auto_1fr]">
         <div>
           <Button variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft />
             Back
           </Button>
         </div>
-        <div className="grid grid-rows-[150px_1fr] grid-cols-[1fr_500px] gap-2 flex-1">
-          <div className="col-span-2 grid grid-cols-[1fr_auto] items-center-safe ">
-            <div className="flex items-start gap-4">
-              <div className="flex size-24 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <FolderKanban className="size-12 text-muted-foreground" />
+        <div className="grid min-w-0 grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:gap-3">
+          <div className="grid min-w-0 grid-cols-1 items-start gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center lg:col-span-2">
+            <div className="flex min-w-0 items-start gap-3 sm:gap-4">
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-muted sm:size-24">
+                <FolderKanban className="size-8 text-muted-foreground sm:size-12" />
               </div>
 
-              <div className="flex-1 space-y-1">
-                <div className="flex items-center gap-2 ">
+              <div className="min-w-0 flex-1 space-y-1">
+                <div className="flex min-w-0 items-center gap-2 wrap-break-word">
                   {details?.name}
                   {/* <Badge variant="default">Actives</Badge> */}
                 </div>
 
-                <p className="text-sm text-muted-foreground">{details?.description}</p>
+                <p className="wrap-break-word text-sm text-muted-foreground">{details?.description}</p>
               </div>
             </div>
-            <div>
+            <div className="sm:justify-self-end">
               <CustomDialog
                 open={open}
                 setOpen={setOpen ?? (() => {})}
@@ -116,10 +115,10 @@ export default function ProjectDetailed() {
               </CustomDialog>
             </div>
           </div>
-          <div className=" flex flex-col">
-            <div>
+          <div className="flex min-w-0 flex-col lg:col-start-1">
+            <div className="mb-2 min-w-0 overflow-x-auto">
               <Tabs defaultValue="all">
-                <TabsList variant="line">
+                <TabsList variant="line" className="w-max min-w-full justify-start">
                   <TabsTrigger value="all" onClick={() => filterTickets('all')}>All</TabsTrigger>
                   <TabsTrigger value="to-do" onClick={() => filterTickets('to-do')}>Open</TabsTrigger>
                   <TabsTrigger value="in-progress" onClick={() => filterTickets('in-progress')} >In-progress</TabsTrigger>
@@ -130,6 +129,8 @@ export default function ProjectDetailed() {
             <ProjectTicketsTable
               viewTicketDetails={(id) => setSelectedTicket(id)}
               data={projectTickets ?? []}
+              activeStatus={currentStatus ?? "all"}
+              isLoading={isPending}
             />
           </div>
           <TicketDetailed

@@ -5,10 +5,10 @@ export default function EmptyTicketDetails() {
   const { setOpen } = useProjectContext();
   return (
     // Empty State
-    <div className="bg-[#FDFBF7] flex items-center justify-center p-4 sm:p-8 font-sans text-slate-800">
+    <div className="flex min-w-0 items-start justify-center font-sans text-slate-800">
       {/* Main Card */}
-      <div className="bg-white w-full max-w-[700px] rounded-2xl border border-slate-200 shadow-sm p-8 sm:p-12">
-        <div className="flex flex-col items-center justify-center text-center min-h-[420px]">
+      <div className="w-full min-w-0 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8 lg:p-12">
+        <div className="flex min-h-70 flex-col items-center justify-center text-center sm:min-h-105">
           {/* Icon */}
           <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-6">
             <svg
