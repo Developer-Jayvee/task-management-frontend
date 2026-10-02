@@ -36,7 +36,7 @@ export default function useUserManagement() {
   } 
   const filterUserList = ({ role , term  } : { role ?: "owner" | "member"; term ?: string} ) => {
     if(role) setSort(role);
-    if(term) setSearch(term);
+    setSearch(term);
   }
   return {
     confirmLink,
