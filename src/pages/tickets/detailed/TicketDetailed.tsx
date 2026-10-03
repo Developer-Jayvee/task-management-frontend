@@ -1,10 +1,19 @@
 import { Field, FieldContent } from "@/components/ui/field";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useProjectContext } from "@/contexts/ProjectContext";
 import EmptyTicketDetails from "@/features/tickets/components/ticket-detailed-empty";
 import { TicketStatusData } from "@/features/tickets/data";
 import usePipeline from "@/features/tickets/hooks/usePipeline";
-import type { TicketResponseData, TicketStatus } from "@/features/tickets/types/ticket-types";
+import type {
+  TicketResponseData,
+  TicketStatus,
+} from "@/features/tickets/types/ticket-types";
 import {
   MessageSquare,
   LayoutGrid,
@@ -20,17 +29,17 @@ import {
 
 type TicketProps = {
   data: TicketResponseData;
-  onStatusUpdate ?: (status : TicketStatus) => void;
+  onStatusUpdate?: (status: TicketStatus) => void;
 };
 
-function TicketHeader({ data , onStatusUpdate }: TicketProps) {
+function TicketHeader({ data, onStatusUpdate }: TicketProps) {
   return (
     <>
       {/* Header Section */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-3">
           <span className="break-all text-slate-500 font-medium text-sm tracking-wide">
-            {data.id}
+            Ticket# {data.id}
           </span>
 
           <span className="bg-[#FDE8E8] text-[#C53030] text-xs font-semibold px-2.5 py-1 rounded-full border border-[#FBD5D5]">
@@ -44,24 +53,28 @@ function TicketHeader({ data , onStatusUpdate }: TicketProps) {
                 name="status"
                 control={control}
                 render={({ field }) => ( */}
-                  <Select value={data.status} onValueChange={(status) => onStatusUpdate?.(status ?? data.status)}>
-                    <SelectTrigger id="ticket-status" className="w-full">
-                      <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
+              <Select
+                value={data.status}
+                onValueChange={(status) =>
+                  onStatusUpdate?.(status ?? data.status)
+                }
+              >
+                <SelectTrigger id="ticket-status" className="w-full">
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
 
-                    <SelectContent className="">
-                      {TicketStatusData.map((status) => (
-                        <SelectItem key={status} value={status}>
-                          {status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                {/* )} */}
+                <SelectContent className="">
+                  {TicketStatusData.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {/* )} */}
               {/* /> */}
             </FieldContent>
           </Field>
-
         </div>
 
         {/* <button className="flex items-center gap-2 bg-[#EBF8FF] text-[#2B6CB0] text-sm font-medium px-3 py-1.5 rounded-md border border-[#BEE3F8] hover:bg-[#E2E8F0] transition-colors">
@@ -89,8 +102,8 @@ function TicketHeader({ data , onStatusUpdate }: TicketProps) {
         </div>
 
         <div className="flex items-center gap-1.5 text-slate-500 text-sm">
-          <MessageSquare size={16} />
-          <span>3</span>
+          {/* <MessageSquare size={16} /> */}
+          {/* <span>3</span> */}
         </div>
       </div>
     </>
@@ -138,7 +151,9 @@ function TicketDescription({ data }: TicketProps) {
 }
 function TicketMetadata({ data }: TicketProps) {
   const { assigneeList } = useProjectContext();
-  const assignee = assigneeList?.find((value) => value.user.id === data.assignee_id)
+  const assignee = assigneeList?.find(
+    (value) => value.user.id === data.assignee_id,
+  );
   return (
     <>
       {/* Divider */}
@@ -157,7 +172,7 @@ function TicketMetadata({ data }: TicketProps) {
 
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <div className="w-2.5 h-2.5 rounded-sm bg-blue-400" />
-              Website Redesign
+              {data.title}
             </div>
           </div>
 
@@ -174,14 +189,7 @@ function TicketMetadata({ data }: TicketProps) {
           </div>
 
           {/* Updated */}
-          <div>
-            <p className="text-xs text-slate-500 mb-1.5 flex items-center gap-1.5">
-              <Clock size={12} />
-              Updated
-            </p>
-
-            <p className="text-sm text-slate-700">Updated</p>
-          </div>
+         
         </div>
 
         {/* Right Column */}
@@ -208,7 +216,14 @@ function TicketMetadata({ data }: TicketProps) {
               Created
             </p>
 
-            <p className="text-sm text-slate-700">Apr 16, 2025, 12:24 AM</p>
+            <p className="text-sm text-slate-700">
+              {data.created_at &&
+                new Date(data.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+            </p>
           </div>
         </div>
       </div>
@@ -326,24 +341,28 @@ export default function TicketDetailed({
   onClose: () => void;
   onUpdate: (id: string) => void;
 }) {
-  const { fetchList , projectData } = useProjectContext();
-  const { transition, isPending } = usePipeline()
-  
+  const { fetchList, projectData } = useProjectContext();
+  const { transition, isPending } = usePipeline();
+
   if (!data) {
     return <EmptyTicketDetails />;
   }
-  if(isPending) fetchList?.();
-  const details = projectData?.tickets?.find((v) => v.id === data) as TicketResponseData;
+  if (isPending) fetchList?.();
+  const details = projectData?.tickets?.find(
+    (v) => v.id === data,
+  ) as TicketResponseData;
   return (
     <div className="flex min-w-0 items-start justify-center font-sans text-slate-800">
       {/* Main Card */}
       <div className="w-full min-w-0 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:p-8">
-        <TicketHeader data={details} onStatusUpdate={(status) => transition(data,status)} />
+        <TicketHeader
+          data={details}
+          onStatusUpdate={(status) => transition(data, status)}
+        />
 
         <TicketDescription data={details} />
 
         <TicketMetadata data={details} />
-
 
         <TicketFooter
           data={details}

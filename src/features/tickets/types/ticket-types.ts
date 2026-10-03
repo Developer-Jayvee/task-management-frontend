@@ -29,4 +29,5 @@ export interface TicketResponseData  {
   status: TicketStatus;
   priority: TicketPriority;
   due_date: string;
+  created_at ?: string;
 }
