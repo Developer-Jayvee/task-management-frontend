@@ -3,6 +3,7 @@ import { ProjectCardProvider } from "@/contexts/ProjectCardContext";
 import useProjects from "@/features/projects/hooks/useProjects";
 import { useEffect } from "react";
 import ProjectBody from "./ProjectBody";
+import { useTicketStore } from "@/stores/useTicketStore";
 
 
 
@@ -18,9 +19,14 @@ export default function ProjectPage() {
     deleteProject,
     confirmProject,
     searchProject,
-    sortProject
+    sortProject,
   } = useProjects();
+  const setTicketStore = useTicketStore((state) => state.setTicketList)
 
+  useEffect(() => {
+    setTicketStore(projectList)
+  },[projectList]);
+  
   useEffect(() => {
     getProjects();
   }, []);
