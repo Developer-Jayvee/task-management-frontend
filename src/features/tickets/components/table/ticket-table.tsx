@@ -1,5 +1,14 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import {
+  emptyStateCopy,
+  emptyStateIcons,
+  useDataTableTicket,
+} from "../../data/table-data";
+import type {
+  TicketDataTableData,
+  TicketStatus,
+} from "../../types/ticket-types";
+
 import {
   Table,
   TableBody,
@@ -8,51 +17,42 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CircleCheck, CircleDashed, CircleDot, Ticket } from "lucide-react";
-import type { ProjectDataI } from "../types/projectTypes";
-import type { TicketStatus } from "@/features/tickets/types/ticket-types";
+import { Button } from "@/components/ui/button";
+import CustomPaginaton from "@/components/custom-pagination";
+import { DefaultDataTableValues } from "../../data/defaultValues";
 
-const emptyStateCopy: Record<"all" | TicketStatus, { title: string; description: string }> = {
-  "all": {
-    title: "No tickets yet",
-    description: "Tickets created for this project will appear here.",
-  },
-  "to-do": {
-    title: "No open tickets",
-    description: "There are no tickets waiting to be started right now.",
-  },
-  "in-progress": {
-    title: "Nothing in progress",
-    description: "Tickets being worked on will appear here.",
-  },
-  completed: {
-    title: "No completed tickets",
-    description: "Completed tickets will appear here.",
-  },
-};
-
-const emptyStateIcons = {
-  all: Ticket,
-  "to-do": CircleDashed,
-  "in-progress": CircleDot,
-  completed: CircleCheck,
-};
-
-export function ProjectTicketsTable({
+export default function TicketDataTableComponent({
   data,
-  viewTicketDetails,
-  activeStatus,
   isLoading,
+  activeStatus,
+  updatePage,
+  pageIndex = 0,
+  pageSize = 10,
+  total = 0
 }: {
-  data: ProjectDataI;
-  viewTicketDetails: (id: string) => void;
-  activeStatus: "all" | TicketStatus;
+  data: TicketDataTableData[];
+  pageIndex: number;
+  pageSize: number;
   isLoading: boolean;
+  activeStatus: "all" | TicketStatus;
+  updatePage: (perPage: number | null) => void;
+  total: number;
 }) {
-  const tickets = Array.isArray(data?.tickets) ? data.tickets : [];
+  const datatable = useDataTableTicket({
+    data: data ?? [DefaultDataTableValues],
+    pageIndex,
+    pageSize,
+    rowCount: total
+  });
+  
+  const table = datatable.getRowModel();
+  const list = table.rows.map((row) => row?.original);
+
   const EmptyIcon = emptyStateIcons[activeStatus];
   const emptyCopy = emptyStateCopy[activeStatus];
-
+  const setPerPageCount = (count: number) => {
+    updatePage(count);
+  };
   return (
     <div className="w-full overflow-x-auto rounded-md border">
       <Table className="min-w-160">
@@ -70,18 +70,26 @@ export function ProjectTicketsTable({
         <TableBody>
           {isLoading ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-40 text-center text-muted-foreground">
+              <TableCell
+                colSpan={6}
+                className="h-40 text-center text-muted-foreground"
+              >
                 Loading tickets…
               </TableCell>
             </TableRow>
-          ) : tickets.length === 0 ? (
+          ) : list && list.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={6} className="h-56 whitespace-normal text-center">
+              <TableCell
+                colSpan={6}
+                className="h-56 whitespace-normal text-center"
+              >
                 <div className="mx-auto flex max-w-sm flex-col items-center gap-2 py-5">
                   <div className="mb-1 flex size-11 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                     <EmptyIcon className="size-5" aria-hidden="true" />
                   </div>
-                  <p className="font-medium text-foreground">{emptyCopy.title}</p>
+                  <p className="font-medium text-foreground">
+                    {emptyCopy.title}
+                  </p>
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {emptyCopy.description}
                   </p>
@@ -89,7 +97,7 @@ export function ProjectTicketsTable({
               </TableCell>
             </TableRow>
           ) : (
-            tickets.map((value, index) => {
+            list.map((value, index) => {
               return (
                 <TableRow key={value.id} className="hover:bg-muted/40">
                   <TableCell className="text-center text-muted-foreground">
@@ -109,7 +117,7 @@ export function ProjectTicketsTable({
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" onClick={() => viewTicketDetails(value.id)}>
+                    <Button variant="ghost" size="sm">
                       View
                     </Button>
                   </TableCell>
@@ -119,6 +127,12 @@ export function ProjectTicketsTable({
           )}
         </TableBody>
       </Table>
+      <CustomPaginaton
+        perPage="10"
+        previousPageLink="#"
+        nextPageLink="#"
+        onPerPageChange={({ count }) => setPerPageCount(count)}
+      />
     </div>
   );
 }

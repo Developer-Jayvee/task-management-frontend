@@ -31,3 +31,13 @@ export interface TicketResponseData  {
   due_date: string;
   created_at ?: string;
 }
+
+
+export interface TicketDataTableData {
+  id: string;
+  title: string;
+  description: string;
+  status: TicketStatus;
+  priority: TicketPriority;
+  due_date: string;
+}

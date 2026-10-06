@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/components/layouts/AuthenticatedLayout";
 import GuestLayout from "@/components/layouts/GuestLayout";
 import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
-import ProjectDetailed from "@/pages/project/detailed/ProjectDetailed";
+import ProjectBaseView from "@/pages/project/detailed/ProjectBaseView";
 import ProjectPage from "@/pages/project/ProjectPage";
 import UserManagementPage from "@/pages/user-management/UserManagementPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
@@ -41,7 +41,7 @@ const MainRoutes = createBrowserRouter([
             },
             {
                 path:"project-management/:id/tickets",
-                element: <ProjectDetailed/>
+                element: <ProjectBaseView/>
             },
             {
                 path: "user-management",

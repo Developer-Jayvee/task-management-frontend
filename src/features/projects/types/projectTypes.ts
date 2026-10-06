@@ -1,5 +1,6 @@
 import type { MemberFormData } from "@/features/auth/types/authTypes";
-import type { TicketResponseData } from "@/features/tickets/types/ticket-types";
+import type { PaginationData } from "@/features/common/types/paginationTypes";
+import type { TicketDataTableData, TicketResponseData, TicketStatus } from "@/features/tickets/types/ticket-types";
 import type { Dispatch, SetStateAction } from "react";
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 import z from "zod";
@@ -49,4 +50,16 @@ export interface ProjectDataI {
     name: string;
     description ?: string;
     tickets: Array<TicketResponseData>;
+}
+
+export interface ProjectViewContextI {
+    data_table_config: {
+        data: TicketDataTableData[],
+        isLoading : boolean;
+        updatePage : (page : number|null, perPage : number|null) => void; 
+        page: number;
+        perPage: number;
+        paginationData ?: PaginationData<TicketDataTableData[]>;
+    };
+    currentTabStatus: 'all' | TicketStatus;
 }

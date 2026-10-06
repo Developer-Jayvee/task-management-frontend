@@ -11,11 +11,13 @@ import type { TicketFormData } from "../types/ticket-types";
 
 const { list, show } = TicketQueryKeys;
 
-export const getTicketListQuery = () => {
+export const getTicketListQuery = ({ page = 0 , perPage = 10 } : {
+  page: number;
+  perPage: number;
+}) => {
   return useQuery({
-    queryKey: [list],
-    queryFn: getTicketList,
-    enabled: false,
+    queryKey: [list,page + 1,perPage],
+    queryFn: () => getTicketList({ page: page + 1, perPage }),
   });
 };
 
