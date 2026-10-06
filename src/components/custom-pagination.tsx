@@ -12,10 +12,14 @@ export default function CustomPaginaton({
   perPage = "10",
   nextPageLink = "#",
   previousPageLink = "#",
-  onPerPageChange = (() => {})
+  onPerPageChange = (() => {}),
+  canNextPage = false,
+  canPrevPage = false
 }: {
   perPage: string;
   nextPageLink: string;
+  canNextPage ?: boolean;
+  canPrevPage ?: boolean;
   previousPageLink: string;
   onPerPageChange : ({ count } : { count : number; }) => void;
 }) {
@@ -40,11 +44,11 @@ export default function CustomPaginaton({
       </Field>
       <Pagination className="mx-0 w-auto">
         <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious href={previousPageLink} />
+          <PaginationItem >
+            <PaginationPrevious className={`${canPrevPage ? 'pointer-events-none opacity-50' : ''}`} href={previousPageLink} />
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext href={nextPageLink} />
+            <PaginationNext className={`${canNextPage ? 'pointer-events-none opacity-50' : ''}`} href={nextPageLink} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

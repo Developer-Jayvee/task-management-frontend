@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export default function ProjectView() {
   const navigate = useNavigate();
   const { data_table_config, currentTabStatus } = useProjectViewContext();
-  
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div>
@@ -69,6 +68,7 @@ export default function ProjectView() {
             </Tabs>
           </div>
           <TicketDataTableComponent
+            meta={data_table_config.paginationData?.meta}
             total={data_table_config.paginationData?.meta.total ?? 0}
             data={data_table_config.data}
             isLoading={data_table_config.isLoading}

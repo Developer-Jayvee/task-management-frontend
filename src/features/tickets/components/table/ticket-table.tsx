@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CustomPaginaton from "@/components/custom-pagination";
 import { DefaultDataTableValues } from "../../data/defaultValues";
+import type { PaginationMetaData } from "@/features/common/types/paginationTypes";
 
 export default function TicketDataTableComponent({
   data,
@@ -28,9 +29,11 @@ export default function TicketDataTableComponent({
   updatePage,
   pageIndex = 0,
   pageSize = 10,
-  total = 0
+  total = 0,
+  meta
 }: {
   data: TicketDataTableData[];
+  meta ?: PaginationMetaData;
   pageIndex: number;
   pageSize: number;
   isLoading: boolean;
@@ -128,9 +131,11 @@ export default function TicketDataTableComponent({
         </TableBody>
       </Table>
       <CustomPaginaton
+        canNextPage={datatable.getCanNextPage()}
+        canPrevPage={datatable.getCanPreviousPage()}
         perPage="10"
-        previousPageLink="#"
-        nextPageLink="#"
+        previousPageLink={meta?.links?.prev ?? "#"}
+        nextPageLink={meta?.links?.next ?? "#"}
         onPerPageChange={({ count }) => setPerPageCount(count)}
       />
     </div>
