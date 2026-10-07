@@ -11,7 +11,11 @@ export default function useTicketDataTable() {
     if( pageIndex !== null) setPage(pageIndex);
     if(perPage !== null) setPerPage(perPage);
   }
-  const refetchTicketTable = () => { listQuery.refetch() };
+  const refetchTicketTable = () => { 
+    console.log(1);
+    
+    listQuery.refetch();
+   };
   return {
     listQuery,
     tab,

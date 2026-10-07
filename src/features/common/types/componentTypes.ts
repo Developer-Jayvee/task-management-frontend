@@ -25,13 +25,13 @@ export interface PromptDialogContextI {
   setDetails: Dispatch<SetStateAction<{ title: string; description ?: string }>>;
   isConfirm ?: boolean;
   isCancelled ?: boolean;
-  confirm ?: () => void;
+  confirm ?: () => Promise<void>;
   cancel ?: () => void;
   configurePrompt ?: ({ title , description , promptId , callback } :  {
     title: string;
     description ?: string;
-    callback : (() => void) | null;
+    callback : (() => Promise<void>) | null;
     promptId : string|null;
-  }) => void;
+  }) => Promise<void>;
   showPrompt ?: () => void;
 } 

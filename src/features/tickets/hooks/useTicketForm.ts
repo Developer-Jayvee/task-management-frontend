@@ -5,8 +5,10 @@ import { createTicketQuery, updateTicketQuery } from "../services/queryService";
 import { toast } from "react-toastify";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function useTicketForm() {
+  const queryClient = useQueryClient();
   const createQuery = createTicketQuery();
   const updateQuery = updateTicketQuery();
   const form = useForm<TicketFormData>({
@@ -16,12 +18,27 @@ export default function useTicketForm() {
   const [open,setOpen] = useState<boolean>(false);
   const [isFormSuccess,setFormSuccess] = useState<boolean>(false);
 
+  const resetForm = () => {
+    form.setValues({
+      title: "",
+      description: "",
+      status: "to-do",
+      priority: "low",
+      assignee_id: undefined,
+      due_date: "",
+    });
+  };
   const confirmFormSubmit = ({ data, id, }: { data: TicketFormData; id?: string; }) => {
     configurePrompt?.({
       title: `Are you sure you want to proceed?`,
       promptId: "#ticketForm",
-      callback: () =>
-        !id ? createFormSubmit(data) : updateFormSubmit({ id, data }),
+      callback: async () => {
+        if(!id) {
+          await createFormSubmit(data)
+        } else {
+          await updateFormSubmit({ id, data });
+        }
+      }
     });
     showPrompt?.();
   };
@@ -32,11 +49,15 @@ export default function useTicketForm() {
       if(update) {
         setFormSuccess(prev => true);
         toast.success("Update success");
-        form.reset();
+        resetForm()
+        await queryClient.invalidateQueries({
+          queryKey: ['ticket-list']
+        })
       } 
     } catch (error) {
       console.warn("Error found in :", error);
     } finally {
+      
       setFormSuccess(prev => false);
     }
   };
@@ -46,14 +67,16 @@ export default function useTicketForm() {
 
       if(create) {
         setFormSuccess(prev => true);
-        console.log(create,1);
-        
         toast.success("Save success");
-        form.reset();
+        resetForm();
+        await queryClient.invalidateQueries({
+          queryKey: ['ticket-list']
+        })
       }
     } catch (error) {
       console.warn("Error found in :", error);
     } finally {
+     
       setFormSuccess(prev => false);
     }
   };

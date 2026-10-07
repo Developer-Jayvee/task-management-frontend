@@ -12,8 +12,8 @@ export default function usePrompt() {
     title: "",
     description: "",
   });
-  const [afterFn, setAfterFn] = useState<(() => void) | null>(null);
-  const configurePrompt = ({
+  const [afterFn, setAfterFn] = useState<(() => Promise<void>) | null>(null);
+  const configurePrompt =  async ({
     title,
     description,
     callback,
@@ -21,7 +21,7 @@ export default function usePrompt() {
   }: {
     title: string;
     description ?: string;
-    callback: (() => void) | null;
+    callback: ( () => Promise<void>) | null;
     promptId: string | null;
   }) => {
     if (!promptId) throw new Error("Component ID is required.");
@@ -34,12 +34,12 @@ export default function usePrompt() {
   const showPrompt = () => {
     setOpen(!open);
   };
-  const confirm = () => {
+  const confirm = async () => {
     try {
       setPromptId(prev => null);
       setIsConfirm(prev => true);
       setOpen(!open);
-      afterFn?.();
+      await afterFn?.();
       resetAll()
     } catch (error) {
       console.warn("Error found in custom prompt", error);
