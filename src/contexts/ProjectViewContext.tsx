@@ -11,6 +11,11 @@ export const ProjectViewContext = createContext<ProjectViewContextI>({
         page: 1,
         perPage: 10
     },
+    form_config: {},
+    modal_config:{
+        open: false,
+        setOpen: () => {}
+    },
     currentTabStatus:"all"
 });
 export const useProjectViewContext = () => {

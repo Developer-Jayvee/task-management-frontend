@@ -1,12 +1,18 @@
+export interface DetailedPaginationLinksData {
+  active: boolean;
+  label : string;
+  page : number;
+  url : string;
+}
 export interface PaginationLinkData {
-  first: string | null;
-  last: string | null;
-  next: string | null;
-  prev: string | null;
+  first: DetailedPaginationLinksData | null;
+  last: DetailedPaginationLinksData | null;
+  next: DetailedPaginationLinksData | null;
+  prev: DetailedPaginationLinksData | null;
 }
 
 export interface PaginationMetaData {
-  links?: PaginationLinkData;
+  links?: Array<DetailedPaginationLinksData>;
   current_page: number;
   from: number;
   last_page: number;
@@ -18,14 +24,5 @@ export interface PaginationMetaData {
 export interface PaginationData<T = []> {
   data: T;
   links?: PaginationLinkData;
-  meta: {
-    links?: PaginationLinkData;
-    current_page: number;
-    from: number;
-    last_page: number;
-    path: string;
-    per_page: number;
-    to: number;
-    total: number;
-  };
+  meta: PaginationMetaData;
 }

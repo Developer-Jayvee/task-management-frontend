@@ -2,6 +2,8 @@ import { ProjectViewProvider } from "@/contexts/ProjectViewContext";
 import ProjectView from "./ProjectView";
 import useTicketDataTable from "@/features/tickets/hooks/useTicketDataTable";
 import type { TicketDataTableData } from "@/features/tickets/types/ticket-types";
+import useTicketForm from "@/features/tickets/hooks/useTicketForm";
+import useUser from "@/features/common/hooks/useUser";
 
 export default function ProjectBaseView() {
   const {
@@ -9,9 +11,19 @@ export default function ProjectBaseView() {
     tab,
     updatePage,
     page,
-    perPage
+    perPage,
+    refetchTicketTable
   } = useTicketDataTable();
-  
+  const {
+    confirmFormSubmit,
+    createFormSubmit,
+    updateFormSubmit,
+    form,
+    open,
+    setOpen,
+    isFormSuccess
+  } = useTicketForm();
+  const { assigneeList } = useUser();
   const ticketList = ticketTableList?.data as Array<TicketDataTableData>;
   return (
     <ProjectViewProvider
@@ -19,11 +31,23 @@ export default function ProjectBaseView() {
         data_table_config: {
           data: ticketList,
           isLoading,
-          updatePage: (page, perPage) => updatePage(page, perPage),
+          updatePage: (perPage, pageIndex) => updatePage(perPage, pageIndex),
           page : ticketTableList?.meta.current_page ?? page,
           perPage: ticketTableList?.meta.per_page ?? perPage,
-          paginationData: ticketTableList
+          paginationData: ticketTableList,
+          refetchTableData: refetchTicketTable
         },
+        form_config: {
+          confirmPrompt: confirmFormSubmit,
+          createFormSubmit,
+          updateFormSubmit,
+          ticketForm: form,
+          isFormSuccess
+        },
+        modal_config: {
+          open,setOpen
+        },
+        assignees: assigneeList,
         currentTabStatus: tab,
       }}
     >

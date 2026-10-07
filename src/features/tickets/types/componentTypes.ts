@@ -4,6 +4,6 @@ import type { TicketFormData } from "./ticket-types";
 
 
 export interface TicketComponentTypes {
-    assigneeList: MemberFormData[];
+    assigneeList ?: MemberFormData[];
     submitForm : SubmitHandler<TicketFormData>;
 }

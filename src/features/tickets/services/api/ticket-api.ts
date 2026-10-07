@@ -17,8 +17,8 @@ export const getTicketList = async ({
   page = 1,
   perPage = 10,
 }: {
-  page: number;
-  perPage: number;
+  page ?: number;
+  perPage ?: number;
 }): Promise<PaginationData> => {
   const response = await axios.get(
     `${import.meta.env.VITE_BASE_URL}/${PREFIX}`,

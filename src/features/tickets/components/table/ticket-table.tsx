@@ -18,9 +18,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import CustomPaginaton from "@/components/custom-pagination";
 import { DefaultDataTableValues } from "../../data/defaultValues";
 import type { PaginationMetaData } from "@/features/common/types/paginationTypes";
+import ServerSidePagination from "@/components/server-side-pagination";
 
 export default function TicketDataTableComponent({
   data,
@@ -30,16 +30,18 @@ export default function TicketDataTableComponent({
   pageIndex = 0,
   pageSize = 10,
   total = 0,
-  meta
+  meta,
+  selectedTicket
 }: {
   data: TicketDataTableData[];
   meta ?: PaginationMetaData;
-  pageIndex: number;
-  pageSize: number;
+  pageIndex ?: number;
+  pageSize ?: number;
   isLoading: boolean;
   activeStatus: "all" | TicketStatus;
-  updatePage: (perPage: number | null) => void;
+  updatePage: (perPage ?: number , pageIndex ?: number) => void;
   total: number;
+  selectedTicket ?: (id : string) => void;
 }) {
   const datatable = useDataTableTicket({
     data: data ?? [DefaultDataTableValues],
@@ -53,8 +55,8 @@ export default function TicketDataTableComponent({
 
   const EmptyIcon = emptyStateIcons[activeStatus];
   const emptyCopy = emptyStateCopy[activeStatus];
-  const setPerPageCount = (count: number) => {
-    updatePage(count);
+  const setPerPageCount = ({ perPage , pageIndex} :  { perPage ?: number; pageIndex ?: number; }) => {
+    updatePage(perPage,pageIndex);
   };
   return (
     <div className="w-full overflow-x-auto rounded-md border">
@@ -120,7 +122,7 @@ export default function TicketDataTableComponent({
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => selectedTicket?.(value.id)}>
                       View
                     </Button>
                   </TableCell>
@@ -130,14 +132,9 @@ export default function TicketDataTableComponent({
           )}
         </TableBody>
       </Table>
-      <CustomPaginaton
-        canNextPage={datatable.getCanNextPage()}
-        canPrevPage={datatable.getCanPreviousPage()}
-        perPage="10"
-        previousPageLink={meta?.links?.prev ?? "#"}
-        nextPageLink={meta?.links?.next ?? "#"}
-        onPerPageChange={({ count }) => setPerPageCount(count)}
-      />
+      {
+        meta && (<ServerSidePagination meta={meta} onPerPageChange={({pageIndex , perPage }) => setPerPageCount({ pageIndex , perPage})}/>)
+      }
     </div>
   );
 }

@@ -5,7 +5,6 @@ export type TicketStatus = 'to-do' | 'in-progress' | 'completed';
 export type TicketPriority = 'low' | 'medium' | 'high';
 
 export const ticketSchema = z.object({
-    'id' : z.string().optional(),
     'project_id': z.string().optional(),
     'title' : z.string().min(1,'Title required'),
     'description' : z.string().optional(),

@@ -1,13 +1,28 @@
+import { CustomDialog } from "@/components/custom-dialog";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import TicketDataTableComponent from "@/features/tickets/components/table/ticket-table";
-import { ArrowLeft, FolderKanban } from "lucide-react";
+import TicketForm from "@/features/tickets/components/ticket-form";
+import { ArrowLeft, FolderKanban, Ticket } from "lucide-react";
+import { useState } from "react";
+import { FormProvider } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 export default function ProjectView() {
   const navigate = useNavigate();
-  const { data_table_config, currentTabStatus } = useProjectViewContext();
+  const {
+    data_table_config,
+    currentTabStatus,
+    modal_config,
+    assignees,
+    form_config,
+  } = useProjectViewContext();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+
+  const selectedTicket = (id: string) => {
+    setSelectedId(id);
+  };
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div>
@@ -34,23 +49,31 @@ export default function ProjectView() {
             </div>
           </div>
           <div className="sm:justify-self-end">
-            CREATE BUTTON HERE
-            {/* <CustomDialog
-                open={open}
-                setOpen={setOpen ?? (() => {})}
-                buttonElement={
-                  <>
-                    <Ticket size={16} /> Create Ticket
-                  </>
-                }
-              >
-                <FormProvider {...ticketForm}>
-                  <TicketForm
-                    assigneeList={assigneeList}
-                    submitForm={confirmPrompt}
-                  />
-                </FormProvider>
-              </CustomDialog> */}
+            <CustomDialog
+              open={modal_config.open}
+              setOpen={modal_config.setOpen ?? (() => {})}
+              buttonElement={
+                <>
+                  <Ticket size={16} /> Create Ticket
+                </>
+              }
+            >
+              {
+                form_config.ticketForm && (
+                  <FormProvider {...form_config.ticketForm}>
+                    <TicketForm
+                      assigneeList={assignees}
+                      submitForm={(data) =>
+                        form_config.confirmPrompt?.({
+                          data,
+                          id: selectedId ?? undefined,
+                        })
+                      }
+                    />
+                  </FormProvider>
+                )
+              }
+            </CustomDialog>
           </div>
         </div>
         <div className="flex min-w-0 flex-col lg:col-start-1">
@@ -68,12 +91,15 @@ export default function ProjectView() {
             </Tabs>
           </div>
           <TicketDataTableComponent
-            meta={data_table_config.paginationData?.meta}
+            selectedTicket={selectedTicket}
+            meta={data_table_config.paginationData?.meta ?? undefined}
             total={data_table_config.paginationData?.meta.total ?? 0}
             data={data_table_config.data}
             isLoading={data_table_config.isLoading}
             activeStatus={currentTabStatus}
-            updatePage={(perPage) => data_table_config.updatePage(null,perPage)}
+            updatePage={(perPage,pageIndex) =>
+              data_table_config.updatePage(perPage,pageIndex)
+            }
             pageIndex={data_table_config.page}
             pageSize={data_table_config.perPage}
           />

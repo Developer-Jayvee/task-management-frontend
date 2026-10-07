@@ -25,6 +25,8 @@ import { PriorityData, TicketStatusData } from "../data";
 import type { TicketComponentTypes } from "../types/componentTypes";
 import { Controller, useFormContext } from "react-hook-form";
 import { type TicketFormData } from "../types/ticket-types";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 export default function TicketForm({
   assigneeList,
@@ -35,12 +37,19 @@ export default function TicketForm({
     handleSubmit,
     control,
     formState: { errors },
+    setValue
   } = useFormContext<TicketFormData>();
+  const { id } = useParams();
+  useEffect(() => {
+    if(id) {
+      setValue('project_id',id);
+    }
+  },[])
   return (
     <DialogContent className="sm:max-w-125">
       <form onSubmit={handleSubmit(submitForm, (err) => console.log(err))}>
         <DialogHeader>
-          <DialogTitle>Create Ticket</DialogTitle>
+          <DialogTitle>Ticket Form</DialogTitle>
 
           <DialogDescription>
             Create a new ticket by providing the details below.

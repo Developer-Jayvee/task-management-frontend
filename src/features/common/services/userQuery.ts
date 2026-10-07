@@ -6,6 +6,6 @@ export const getAssgineeQuery = () => {
     return useQuery({
         queryKey: ['assignee-list'],
         queryFn: getAssignees,
-        enabled: false
+        // enabled: false
     });
 }
