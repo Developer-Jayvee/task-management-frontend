@@ -27,6 +27,7 @@ import {
 import useLogout from "@/features/auth/hooks/useLogout";
 import { PromptProvider } from "@/contexts/PromptDialogContext";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { ProjectProvider } from "@/contexts/ProjectContext";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
@@ -96,7 +97,9 @@ export default function AuthenticatedLayout() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <PromptProvider>
-            <Outlet />
+            <ProjectProvider>
+              <Outlet />
+            </ProjectProvider>
           </PromptProvider>
         </div>
       </SidebarInset>

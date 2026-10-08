@@ -21,10 +21,11 @@ export const getTicketListQuery = ({ page = 1 , perPage = 10 } : {
   });
 };
 
-export const showTicketQuery = (id: string) => {
+export const showTicketQuery = (id ?: string) => {
   return useQuery({
     queryKey: [show, id],
     queryFn: () => showTicketDetails(id),
+    enabled: !!id
   });
 };
 

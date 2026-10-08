@@ -1,4 +1,7 @@
+import { useTicketViewContext } from "@/contexts/TicketViewContext";
+
 export default function TicketViewDescription() {
+  const { data } = useTicketViewContext()
   return (
     <>
       {/* Divider */}
@@ -31,7 +34,7 @@ export default function TicketViewDescription() {
         </div>
 
         <p className="text-slate-600 text-sm leading-relaxed">
-          {/* {data.description} */}
+          {data?.description}
         </p>
       </div>
     </>

@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label";
 import VerticalOptions from "./vertical-options";
 import type { ProjectCardI } from "../types/projectTypes";
 import { useNavigate } from "react-router-dom";
+import { useProjectContext } from "@/contexts/ProjectContext";
 
 export default function ProjectCard({ data }: { data : ProjectCardI}) {
   const navigate = useNavigate()
+  const { setSelectedProject } = useProjectContext()
   return (
     <Card className="h-57.5 overflow-hidden" >
       <CardHeader>
@@ -49,7 +51,10 @@ export default function ProjectCard({ data }: { data : ProjectCardI}) {
             </div>
           </div>
 
-          <Button onClick={() => navigate(`${data.id}/tickets`)}>View Details</Button>
+          <Button onClick={() => {
+            setSelectedProject?.(data.id);
+            navigate(`${data.id}/tickets`);
+          }}>View Details</Button>
         </div>
       </CardContent>
     </Card>

@@ -1,5 +1,6 @@
 import z from "zod";
 import { PriorityData, TicketStatusData } from "../data";
+import type { UserFormData } from "@/features/auth/types/authTypes";
 
 export type TicketStatus = 'to-do' | 'in-progress' | 'completed';
 export type TicketPriority = 'low' | 'medium' | 'high';
@@ -29,6 +30,8 @@ export interface TicketResponseData  {
   priority: TicketPriority;
   due_date: string;
   created_at ?: string;
+  createdBy?: UserFormData;
+  assignee?: UserFormData;
 }
 
 

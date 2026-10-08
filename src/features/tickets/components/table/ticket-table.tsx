@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { DefaultDataTableValues } from "../../data/defaultValues";
 import type { PaginationMetaData } from "@/features/common/types/paginationTypes";
 import ServerSidePagination from "@/components/server-side-pagination";
+import { useTicketViewContext } from "@/contexts/TicketViewContext";
 
 export default function TicketDataTableComponent({
   data,
@@ -31,7 +32,6 @@ export default function TicketDataTableComponent({
   pageSize = 10,
   total = 0,
   meta,
-  selectedTicket
 }: {
   data: TicketDataTableData[];
   meta ?: PaginationMetaData;
@@ -41,7 +41,6 @@ export default function TicketDataTableComponent({
   activeStatus: "all" | TicketStatus;
   updatePage: (perPage ?: number , pageIndex ?: number) => void;
   total: number;
-  selectedTicket ?: (id : string) => void;
 }) {
   const datatable = useDataTableTicket({
     data: data ?? [DefaultDataTableValues],
@@ -49,7 +48,7 @@ export default function TicketDataTableComponent({
     pageSize,
     rowCount: total
   });
-  
+  const { setSelectedTicket } = useTicketViewContext()
   const table = datatable.getRowModel();
   const list = table.rows.map((row) => row?.original);
 
@@ -122,7 +121,7 @@ export default function TicketDataTableComponent({
                   </TableCell>
 
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="sm" onClick={() => selectedTicket?.(value.id)}>
+                    <Button variant="ghost" size="sm" onClick={() => setSelectedTicket?.(value.id)}>
                       View
                     </Button>
                   </TableCell>

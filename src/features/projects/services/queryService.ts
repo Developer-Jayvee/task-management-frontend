@@ -33,10 +33,11 @@ export const getProjectsQuery = ({
     queryFn: () => getProjects(search, sort),
   });
 };
-export const getProjectQuery = (id: string) => {
+export const getProjectQuery = (id ?: string) => {
   return useQuery({
     queryKey: ["project", id],
     queryFn: () => viewProject(id),
+    enabled: !!id
   });
 };
 

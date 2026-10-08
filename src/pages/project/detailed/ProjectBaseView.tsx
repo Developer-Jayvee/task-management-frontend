@@ -4,6 +4,7 @@ import useTicketDataTable from "@/features/tickets/hooks/useTicketDataTable";
 import type { TicketDataTableData } from "@/features/tickets/types/ticket-types";
 import useTicketForm from "@/features/tickets/hooks/useTicketForm";
 import useUser from "@/features/common/hooks/useUser";
+import TicketBaseView from "@/pages/tickets/view/TicketBaseView";
 
 export default function ProjectBaseView() {
   const {
@@ -51,7 +52,9 @@ export default function ProjectBaseView() {
         currentTabStatus: tab,
       }}
     >
-      <ProjectView />
+      <TicketBaseView>
+        <ProjectView />
+      </TicketBaseView>
     </ProjectViewProvider>
   );
 }

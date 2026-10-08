@@ -1,7 +1,11 @@
+import { useProjectContext } from "@/contexts/ProjectContext";
+import { useTicketViewContext } from "@/contexts/TicketViewContext";
 import { CalendarDays, LayoutGrid, Tag, User } from "lucide-react";
 
 export default function TicketViewMetaData() {
-     return (
+  const { data: projectDetails } = useProjectContext()  
+  const { data: ticketDetails } = useTicketViewContext();
+  return (
     <>
       {/* Divider */}
       <div className="h-px bg-slate-100 w-full mb-6" />
@@ -19,7 +23,7 @@ export default function TicketViewMetaData() {
 
             <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
               <div className="w-2.5 h-2.5 rounded-sm bg-blue-400" />
-              {/* {data.title} */}
+              {projectDetails?.name}
             </div>
           </div>
 
@@ -31,12 +35,11 @@ export default function TicketViewMetaData() {
             </p>
 
             <span className="bg-[#FDE8E8] text-[#C53030] text-xs font-semibold px-2 py-0.5 rounded-full border border-[#FBD5D5]">
-              {/* {data.priority} */}
+              {ticketDetails?.priority}
             </span>
           </div>
 
           {/* Updated */}
-         
         </div>
 
         {/* Right Column */}
@@ -52,7 +55,7 @@ export default function TicketViewMetaData() {
               <div className="bg-slate-100 p-1 rounded-full border border-slate-200">
                 <User size={14} className="text-slate-400" />
               </div>
-              {/* {assignee?.user?.name} */}
+              {ticketDetails?.assignee?.name}
             </div>
           </div>
 
@@ -64,12 +67,12 @@ export default function TicketViewMetaData() {
             </p>
 
             <p className="text-sm text-slate-700">
-              {/* {data.created_at &&
-                new Date(data.created_at).toLocaleDateString("en-US", {
+              {ticketDetails?.created_at &&
+                new Date(ticketDetails?.created_at).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
-                })} */}
+                })}
             </p>
           </div>
         </div>

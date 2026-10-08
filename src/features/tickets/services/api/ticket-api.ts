@@ -30,8 +30,8 @@ export const getTicketList = async ({
   return response?.data;
 };
 
-export const showTicketDetails = async (id: string) => {
-  const response = await http.get(`${PREFIX}/${id}`);
+export const showTicketDetails = async (id ?: string) => {
+  const response = await http.get(`${PREFIX}/${id}/details`);
 
   return response?.data;
 };

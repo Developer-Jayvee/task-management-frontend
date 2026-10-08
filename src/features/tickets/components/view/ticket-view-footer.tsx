@@ -1,6 +1,8 @@
-import { Pencil, Trash2 } from "lucide-react";
+import { useTicketViewContext } from "@/contexts/TicketViewContext";
+import { Pencil, Trash2, X } from "lucide-react";
 
 export default function TicketViewFooter() {
+  const { setSelectedTicket } = useTicketViewContext()
   return (
     <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
       {/* Delete */}
@@ -26,7 +28,7 @@ export default function TicketViewFooter() {
       {/* Close + Update */}
       <div className="flex flex-1 justify-end gap-2 sm:flex-none">
         <button
-          //   onClick={() => onClose()}
+            onClick={() => setSelectedTicket?.(undefined)}
           type="button"
           className="
             inline-flex items-center gap-2

@@ -39,12 +39,8 @@ export interface ProjectCardContextI {
 }
 
 export interface ProjectContextI {
-  fetchList?: () => void;
-  ticketList: TicketResponseData[] | [];
-  projectData?: ProjectDataI;
-  open?: boolean;
-  setOpen?: Dispatch<SetStateAction<boolean>>;
-  assigneeList?: MemberFormData[];
+  data ?: ProjectDataI;
+  setSelectedProject ?: (id ?: string) => void;
 }
 
 export interface ProjectDataI {
@@ -52,7 +48,6 @@ export interface ProjectDataI {
   tenant_id: string;
   name: string;
   description?: string;
-  tickets: Array<TicketResponseData>;
 }
 
 export interface ProjectViewContextI {
@@ -79,4 +74,10 @@ export interface ProjectViewContextI {
   }
   assignees ?: MemberFormData[];
   currentTabStatus: "all" | TicketStatus;
+  projectData ?: {
+    id: string;
+    tenant_id: string;
+    name: string;
+    description?: string;
+  };
 }

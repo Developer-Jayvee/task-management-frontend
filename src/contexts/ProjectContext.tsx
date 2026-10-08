@@ -1,9 +1,8 @@
+import useProjectView from "@/features/projects/hooks/useProjectView";
 import type { ProjectContextI } from "@/features/projects/types/projectTypes";
 import { createContext, useContext } from "react";
 
-export const ProjectContext = createContext<ProjectContextI>({
-  ticketList: [],
-});
+export const ProjectContext = createContext<ProjectContextI>({});
 
 export const useProjectContext = () => {
   const context = useContext(ProjectContext);
@@ -14,12 +13,18 @@ export const useProjectContext = () => {
 };
 export const ProjectProvider = ({
   children,
-  data,
 }: {
   children: React.ReactNode;
-  data: ProjectContextI;
 }) => {
-    return <ProjectContext.Provider value={data}>
-        {children}
+  const { data, setSelectedProject } = useProjectView();
+  return (
+    <ProjectContext.Provider
+      value={{
+        data,
+        setSelectedProject,
+      }}
+    >
+      {children}
     </ProjectContext.Provider>
+  );
 };
