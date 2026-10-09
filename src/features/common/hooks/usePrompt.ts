@@ -50,6 +50,7 @@ export default function usePrompt() {
     setIsConfirm(false);
     setOpen(!open);
     setIsCancelled(false);
+    setPromptId(prev => null);
   };
 
   const resetAll = () => {

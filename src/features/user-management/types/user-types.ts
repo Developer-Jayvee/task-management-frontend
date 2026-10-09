@@ -15,4 +15,5 @@ export interface UserDataTableData {
   email: string;
   role : Roles;
   created_at : string;
+  is_active: boolean;
 }

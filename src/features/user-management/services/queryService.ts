@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { generateLinkAPI, tenantMembersAPI, verifyLinkAPI } from "./api/user-api"
+import { generateLinkAPI, tenantMembersAPI, toggleStatusAPI, verifyLinkAPI } from "./api/user-api"
 
 
 
@@ -22,5 +22,11 @@ export const tenantMembersQuery = ({sort,search , perPage ,page} : { sort ?: str
     return useQuery({
         queryKey:['tenant-members',sort, search,perPage,page],
         queryFn: () =>  tenantMembersAPI({sort ,search, page ,perPage}),
+    });
+}
+
+export const useToggleStatusMutation = () => {
+    return useMutation({
+        mutationFn: ({ status, id }: { status: "activate" | "deactivate"; id : string; }) => toggleStatusAPI({ status , id})
     });
 }

@@ -15,7 +15,12 @@ import type { UserDataTableData } from "../../types/user-types";
 import ServerSidePagination from "@/components/server-side-pagination";
 import { DefaultUserData } from "../../data/defaultValues";
 import UserTableActions from "./user-table-actions";
+import { useToggleStatusMutation } from "../../services/queryService";
+import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 export default function UserTable() {
+  const queryClient = useQueryClient();
+  const toggleStatusMutation = useToggleStatusMutation();
   const { list: data, meta, filterUserList } = useUserContext();
   const datatable = useDataTableUser({
     data: (data as unknown as UserDataTableData[]) ?? [DefaultUserData],
@@ -32,6 +37,19 @@ export default function UserTable() {
   }) => {
     filterUserList?.({ pageIndex, perPage });
   };
+  
+  const toggleStatus =  async ({ status, id  }: { status: "activate" | "deactivate"; id: string; }) => {
+    try {
+      await toggleStatusMutation.mutateAsync({ status , id });
+      await queryClient.invalidateQueries({
+        queryKey:['tenant-members']
+      });
+      toast.success('Change status success');
+    } catch (error) {
+      toast.error('Failed to change user status');
+    }
+  }
+  
   return (
     <div className="rounded-md border">
       <Table>
@@ -82,7 +100,10 @@ export default function UserTable() {
               <TableCell>
                 {
                   user.role !== "owner" && (
-                    <UserTableActions />
+                    <UserTableActions
+                    status={user.is_active}
+                    onChangeStatus={({ status  }) => toggleStatus({ status , id: user?.user_id })}
+                    />
                   )
                 }
                

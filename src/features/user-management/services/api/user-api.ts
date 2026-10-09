@@ -21,6 +21,11 @@ export const tenantMembersAPI = async ({ sort, search, perPage ,page } : { sort 
         params: { sort, search, perPage ,page} },
   );
   return response?.data;
+}
 
 
+export const toggleStatusAPI = async({ status, id }: { status: "activate" | "deactivate"; id : string; }) => {
+  const response = await http.patch(`users/${id}/${status}`);
+
+  return response?.data;
 }
