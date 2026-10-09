@@ -1,14 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, User } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import UserTable from "@/features/user-management/components/table/user-table";
 import TableFilters from "@/features/user-management/components/table/table-filters";
-import { useUserContext } from "@/contexts/UserContext";
-import { CustomDialog } from "@/components/custom-dialog";
-import LinkGenerationForm from "@/features/user-management/components/form/link-generation-form";
+import CreateUserForm from "@/features/user-management/components/create-user-form";
 
 export default function UserManagementContent() {
-  const { list: users, open, setOpen , generateInvitation , generatedLinkData } = useUserContext();
 
   return (
     <div className="min-h-screen bg-background p-6 lg:p-8">
@@ -24,29 +21,18 @@ export default function UserManagementContent() {
             </p>
           </div>
           <div className="">
-            <CustomDialog
-              open={open ?? false}
-              setOpen={setOpen ?? (() => {})}
-              buttonElement={
-                <>
-                  <User size={16} /> Invite User
-                </>
-              }
-            >
-              <LinkGenerationForm link={generatedLinkData?.data}  onGenerate={async () => await generateInvitation?.()}/>
-            </CustomDialog>
+            <CreateUserForm/>
           </div>
         </div>
-
         {/* Table Card */}
         <Card>
           <CardHeader>
             <TableFilters />
           </CardHeader>
           <CardContent>
-            <UserTable data={users} />
+            <UserTable/>
             {/* Pagination */}
-            <div className="flex flex-col items-center justify-between gap-4 pt-4 sm:flex-row">
+            {/* <div className="flex flex-col items-center justify-between gap-4 pt-4 sm:flex-row">
               <p className="text-sm text-muted-foreground">
                 Showing <span className="font-medium">1</span> to{" "}
                 <span className="font-medium">8</span> of{" "}
@@ -62,7 +48,7 @@ export default function UserManagementContent() {
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>

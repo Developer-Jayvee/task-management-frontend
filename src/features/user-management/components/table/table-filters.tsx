@@ -23,7 +23,7 @@ export default function TableFilters() {
           <Input
             placeholder="Search users..."
             className="w-full pl-9 sm:w-[250px]"
-            onKeyUp={(event) => filterUserList({term : event.currentTarget.value})}
+            onKeyUp={(event) => filterUserList?.({term : event.currentTarget.value})}
           />
         </div>
         <Select defaultValue="" onValueChange={(value) => filterUserList?.({ role : value})}>

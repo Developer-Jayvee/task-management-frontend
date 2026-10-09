@@ -11,12 +11,14 @@ export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
   const [open, setOpen] = useState<boolean>(false);
   const [sort, setSort] = useState<"owner" | "member" | undefined>();
+  const [page,setPage] = useState<number | undefined>();
+  const [perPage,setPerPage] = useState<number | undefined>();
   const [search,setSearch] = useState<string|undefined>();
   const [debounceSearch] = useDebounce(search,500);
   const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
-  const tenantMembers = tenantMembersQuery({sort, search: debounceSearch});
+  const tenantMembers = tenantMembersQuery({sort, search: debounceSearch , page , perPage });
   
   const confirmLink = (url?: string) => {
     if (!url) return false;
@@ -34,10 +36,14 @@ export default function useUserManagement() {
       console.warn('Error found in;',error)
     }
   } 
-  const filterUserList = ({ role , term  } : { role ?: "owner" | "member"; term ?: string} ) => {
-    if(role) setSort(role);
+  const filterUserList = ({ role , term , perPage , pageIndex  } : { role ?: "owner" | "member"; term ?: string; perPage ?: number; pageIndex ?: number;  } ) => {
+    setSort(role);
+    if(pageIndex ) setPage(pageIndex);
+    if(perPage) setPerPage(perPage);
     setSearch(term);
   }
+
+
   return {
     confirmLink,
     generate,

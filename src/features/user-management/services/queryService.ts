@@ -18,9 +18,9 @@ export const generateLinkQuery = () => {
     });
 }
 
-export const tenantMembersQuery = ({sort,search} : { sort ?: string; search ?: string;}) => {
+export const tenantMembersQuery = ({sort,search , perPage ,page} : { sort ?: string; search ?: string; perPage ?: number; page ?: number; }) => {
     return useQuery({
-        queryKey:['tenant-members',sort, search],
-        queryFn: () =>  tenantMembersAPI({sort ,search}),
+        queryKey:['tenant-members',sort, search,perPage,page],
+        queryFn: () =>  tenantMembersAPI({sort ,search, page ,perPage}),
     });
 }

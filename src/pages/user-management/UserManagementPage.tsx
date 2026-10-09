@@ -9,13 +9,14 @@ export default function UserManagementPage() {
   return (
     <UserProvider
       data={{
-        list: tenantMembersResponse.data,
+        list: tenantMembersResponse.data?.data,
+        meta:  tenantMembersResponse?.data?.meta,
         fetchMembers,
         open,
         setOpen,
         generateInvitation: generate,
         generatedLinkData: generatedLinkResponse,
-        filterUserList
+        filterUserList,
       }}
     >
       <UserManagementContent />

@@ -1,9 +1,7 @@
 import type { UserContextI } from "@/features/user-management/types/context-types";
 import { createContext, useContext } from "react";
 
-export const UserContext = createContext<UserContextI>({
-  list: [],
-});
+export const UserContext = createContext<UserContextI>({});
 
 export const useUserContext = () => {
   const context = useContext(UserContext);

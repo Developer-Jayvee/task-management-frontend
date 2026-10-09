@@ -7,6 +7,7 @@ export default function GuestLayout() {
   if(isPending) {
     return null;
   }
+ 
   
   if(isSuccess) {
     return <Navigate to={`/${data?.slug}/project-management`} replace/>

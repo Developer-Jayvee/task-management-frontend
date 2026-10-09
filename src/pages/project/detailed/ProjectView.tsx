@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useProjectContext } from "@/contexts/ProjectContext";
 import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import CreateTicketForm from "@/features/tickets/components/create-ticket-form";
 import TicketDataTableComponent from "@/features/tickets/components/table/ticket-table";
@@ -12,12 +11,11 @@ export default function ProjectView() {
   const navigate = useNavigate();
   const { data_table_config, currentTabStatus } = useProjectViewContext();
   const { projectData: data } = useProjectViewContext();
-  console.log(data);
   
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div>
-        <Button variant="ghost" onClick={() => navigate(-1)}>
+        <Button variant="ghost" onClick={() => navigate("/")}>
           <ArrowLeft />
           Back
         </Button>

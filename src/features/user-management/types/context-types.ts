@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { UserResponseData } from "./user-types";
+import type { PaginationData, PaginationMetaData } from "@/features/common/types/paginationTypes";
 
 
 
@@ -10,11 +10,12 @@ export interface QueryResponseData  {
 }
 
 export interface UserContextI {
-    list : UserResponseData[] | [];
+    list ?: PaginationData;
+    meta ?: PaginationMetaData;
     fetchMembers ?: () => void;
     open ?: boolean;
     setOpen ?: Dispatch<SetStateAction<boolean>>;
     generateInvitation ?: () => Promise<void>;
   generatedLinkData?: QueryResponseData;
-  filterUserList ?: ({ role , term  } : { role ?: "owner" | "member"; term ?: string} ) => void; 
+  filterUserList ?: ({ role , term, pageIndex , perPage  } : { role ?: "owner" | "member"; term ?: string; perPage ?: number; pageIndex ?: number; } ) => void; 
 }

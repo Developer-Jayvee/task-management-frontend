@@ -1,24 +1,12 @@
 import {
-  createPaginatedRowModel,
-  createSortedRowModel,
-  rowPaginationFeature,
-  rowSortingFeature,
-  sortFns,
-  tableFeatures,
   useTable,
   type ColumnDef,
 } from "@tanstack/react-table";
 import type { TicketDataTableData, TicketStatus } from "../types/ticket-types";
 import { CircleCheck, CircleDashed, CircleDot, Ticket } from "lucide-react";
+import { features } from "@/lib/tanstack-table";
 
-const features = tableFeatures({
-  rowSortingFeature,
-  rowPaginationFeature,
-  sortedRowModel: createSortedRowModel(),
-  // paginatedRowModel: createPaginatedRowModel(),
-  sortFns: sortFns,
-  
-});
+
 export const columns: ColumnDef<typeof features, TicketDataTableData>[] = [
   {
     accessorKey: "id",

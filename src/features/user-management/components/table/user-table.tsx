@@ -9,8 +9,22 @@ import {
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { UserResponseData } from "../../types/user-types";
-export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
+import { useUserContext } from "@/contexts/UserContext";
+import { useDataTableUser } from "../../data/table-data";
+import type { UserDataTableData } from "../../types/user-types";
+import ServerSidePagination from "@/components/server-side-pagination";
+import { DefaultUserData } from "../../data/defaultValues";
+export default function UserTable() {
+  const { list: data, meta, filterUserList } = useUserContext();
+  const datatable = useDataTableUser({
+    data: data as unknown as  UserDataTableData[] ?? [DefaultUserData],
+    totalCount: meta?.total ?? 0
+  })
+  const list = datatable.getRowModel().rows.map(row => row?.original);
+  
+  const onPerPageChange = ({ pageIndex , perPage }: { pageIndex ?: number; perPage ?: number }) => {
+    filterUserList?.({ pageIndex, perPage})
+  }
   return (
     <div className="rounded-md border">
       <Table>
@@ -26,8 +40,8 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.map((user) => (
-            <TableRow key={user.id}>
+          {list?.map((user) => (
+            <TableRow key={user.user_id}>
               <TableCell>
                 <Checkbox />
               </TableCell>
@@ -35,26 +49,26 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-9 w-9">
                     <AvatarImage
-                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.user?.name ?? "Unknown")}`}
-                      alt={user.user.name}
+                      src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name ?? "Unknown")}`}
+                      alt={user?.name}
                     />
                   </Avatar>
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">
-                      {user.user.name}
+                      {user?.name}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      {user.user.email}
+                      {user?.email}
                     </span>
                   </div>
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant="ghost">{user.role}</Badge>
+                <Badge variant="ghost">{user?.role}</Badge>
               </TableCell>
               <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
-                {user.user.created_at &&
-                  new Date(user.user.created_at).toLocaleDateString("en-US", {
+                {user?.created_at &&
+                  new Date(user?.created_at).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -64,6 +78,9 @@ export default function UserTable({ data }: { data: UserResponseData[] | [] }) {
           ))}
         </TableBody>
       </Table>
+      {
+         meta && (<ServerSidePagination meta={meta} onPerPageChange={onPerPageChange}/>)
+      }
     </div>
   );
 }
