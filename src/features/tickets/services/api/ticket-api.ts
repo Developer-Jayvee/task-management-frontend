@@ -43,7 +43,7 @@ export const updateTicket = async (id: string, data: TicketFormData) => {
 };
 
 export const deleteTicket = async (id: string) => {
-  const response = await http.delete(`${PREFIX}/${id}`);
+  const response = await http.delete(`${PREFIX}/${id}/delete`);
 
   return response?.data;
 };

@@ -8,7 +8,7 @@ import { useTicketViewContext } from "@/contexts/TicketViewContext";
 export default function CreateTicketForm() {
   const { modal_config, assignees, form_config } = useProjectViewContext();
   const { data: ticketDetails } = useTicketViewContext();
-
+  
   return (
     <CustomDialog
       open={modal_config.open}

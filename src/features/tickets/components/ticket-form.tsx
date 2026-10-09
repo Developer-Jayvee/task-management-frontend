@@ -197,7 +197,7 @@ export default function TicketForm({
         </div>
 
         <DialogFooter>
-          <Button type="submit">Create Ticket</Button>
+          <Button type="submit">Submit</Button>
         </DialogFooter>
       </form>
     </DialogContent>

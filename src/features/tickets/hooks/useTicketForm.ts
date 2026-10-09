@@ -57,7 +57,6 @@ export default function useTicketForm() {
     } catch (error) {
       console.warn("Error found in :", error);
     } finally {
-      
       setFormSuccess(prev => false);
     }
   };
@@ -81,6 +80,7 @@ export default function useTicketForm() {
     }
   };
 
+ 
   return {
     confirmFormSubmit,
     createFormSubmit,

@@ -1,13 +1,33 @@
+import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import { useTicketViewContext } from "@/contexts/TicketViewContext";
 import { Pencil, Trash2, X } from "lucide-react";
 
 export default function TicketViewFooter() {
-  const { setSelectedTicket } = useTicketViewContext()
+  const { setSelectedTicket,deleteTicketConfirm } = useTicketViewContext();
+  const {
+    modal_config,
+    form_config: { ticketForm: form },
+  } = useProjectViewContext();
+  const { data } = useTicketViewContext();
+
+  const onUpdate = () => {
+    modal_config.setOpen(!modal_config.open);
+    form?.setValues({
+      title: data?.title,
+      description: data?.description ?? "",
+      status: data?.status,
+      priority: data?.priority,
+      assignee_id: Number(data?.assignee_id),
+      due_date: data?.due_date,
+    });
+  };
+
+  
   return (
     <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
       {/* Delete */}
       <button
-        // onClick={() => onDelete(data.id)}
+        onClick={() => deleteTicketConfirm?.()}
         type="button"
         className="
           inline-flex items-center gap-2
@@ -28,7 +48,7 @@ export default function TicketViewFooter() {
       {/* Close + Update */}
       <div className="flex flex-1 justify-end gap-2 sm:flex-none">
         <button
-            onClick={() => setSelectedTicket?.(undefined)}
+          onClick={() => setSelectedTicket?.(undefined)}
           type="button"
           className="
             inline-flex items-center gap-2
@@ -48,6 +68,7 @@ export default function TicketViewFooter() {
 
         <button
           //   onClick={() => onUpdate(data.id)}
+          onClick={() => onUpdate()}
           type="button"
           className="
             inline-flex items-center gap-2
