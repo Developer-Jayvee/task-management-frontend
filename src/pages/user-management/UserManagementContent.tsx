@@ -1,12 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import UserTable from "@/features/user-management/components/table/user-table";
 import TableFilters from "@/features/user-management/components/table/table-filters";
 import CreateUserForm from "@/features/user-management/components/create-user-form";
 
 export default function UserManagementContent() {
-
   return (
     <div className="min-h-screen bg-background p-6 lg:p-8">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -21,7 +18,7 @@ export default function UserManagementContent() {
             </p>
           </div>
           <div className="">
-            <CreateUserForm/>
+            <CreateUserForm />
           </div>
         </div>
         {/* Table Card */}
@@ -30,25 +27,7 @@ export default function UserManagementContent() {
             <TableFilters />
           </CardHeader>
           <CardContent>
-            <UserTable/>
-            {/* Pagination */}
-            {/* <div className="flex flex-col items-center justify-between gap-4 pt-4 sm:flex-row">
-              <p className="text-sm text-muted-foreground">
-                Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">8</span> of{" "}
-                <span className="font-medium">2,420</span> users
-              </p>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm" disabled>
-                  <ChevronLeft className="mr-2 h-4 w-4" />
-                  Previous
-                </Button>
-                <Button variant="outline" size="sm">
-                  Next
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div> */}
+            <UserTable />
           </CardContent>
         </Card>
       </div>

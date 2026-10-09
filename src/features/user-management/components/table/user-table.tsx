@@ -14,17 +14,24 @@ import { useDataTableUser } from "../../data/table-data";
 import type { UserDataTableData } from "../../types/user-types";
 import ServerSidePagination from "@/components/server-side-pagination";
 import { DefaultUserData } from "../../data/defaultValues";
+import UserTableActions from "./user-table-actions";
 export default function UserTable() {
   const { list: data, meta, filterUserList } = useUserContext();
   const datatable = useDataTableUser({
-    data: data as unknown as  UserDataTableData[] ?? [DefaultUserData],
-    totalCount: meta?.total ?? 0
-  })
-  const list = datatable.getRowModel().rows.map(row => row?.original);
-  
-  const onPerPageChange = ({ pageIndex , perPage }: { pageIndex ?: number; perPage ?: number }) => {
-    filterUserList?.({ pageIndex, perPage})
-  }
+    data: (data as unknown as UserDataTableData[]) ?? [DefaultUserData],
+    totalCount: meta?.total ?? 0,
+  });
+  const list = datatable.getRowModel().rows.map((row) => row?.original);
+
+  const onPerPageChange = ({
+    pageIndex,
+    perPage,
+  }: {
+    pageIndex?: number;
+    perPage?: number;
+  }) => {
+    filterUserList?.({ pageIndex, perPage });
+  };
   return (
     <div className="rounded-md border">
       <Table>
@@ -36,7 +43,7 @@ export default function UserTable() {
             <TableHead>User</TableHead>
             <TableHead>Role</TableHead>
             <TableHead className="hidden md:table-cell">Joined</TableHead>
-            {/*<TableHead className="w-17.5 text-right">Actions</TableHead>*/}
+            <TableHead className="w-17.5 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -54,9 +61,7 @@ export default function UserTable() {
                     />
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium">
-                      {user?.name}
-                    </span>
+                    <span className="text-sm font-medium">{user?.name}</span>
                     <span className="text-xs text-muted-foreground">
                       {user?.email}
                     </span>
@@ -74,13 +79,21 @@ export default function UserTable() {
                     day: "numeric",
                   })}
               </TableCell>
+              <TableCell>
+                {
+                  user.role !== "owner" && (
+                    <UserTableActions />
+                  )
+                }
+               
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {
-         meta && (<ServerSidePagination meta={meta} onPerPageChange={onPerPageChange}/>)
-      }
+      {meta && (
+        <ServerSidePagination meta={meta} onPerPageChange={onPerPageChange} />
+      )}
     </div>
   );
 }
