@@ -5,8 +5,13 @@ import type { TicketDataTableData } from "@/features/tickets/types/ticket-types"
 import useTicketForm from "@/features/tickets/hooks/useTicketForm";
 import useUser from "@/features/common/hooks/useUser";
 import TicketBaseView from "@/pages/tickets/view/TicketBaseView";
+import useProjectView from "@/features/projects/hooks/useProjectView";
+import { Navigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ProjectBaseView() {
+  const { id } = useParams()
+  const { data: projectViewData , setSelectedProject } = useProjectView();
   const {
     listQuery: { data: ticketTableList, isLoading },
     tab,
@@ -26,6 +31,14 @@ export default function ProjectBaseView() {
   } = useTicketForm();
   const { assigneeList } = useUser();
   const ticketList = ticketTableList?.data as Array<TicketDataTableData>;
+  useEffect(() => {
+    if(id) setSelectedProject(id);
+    else if (!id) setSelectedProject(undefined);
+  },[]);
+
+  if(projectViewData === undefined) return <Navigate to="/" replace/>
+  if(projectViewData === null) return null;
+
   return (
     <ProjectViewProvider
       data={{
@@ -50,6 +63,7 @@ export default function ProjectBaseView() {
         },
         assignees: assigneeList,
         currentTabStatus: tab,
+        projectData: projectViewData
       }}
     >
       <TicketBaseView>

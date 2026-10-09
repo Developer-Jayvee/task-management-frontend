@@ -1,8 +1,8 @@
-import { useProjectContext } from "@/contexts/ProjectContext";
+import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import { Ticket } from "lucide-react";
 
 export default function EmptyTicketDetails() {
-  const { setOpen } = useProjectContext();
+  const { modal_config } = useProjectViewContext();
   return (
     // Empty State
     <div className="flex min-w-0 items-start justify-center font-sans text-slate-800">
@@ -42,7 +42,7 @@ export default function EmptyTicketDetails() {
 
           {/* Optional Action */}
           <button
-            onClick={() => setOpen?.(true)}
+            onClick={() => modal_config?.setOpen(!modal_config.open)}
             className="
               inline-flex items-center gap-2
               bg-slate-900 text-white

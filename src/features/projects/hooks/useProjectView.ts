@@ -3,15 +3,15 @@ import { getProjectQuery } from "../services/queryService";
 
 
 export default function useProjectView() {
-    const [selected,setSelected] = useState<string|undefined>();
+    const [selected,setSelected] = useState<string|undefined|null>();
     const showProjectQuery = getProjectQuery(selected)
 
-    const setSelectedProject = (id ?: string) => {
+    const setSelectedProject = (id ?: string|null) => {
         setSelected(id);
     }
     
     return { 
-        data: showProjectQuery.data,
+        data: showProjectQuery.data ?? null,
         setSelectedProject
     }
 }

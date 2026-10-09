@@ -23,7 +23,7 @@ export const updateProject = async (id : string ,data : ProjectFormData) => {
     return response?.data;
 }
 
-export  const viewProject = async (id ?: string) => {
+export  const viewProject = async (id ?: string|null) => {
     const response = await http.get(`${BASE_URL}/${id}/details`);
 
     return response?.data;

@@ -11,7 +11,9 @@ import { useNavigate } from "react-router-dom";
 export default function ProjectView() {
   const navigate = useNavigate();
   const { data_table_config, currentTabStatus } = useProjectViewContext();
-  const { data } = useProjectContext();
+  const { projectData: data } = useProjectViewContext();
+  console.log(data);
+  
   return (
     <div className="grid min-w-0 grid-rows-[auto_1fr]">
       <div>
