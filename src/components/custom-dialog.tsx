@@ -7,14 +7,16 @@ export function CustomDialog({
   buttonElement,
   open,
   setOpen,
+  hasTriggerBtn = true,
+  buttonElementCallBack
 }: CustomDialogI) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={
-        <Button variant="default" >
-          {buttonElement}
-        </Button>
-      } />
+      {hasTriggerBtn && (
+        <DialogTrigger
+          render={<Button variant="default" onClick={() => buttonElementCallBack?.()}>{buttonElement}</Button>}
+        />
+      )}
       {children}
     </Dialog>
   );

@@ -10,6 +10,7 @@ import { useDebounce } from "use-debounce";
 export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
   const [open, setOpen] = useState<boolean>(false);
+  const [modalId,setModalId] = useState<string|undefined>()
   const [sort, setSort] = useState<"owner" | "member" | undefined>();
   const [page,setPage] = useState<number | undefined>();
   const [perPage,setPerPage] = useState<number | undefined>();
@@ -64,6 +65,7 @@ export default function useUserManagement() {
     },
     fetchMembers,
     open, setOpen,
+    modalId,setModalId,
     filterUserList
   };
 }

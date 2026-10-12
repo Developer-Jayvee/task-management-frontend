@@ -3,8 +3,10 @@ import type { Dispatch, SetStateAction } from "react";
 export interface CustomDialogI {
   children: React.ReactNode;
   buttonElement: React.ReactElement;
+  buttonElementCallBack ?: () => void;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  hasTriggerBtn ?: boolean;
 }
 
 export interface PromptDialogI extends Omit<

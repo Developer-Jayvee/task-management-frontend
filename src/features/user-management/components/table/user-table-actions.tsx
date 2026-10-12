@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useUserContext } from "@/contexts/UserContext";
 import { CirclePause, CirclePlay, EllipsisVertical, PencilIcon, ShieldCheck } from "lucide-react";
+import { EDIT_USER_MODAL_ID } from "../../data/defaultValues";
 
 
 
@@ -11,7 +13,8 @@ export default function UserTableActions({
   status: boolean;
   onChangeStatus: ({  status } : { status: "activate"|"deactivate"}) => void;
 }) {
-  console.log(status);
+ const {  setOpen,setModalId } =
+    useUserContext();
   
   return (
     <>
@@ -27,6 +30,10 @@ export default function UserTableActions({
            <Button
             variant="ghost"
             className="w-full justify-start"
+            onClick={() => {
+              setOpen?.(true);
+              setModalId?.(EDIT_USER_MODAL_ID);
+            }}
           >
             <PencilIcon className="mr-2 size-4" />
             Edit

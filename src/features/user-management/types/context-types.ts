@@ -15,6 +15,8 @@ export interface UserContextI {
     fetchMembers ?: () => void;
     open ?: boolean;
     setOpen ?: Dispatch<SetStateAction<boolean>>;
+    modalId ?: string;
+    setModalId ?: Dispatch<SetStateAction<string|undefined>>;
     generateInvitation ?: () => Promise<void>;
   generatedLinkData?: QueryResponseData;
   filterUserList ?: ({ role , term, pageIndex , perPage  } : { role ?: "owner" | "member"; term ?: string; perPage ?: number; pageIndex ?: number; } ) => void; 
