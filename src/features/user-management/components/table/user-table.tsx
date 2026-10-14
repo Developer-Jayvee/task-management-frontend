@@ -101,7 +101,7 @@ export default function UserTable() {
                 {
                   user.role !== "owner" && (
                     <UserTableActions
-                    status={user.is_active}
+                    data={user}
                     onChangeStatus={({ status  }) => toggleStatus({ status , id: user?.user_id })}
                     />
                   )

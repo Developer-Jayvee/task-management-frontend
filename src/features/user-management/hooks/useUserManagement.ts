@@ -1,11 +1,14 @@
 import { useState } from "react";
 import {
   generateLinkQuery,
+  resetPasswordMutation,
   tenantMembersQuery,
   verifyLinkQuery,
 } from "../services/queryService";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDebounce } from "use-debounce";
+import { toast } from "react-toastify";
+import type { UserDataTableData } from "../types/user-types";
 
 export default function useUserManagement() {
   const [link, setLink] = useState<string | undefined>();
@@ -15,12 +18,13 @@ export default function useUserManagement() {
   const [page,setPage] = useState<number | undefined>();
   const [perPage,setPerPage] = useState<number | undefined>();
   const [search,setSearch] = useState<string|undefined>();
+  const [selectedUser,setSelectedUser] = useState<UserDataTableData|undefined>();
   const [debounceSearch] = useDebounce(search,500);
   const queryClient = useQueryClient();
   const verifyLink = verifyLinkQuery(link);
   const generateLink = generateLinkQuery();
   const tenantMembers = tenantMembersQuery({sort, search: debounceSearch , page , perPage });
-  
+  const resetPassQuery = resetPasswordMutation();
   const confirmLink = (url?: string) => {
     if (!url) return false;
     setLink(url);
@@ -43,7 +47,17 @@ export default function useUserManagement() {
     if(perPage) setPerPage(perPage);
     setSearch(term);
   }
-
+  const resetPass =  async () => {
+    try {
+      if(! selectedUser?.email) return;
+      
+      await resetPassQuery.mutateAsync({email: selectedUser?.email});
+      toast.success('Please check your email for reset link.')
+    } catch (error) {
+      toast.error('Error occured');
+      console.warn('Error in ',error);
+    }
+  }
 
   return {
     confirmLink,
@@ -66,6 +80,9 @@ export default function useUserManagement() {
     fetchMembers,
     open, setOpen,
     modalId,setModalId,
-    filterUserList
+    filterUserList,
+    resetPass,
+    setSelectedUser,
+    selectedUser
   };
 }

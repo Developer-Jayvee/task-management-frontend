@@ -29,3 +29,11 @@ export const toggleStatusAPI = async({ status, id }: { status: "activate" | "dea
 
   return response?.data;
 }
+
+export const resetPasswordAPI = async({ email }: { email : string; }) => {
+  const response = await http.post('auth/user/reset-password',{
+    email
+  });
+
+  return response?.data;
+}

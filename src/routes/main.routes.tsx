@@ -4,6 +4,7 @@ import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import ProjectBaseView from "@/pages/project/detailed/ProjectBaseView";
 import ProjectPage from "@/pages/project/ProjectPage";
+import ResetPasswordPage from "@/pages/reset-password/ResetPasswordPage";
 import UserManagementPage from "@/pages/user-management/UserManagementPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
@@ -24,6 +25,10 @@ const MainRoutes = createBrowserRouter([
             {
                 path:"register",
                 element: <RegisterPage/>
+            },
+            {
+                path:'reset-password',
+                element: <ResetPasswordPage/>
             }
         ]
     },
@@ -46,7 +51,8 @@ const MainRoutes = createBrowserRouter([
             {
                 path: "user-management",
                 element:<UserManagementPage/>
-            }
+            },
+            
         ]
     }
 ])

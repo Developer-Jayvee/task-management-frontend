@@ -11,14 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function ResetPasswordForm() {
-  const { open, setOpen, modalId } = useUserContext();
-  
-  const handleResetPassword = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  
-  };
-  console.log(modalId);
-
+  const { open, setOpen, modalId,resetPass } = useUserContext();
   if (modalId !== EDIT_USER_MODAL_ID) return null;
   return (
     <CustomDialog
@@ -52,11 +45,11 @@ export default function ResetPasswordForm() {
           </p>
 
           {/* Form */}
-          <form onSubmit={handleResetPassword} className="mt-6 w-full">
-            <Button type="submit" className="w-full">
+          <div className="mt-6 w-full">
+            <Button type="button" onClick={() => resetPass?.()} className="w-full">
               Reset Password
             </Button>
-          </form>
+          </div>
         </div>
       </DialogContent>
     </CustomDialog>

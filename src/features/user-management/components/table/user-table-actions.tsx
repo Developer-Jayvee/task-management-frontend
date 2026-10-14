@@ -3,19 +3,19 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useUserContext } from "@/contexts/UserContext";
 import { CirclePause, CirclePlay, EllipsisVertical, PencilIcon, ShieldCheck } from "lucide-react";
 import { EDIT_USER_MODAL_ID } from "../../data/defaultValues";
+import type { UserDataTableData } from "../../types/user-types";
 
 
 
 export default function UserTableActions({
-  status,
+  data,
   onChangeStatus
 }: {
-  status: boolean;
+  data: UserDataTableData;
   onChangeStatus: ({  status } : { status: "activate"|"deactivate"}) => void;
 }) {
- const {  setOpen,setModalId } =
+ const {  setOpen,setModalId,setSelectedUser } =
     useUserContext();
-  
   return (
     <>
       <Popover>
@@ -33,6 +33,7 @@ export default function UserTableActions({
             onClick={() => {
               setOpen?.(true);
               setModalId?.(EDIT_USER_MODAL_ID);
+              setSelectedUser?.(data)
             }}
           >
             <PencilIcon className="mr-2 size-4" />
@@ -47,12 +48,12 @@ export default function UserTableActions({
           </Button>
 
           <Button
-            onClick={() => onChangeStatus({ status: !status ? 'activate' : 'deactivate'})}
+            onClick={() => onChangeStatus({ status: !data.is_active ? 'activate' : 'deactivate'})}
             variant="ghost"
             className="w-full justify-start text-destructive hover:text-destructive"
           >
             {
-              status ? (<><CirclePause className="mr-2 size-4" /> Deactivate</>) :
+              data.is_active ? (<><CirclePause className="mr-2 size-4" /> Deactivate</>) :
               (<><CirclePlay className="mr-2 size-4" />Activate </>)
             }
           </Button>

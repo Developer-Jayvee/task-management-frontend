@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { PaginationData, PaginationMetaData } from "@/features/common/types/paginationTypes";
+import type { UserDataTableData } from "./user-types";
 
 
 
@@ -18,6 +19,9 @@ export interface UserContextI {
     modalId ?: string;
     setModalId ?: Dispatch<SetStateAction<string|undefined>>;
     generateInvitation ?: () => Promise<void>;
-  generatedLinkData?: QueryResponseData;
-  filterUserList ?: ({ role , term, pageIndex , perPage  } : { role ?: "owner" | "member"; term ?: string; perPage ?: number; pageIndex ?: number; } ) => void; 
+    generatedLinkData?: QueryResponseData;
+    filterUserList ?: ({ role , term, pageIndex , perPage  } : { role ?: "owner" | "member"; term ?: string; perPage ?: number; pageIndex ?: number; } ) => void; 
+    resetPass ?: () => Promise<void>;
+    setSelectedUser ?: Dispatch<SetStateAction<UserDataTableData|undefined>>;
+    selectedUser ?: UserDataTableData;
 }

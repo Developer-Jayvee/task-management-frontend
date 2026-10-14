@@ -14,6 +14,9 @@ export default function UserManagementPage() {
     filterUserList,
     modalId,
     setModalId,
+    resetPass,
+    setSelectedUser,
+    selectedUser
   } = useUserManagement();
 
   useEffect(() => {
@@ -32,6 +35,9 @@ export default function UserManagementPage() {
         filterUserList,
         modalId,
         setModalId,
+        resetPass,
+        setSelectedUser,
+        selectedUser
       }}
     >
       <UserManagementContent />
