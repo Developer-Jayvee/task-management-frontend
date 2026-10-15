@@ -1,17 +1,40 @@
-import AuthenticatedLayout from "@/components/layouts/AuthenticatedLayout";
-import GuestLayout from "@/components/layouts/GuestLayout";
-import LoginPage from "@/pages/auth/LoginPage";
-import RegisterPage from "@/pages/auth/RegisterPage";
-import ProjectBaseView from "@/pages/project/detailed/ProjectBaseView";
-import ProjectPage from "@/pages/project/ProjectPage";
-import ResetPasswordPage from "@/pages/reset-password/ResetPasswordPage";
-import UserManagementPage from "@/pages/user-management/UserManagementPage";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
+
+
+
+const AuthenticatedLayout = lazy(
+  () => import("@/components/layouts/AuthenticatedLayout")
+)
+const GuestLayout = lazy(() => import("@/components/layouts/GuestLayout"))
+const LoginPage = lazy(() => import("@/pages/auth/LoginPage"))
+const RegisterPage = lazy(() => import("@/pages/auth/RegisterPage"))
+const ProjectBaseView = lazy(
+  () => import("@/pages/project/detailed/ProjectBaseView")
+)
+const ProjectPage = lazy(() => import("@/pages/project/ProjectPage"))
+const ResetPasswordPage = lazy(
+  () => import("@/pages/reset-password/ResetPasswordPage")
+)
+const UserManagementPage = lazy(
+  () => import("@/pages/user-management/users/UserManagementPage")
+)
+const RolePage = lazy(() => import("@/pages/user-management/roles/RolesPage"))
+
+const routeLoading = (
+  <div className="flex min-h-screen items-center justify-center" role="status">
+    Loading...
+  </div>
+)
 const MainRoutes = createBrowserRouter([
   {
     path: "/",
-    element: <GuestLayout />,
+    element: (
+      <Suspense fallback={routeLoading}>
+        <GuestLayout />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
@@ -33,7 +56,11 @@ const MainRoutes = createBrowserRouter([
   },
   {
     path: ":slug",
-    element: <AuthenticatedLayout />,
+    element: (
+      <Suspense fallback={routeLoading}>
+        <AuthenticatedLayout />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
@@ -58,6 +85,10 @@ const MainRoutes = createBrowserRouter([
             path: "users",
             element: <UserManagementPage />,
           },
+          {
+            path: "roles",
+            element: <RolePage />,
+          }
         ],
       },
     ],
