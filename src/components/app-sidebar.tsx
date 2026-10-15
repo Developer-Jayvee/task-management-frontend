@@ -36,12 +36,12 @@ const data = {
         },
         {
           title: "User Management",
-          // url: "user-management",
+          url: "user-management",
           except: ['member'],
           children: [
             {
               title:"All Users",
-              url : "user-management"
+              url : "users"
             },
             {
               title: "Roles",
@@ -90,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                           <CollapsibleTrigger
                             render={
                               <SidebarMenuButton
-                                isActive={window.location.pathname.split("/")[2] === navItem.url}
+                                isActive={window.location.pathname.split("/").at(-1) === navItem.url}
                               />
                             }
                           >
@@ -101,11 +101,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             <SidebarMenu>
                               {navItem.children.map((child) => {
                                 const childUrl = child.url ?? navItem.url
+                                
                                 return (
                                   <SidebarMenuItem key={`${navItem.title}-${child.title}`}>
                                     <SidebarMenuButton
-                                      isActive={window.location.pathname.split("/")[2] === childUrl}
-                                      onClick={() => navigate(`/${slug}/${childUrl}`)}
+                                      isActive={window.location.pathname.split("/").at(-1) === childUrl}
+                                      onClick={() => navigate(`/${slug}/${navItem.url}/${childUrl}`)}
                                     >
                                       {child.title}
                                     </SidebarMenuButton>
@@ -118,12 +119,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuItem>
                     )
                   }
-
                   return (
                     <SidebarMenuItem key={navItem.title}>
                       <SidebarMenuButton
-                        isActive={window.location.pathname.split("/")[2] === navItem.url}
-                        onClick={() => navigate(`/${slug}/${navItem.url}`)}
+                        isActive={window.location.pathname.split("/").at(-1) === navItem.url}
+                        onClick={() => navigate(`/${slug}//${navItem.url}`)}
                       >
                         {navItem.title}
                       </SidebarMenuButton>

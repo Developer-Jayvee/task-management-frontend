@@ -8,53 +8,60 @@ import ResetPasswordPage from "@/pages/reset-password/ResetPasswordPage";
 import UserManagementPage from "@/pages/user-management/UserManagementPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
-
 const MainRoutes = createBrowserRouter([
-    {
-        path:"/",
-        element: <GuestLayout/>,
+  {
+    path: "/",
+    element: <GuestLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="login" replace />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPasswordPage />,
+      },
+    ],
+  },
+  {
+    path: ":slug",
+    element: <AuthenticatedLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="project-management" replace />,
+      },
+      {
+        path: "project-management",
+        element: <ProjectPage />,
+      },
+      {
+        path: "project-management/:id/tickets",
+        element: <ProjectBaseView />,
+      },
+      {
+        path: "user-management",
         children: [
-            {
-                index:true,
-                element:<Navigate to="login" replace/>
-            },
-            {
-                path:"login",
-                element:<LoginPage/>
-            },
-            {
-                path:"register",
-                element: <RegisterPage/>
-            },
-            {
-                path:'reset-password',
-                element: <ResetPasswordPage/>
-            }
-        ]
-    },
-    {
-        path:':slug',
-        element:<AuthenticatedLayout/>,
-        children: [
-            {
-                index:true,
-                element:<Navigate to="project-management" replace/>
-            },
-            {
-                path:"project-management",
-                element:<ProjectPage/>,
-            },
-            {
-                path:"project-management/:id/tickets",
-                element: <ProjectBaseView/>
-            },
-            {
-                path: "user-management",
-                element:<UserManagementPage/>
-            },
-            
-        ]
-    }
-])
+          {
+            index: true,
+            element: <Navigate to="users" replace />,
+          },
+          {
+            path: "users",
+            element: <UserManagementPage />,
+          },
+        ],
+      },
+    ],
+  },
+]);
 
 export default MainRoutes;
