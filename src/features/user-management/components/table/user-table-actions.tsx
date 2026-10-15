@@ -26,7 +26,7 @@ export default function UserTableActions({
             </Button>
           }
         />
-        <PopoverContent align="end" className="w-40 p-1">
+        <PopoverContent align="end" className="w-50 p-1">
            <Button
             variant="ghost"
             className="w-full justify-start"
@@ -37,7 +37,7 @@ export default function UserTableActions({
             }}
           >
             <PencilIcon className="mr-2 size-4" />
-            Edit
+            Reset Password
           </Button>
           <Button
             variant="ghost"
