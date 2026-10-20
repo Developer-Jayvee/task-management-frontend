@@ -8,6 +8,7 @@ export interface RolePageContextData {
    setOpen : Dispatch<SetStateAction<boolean>>;
    selectedRole ?: "owner"|"member";
    setSelectedRole : Dispatch<SetStateAction<"owner"|"member"|undefined>>;
+   deleteRoleCallback : (roleId ?: string) => Promise<void>;
 }
 
 export const roleSchema = z.object({

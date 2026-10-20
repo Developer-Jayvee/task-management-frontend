@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/popover";
 import { useRoleContext } from "@/contexts/RolePageContext";
 import { AccessibilityIcon, EllipsisVertical, Trash2 } from "lucide-react";
-export default function VerticalOptions({ role }: { role ?: "owner" | "member"}) {
-  const { setOpen, setSelectedRole } = useRoleContext();
+export default function VerticalOptions({ role, roleId }: { roleId ?: string; role ?: "owner" | "member"}) {
+  const { setOpen, setSelectedRole, deleteRoleCallback  } = useRoleContext();
   return (
     <>
       <Popover>
@@ -34,6 +34,7 @@ export default function VerticalOptions({ role }: { role ?: "owner" | "member"})
           <Button
             variant="ghost"
             className="w-full justify-start text-destructive hover:text-destructive"
+            onClick={() => deleteRoleCallback(roleId) }
           >
             <Trash2 className="mr-2 size-4" />
             Delete

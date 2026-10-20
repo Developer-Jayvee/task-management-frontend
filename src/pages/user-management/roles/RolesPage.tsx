@@ -42,7 +42,7 @@ function RolesTable() {
                     })}
                 </TableCell>
                 <TableCell>
-                  <VerticalOptions role={role.name as unknown as RoleList} />
+                  <VerticalOptions role={role.name as unknown as RoleList}  roleId={role.id}/>
                 </TableCell>
               </TableRow>
             ))
