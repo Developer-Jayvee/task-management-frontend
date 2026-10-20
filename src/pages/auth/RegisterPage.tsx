@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import useRegister from "@/features/auth/hooks/useRegister"
-import { verifyLinkQuery } from "@/features/user-management/services/queryService"
+import { verifyLinkQuery } from "@/features/user-management/user/services/queryService"
 
 import { useEffect, useState } from "react"
 

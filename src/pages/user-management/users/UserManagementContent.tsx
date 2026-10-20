@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import UserTable from "@/features/user-management/components/table/user-table";
-import TableFilters from "@/features/user-management/components/table/table-filters";
-import CreateUserForm from "@/features/user-management/components/create-user-form";
+import UserTable from "@/features/user-management/user/components/table/user-table";
+import TableFilters from "@/features/user-management/user/components/table/table-filters";
+import CreateUserForm from "@/features/user-management/user/components/create-user-form";
 import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useUserContext } from "@/contexts/UserContext";
-import { INVITE_USER_MODAL_ID } from "@/features/user-management/data/defaultValues";
-import ResetPasswordForm from "@/features/user-management/components/reset-password-form";
+import { INVITE_USER_MODAL_ID } from "@/features/user-management/user/data/defaultValues";
+import ResetPasswordForm from "@/features/user-management/user/components/reset-password-form";
 
 export default function UserManagementContent() {
   const { setOpen, setModalId } = useUserContext();

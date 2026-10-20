@@ -1,6 +1,6 @@
 import { UserProvider } from "@/contexts/UserContext";
 import UserManagementContent from "./UserManagementContent";
-import useUserManagement from "@/features/user-management/hooks/useUserManagement";
+import useUserManagement from "@/features/user-management/user/hooks/useUserManagement";
 import { useEffect } from "react";
 
 export default function UserManagementPage() {

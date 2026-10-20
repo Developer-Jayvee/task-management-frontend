@@ -20,7 +20,7 @@ const ResetPasswordPage = lazy(
 const UserManagementPage = lazy(
   () => import("@/pages/user-management/users/UserManagementPage")
 )
-const RolePage = lazy(() => import("@/pages/user-management/roles/RolesPage"))
+const RolePage = lazy(() => import("@/pages/user-management/roles/RolesLayout"))
 
 const routeLoading = (
   <div className="flex min-h-screen items-center justify-center" role="status">
