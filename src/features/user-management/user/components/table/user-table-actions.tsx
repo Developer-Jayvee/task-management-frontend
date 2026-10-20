@@ -40,14 +40,6 @@ export default function UserTableActions({
             Reset Password
           </Button>
           <Button
-            variant="ghost"
-            className="w-full justify-start"
-          >
-            <ShieldCheck className="mr-2 size-4" />
-            Access
-          </Button>
-
-          <Button
             onClick={() => onChangeStatus({ status: !data.is_active ? 'activate' : 'deactivate'})}
             variant="ghost"
             className="w-full justify-start text-destructive hover:text-destructive"
