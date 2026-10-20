@@ -5,12 +5,12 @@ export default function TicketViewDescription() {
   return (
     <>
       {/* Divider */}
-      <div className="h-px bg-slate-100 w-full mb-6" />
+      <div className="mb-5 h-px w-full bg-gradient-to-r from-slate-200 via-slate-100 to-transparent" />
 
       {/* Description Section */}
-      <div className="mb-6">
-        <div className="flex items-center gap-2 mb-3 text-slate-700">
-          <div className="bg-slate-100 p-1.5 rounded-md">
+      <div className="mb-6 rounded-xl border border-slate-100 bg-slate-50/70 p-4 sm:p-5">
+        <div className="mb-3 flex items-center gap-2 text-slate-700">
+          <div className="rounded-lg bg-white p-1.5 shadow-sm ring-1 ring-slate-200/70">
             <svg
               width="16"
               height="16"
@@ -30,10 +30,10 @@ export default function TicketViewDescription() {
             </svg>
           </div>
 
-          <h3 className="font-semibold text-sm">Description</h3>
+          <h3 className="text-sm font-semibold tracking-wide text-slate-800">Description</h3>
         </div>
 
-        <p className="text-slate-600 text-sm leading-relaxed">
+        <p className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-600">
           {data?.description}
         </p>
       </div>

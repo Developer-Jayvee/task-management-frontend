@@ -1,8 +1,16 @@
 import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import { useTicketViewContext } from "@/contexts/TicketViewContext";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { EllipsisVertical, Pencil, Trash2, X } from "lucide-react";
+import { useState } from "react";
 
 export default function TicketViewFooter() {
+  const [actionsOpen, setActionsOpen] = useState(false);
   const { setSelectedTicket,deleteTicketConfirm } = useTicketViewContext();
   const {
     modal_config,
@@ -24,67 +32,51 @@ export default function TicketViewFooter() {
 
   
   return (
-    <div className="mt-6 flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
-      {/* Delete */}
-      <button
-        onClick={() => deleteTicketConfirm?.()}
-        type="button"
-        className="
-          inline-flex items-center gap-2
-          px-3 py-2 sm:px-4 sm:py-2.5
-          rounded-lg
-          border border-red-200
-          bg-white
-          text-red-600
-          text-sm font-medium
-          hover:bg-red-50
-          transition-colors
-        "
-      >
-        <Trash2 size={16} />
-        Delete
-      </button>
-
-      {/* Close + Update */}
-      <div className="flex flex-1 justify-end gap-2 sm:flex-none">
-        <button
-          onClick={() => setSelectedTicket?.(undefined)}
-          type="button"
-          className="
-            inline-flex items-center gap-2
-            px-3 py-2.5 sm:px-4
-            rounded-lg
-            border border-slate-200
-            bg-white
-            text-slate-700
-            text-sm font-medium
-            hover:bg-slate-50
-            transition-colors
-          "
-        >
-          <X size={16} />
-          Close
-        </button>
-
-        <button
-          //   onClick={() => onUpdate(data.id)}
-          onClick={() => onUpdate()}
-          type="button"
-          className="
-            inline-flex items-center gap-2
-            px-3 py-2.5 sm:px-4
-            rounded-lg
-            bg-slate-900
-            text-white
-            text-sm font-medium
-            hover:bg-slate-800
-            transition-colors
-          "
-        >
-          <Pencil size={16} />
-          Update
-        </button>
-      </div>
+    <div className="mb-2 flex justify-end">
+      <Popover open={actionsOpen} onOpenChange={setActionsOpen}>
+        <PopoverTrigger
+          render={
+            <Button variant="ghost" size="icon" aria-label="Ticket actions" className="rounded-xl text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+              <EllipsisVertical className="size-4" />
+            </Button>
+          }
+        />
+        <PopoverContent align="end" side="top" className="w-44 gap-1 rounded-xl p-1.5">
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
+            onClick={() => {
+              setActionsOpen(false);
+              setSelectedTicket?.(undefined);
+            }}
+          >
+            <X className="mr-2 size-4" />
+            Close
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start"
+            onClick={() => {
+              setActionsOpen(false);
+              onUpdate();
+            }}
+          >
+            <Pencil className="mr-2 size-4" />
+            Update
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start text-destructive hover:text-destructive"
+            onClick={() => {
+              setActionsOpen(false);
+              deleteTicketConfirm?.();
+            }}
+          >
+            <Trash2 className="mr-2 size-4" />
+            Delete
+          </Button>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 }
