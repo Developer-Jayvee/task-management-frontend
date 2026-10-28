@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useProjectViewContext } from "@/contexts/ProjectViewContext";
 import { usePromptContext } from "@/contexts/PromptDialogContext";
+import { showTicketDetails } from "../services/api/ticket-api";
 
 export default function useTicketView() {
   const { configurePrompt, showPrompt } = usePromptContext();
@@ -39,6 +40,24 @@ export default function useTicketView() {
       });
     }
   };
+
+  const onUpdateTIcket = async (id: string) => {
+      const ticket = await showTicketDetails(id);
+      if (!ticket) return;
+      ticketForm?.reset({
+        project_id: String(ticket.project_id),
+        title: ticket.title,
+        description: ticket.description ?? "",
+        status: ticket.status,
+        priority: ticket.priority,
+        assignee_id: Number(ticket.assignee_id),
+        due_date: ticket.due_date,
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["ticket-list"],
+      });
+    };
   return {
     details,
     selected,
@@ -53,5 +72,6 @@ export default function useTicketView() {
       });
       showPrompt?.();
     },
+    onUpdateTIcket
   };
 }

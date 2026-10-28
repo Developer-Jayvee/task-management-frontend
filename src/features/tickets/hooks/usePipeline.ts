@@ -12,7 +12,9 @@ export default function usePipeline() {
     const transition = async (id: string ,status : TicketStatus) => {
         try {
             await query.mutateAsync({ id , status });
-
+            await queryClient.invalidateQueries({
+                queryKey: ["ticket-list"],
+            });
             // await queryClient.invalidateQueries({
             //     queryKey: ['project-tickets',data?.ticket?.project_id]
             // })

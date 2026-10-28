@@ -6,4 +6,5 @@ export interface TicketViewContextI  {
     setSelectedTicket ?: (id ?: string) => void;
     ticketSelected ?: string;
     deleteTicketConfirm ?: () => void;
+    onUpdateTIcket ?: (id: string) => Promise<void>;
 }

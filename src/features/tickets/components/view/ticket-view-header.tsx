@@ -9,9 +9,13 @@ import {
 import { TicketStatusData } from "../../data";
 import { useTicketViewContext } from "@/contexts/TicketViewContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import usePipeline from "../../hooks/usePipeline";
+import type { TicketStatus } from "../../types/ticket-types";
 
 export default function TicketViewHeader() {
   const { data } = useTicketViewContext();
+  const { transition, isPending } = usePipeline();
+  
   return (
     <>
       {/* Header Section */}
@@ -33,7 +37,8 @@ export default function TicketViewHeader() {
                         control={control}
                         render={({ field }) => ( */}
               <Select
-              // value={data.status}
+              onValueChange={(status) => data?.id ? transition(data.id,status as TicketStatus) : ({}) }
+              value={data?.status}
               // onValueChange={(status) =>
               //   onStatusUpdate?.(status ?? data.status)
               // }

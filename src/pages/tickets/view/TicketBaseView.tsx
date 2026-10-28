@@ -10,13 +10,15 @@ export default function TicketBaseView({ children } : { children : React.ReactNo
         setSelectedTicket,
         details,
         selected,
-        deleteTicketConfirm
+        deleteTicketConfirm,
+        onUpdateTIcket
     } = useTicketView();
     return <TicketViewContextProvider data={{
         data: details as TicketResponseData,
         setSelectedTicket,
         ticketSelected: selected,
-        deleteTicketConfirm
+        deleteTicketConfirm,
+        onUpdateTIcket
     }}>
         <>
             {children}
