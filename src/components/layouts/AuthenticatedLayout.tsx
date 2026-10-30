@@ -28,19 +28,15 @@ import useLogout from "@/features/auth/hooks/useLogout";
 import { PromptProvider } from "@/contexts/PromptDialogContext";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { ProjectProvider } from "@/contexts/ProjectContext";
-import { Button } from "@base-ui/react/button";
-import { Bell } from "lucide-react";
-import useNotification from "@/features/notification/hooks/useNotification";
+import { NotificationContextProvider } from "@/contexts/NotificationContext";
+import NotificationComponent from "../notification";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
   const { refetch, isSuccess } = useLogout();
   const authStore = useAuthStore((state) => state.userData);
   const clearAuthStore = useAuthStore((state) => state.clearUserData)
-  const { ticketNotif } = useNotification(); 
 
-  
-  
   if (isSuccess) {
     window.location.reload();
   }
@@ -58,63 +54,61 @@ export default function AuthenticatedLayout() {
   }
   return (
     <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
-          <div className="flex items-center">
-            <SidebarTrigger className="-ml-1" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Multi-tenant Ticket Management
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                {/* <BreadcrumbSeparator className="hidden md:block" />
+      <NotificationContextProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
+            <div className="flex items-center">
+              <SidebarTrigger className="-ml-1" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href="#">
+                      Multi-tenant Ticket Management
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                  {/* <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
                     <BreadcrumbPage>Data Fetching</BreadcrumbPage>
                   </BreadcrumbItem> */}
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center">
-              <Button className="cursor-pointer">
-                <Bell/>
-              </Button>
+                </BreadcrumbList>
+              </Breadcrumb>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={
-                  <SidebarMenuButton
-                    size="lg"
-                    className="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
-                  />
-                }
-              >
-                <Avatar>
-                  <AvatarImage src={`https://ui-avatars.com/api/?name=${encodeURIComponent(authStore?.name ?? "Unknown")}`} />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <Label>{authStore?.name}</Label>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={() => logoutUser()}>
-                  <Label>Logout</Label>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+
+            <div className="flex items-center gap-3">
+             <NotificationComponent/>
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <SidebarMenuButton
+                      size="lg"
+                      className="data-open:bg-sidebar-accent data-open:text-sidebar-accent-foreground"
+                    />
+                  }
+                >
+                  <Avatar>
+                    <AvatarImage src={`https://ui-avatars.com/api/?name=${encodeURIComponent(authStore?.name ?? "Unknown")}`} />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                  <Label>{authStore?.name}</Label>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => logoutUser()}>
+                    <Label>Logout</Label>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4">
+            <PromptProvider>
+              <ProjectProvider>
+                <Outlet />
+              </ProjectProvider>
+            </PromptProvider>
           </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <PromptProvider>
-            <ProjectProvider>
-              <Outlet />
-            </ProjectProvider>
-          </PromptProvider>
-        </div>
-      </SidebarInset>
+        </SidebarInset>
+      </NotificationContextProvider>
     </SidebarProvider>
   );
 }
