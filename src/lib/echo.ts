@@ -4,6 +4,14 @@ import Pusher from "pusher-js";
 
 const broadcastAuthUrl = `${import.meta.env.VITE_DOMAIN_URL}/broadcasting/auth`;
 
+
+console.log("Reverb configuration:", {
+    broadcaster: import.meta.env.VITE_BROADCAST,
+    keyExists: !!import.meta.env.VITE_REVERB_APP_KEY,
+    host: import.meta.env.VITE_REVERB_HOST,
+    port: import.meta.env.VITE_REVERB_PORT,
+});
+
 window.Pusher = Pusher;
 configureEcho({
   broadcaster: import.meta.env.VITE_BROADCAST,
@@ -13,7 +21,7 @@ configureEcho({
   wsPort: Number(import.meta.env.VITE_REVERB_PORT ?? 8080),
   wssPort: Number(import.meta.env.VITE_REVERB_PORT ?? 443),
 
-  forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
+  forceTLS: import.meta.env.VITE_REVERB_SCHEME === "https",
   enabledTransports: ["ws"],
 
   authEndpoint: broadcastAuthUrl,

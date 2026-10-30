@@ -30,19 +30,16 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import { Button } from "@base-ui/react/button";
 import { Bell } from "lucide-react";
-import useTicketNotif from "@/features/notification/hooks/useTIcketNotif";
+import useNotification from "@/features/notification/hooks/useNotification";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
   const { refetch, isSuccess } = useLogout();
   const authStore = useAuthStore((state) => state.userData);
   const clearAuthStore = useAuthStore((state) => state.clearUserData)
+  const { ticketNotif } = useNotification(); 
 
-  if(authStore?.id) {
-    const notif = useTicketNotif( {memberId: authStore?.id}); 
-    
-  }
-
+  
   
   if (isSuccess) {
     window.location.reload();

@@ -1,6 +1,10 @@
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useEchoNotification } from "@laravel/echo-react"
 
-export default function useTicketNotif({ memberId } : { memberId : string }) {
+export default function useTicketNotif() {
+    const authStore = useAuthStore((state) => state.userData);
+    const memberId = authStore?.id ?? "";
+
     
     return useEchoNotification(
         `App.Models.User.${memberId}`,
