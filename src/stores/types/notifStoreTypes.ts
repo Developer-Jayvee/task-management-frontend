@@ -3,7 +3,7 @@
 export interface NotificationStoreData {
     read: number;
     unread: number;
-    setRead: (n : number) => void;
-    setUnread: (n : number) => void;
+    appendRead: () => void;
+    appendUnread: () => void;
     replaceUnreads: (unread: number) => void;
 }
