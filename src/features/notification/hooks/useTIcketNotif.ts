@@ -12,7 +12,6 @@ export default function useTicketNotif({
   const authStore = useAuthStore((state) => state.userData);
   const appendUnread = useNotifStore((state) => state.appendUnread);
   const memberId = authStore?.id ?? "";
-  if (memberId === "") return null;
 
   return useEchoNotification(
     `App.Models.User.${memberId}`,

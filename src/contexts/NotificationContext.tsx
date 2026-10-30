@@ -20,11 +20,11 @@ export const NotificationContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [notifs, setNotifs] = useState<Array<NotificationData>>([]);
   const notifStore = useNotifStore((state) => state.unread);
   const setUnreads = useNotifStore((state) => state.replaceUnreads);
-  const [notifs, setNotifs] = useState<Array<NotificationData>>([]);
   const { notifCounts } = useNotif();
-  useTicketNotif({ setNotifs });
+  const ticketNotif = useTicketNotif({ setNotifs });
 
   useEffect(() => {
     if (notifCounts) {
@@ -34,7 +34,7 @@ export const NotificationContextProvider = ({
   return (
     <NotificationContext.Provider
       value={{
-        notifCount: notifStore,
+        notifCount:  notifStore ?? 0, 
         notifications: notifs,
       }}
     >

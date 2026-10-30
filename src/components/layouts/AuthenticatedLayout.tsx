@@ -30,13 +30,14 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import { NotificationContextProvider } from "@/contexts/NotificationContext";
 import NotificationComponent from "../notification";
+import { useNotifStore } from "@/stores/useNotifStore";
 
 export default function AuthenticatedLayout() {
   const { isError, isPending } = useVerifyIdentity();
   const { refetch, isSuccess } = useLogout();
   const authStore = useAuthStore((state) => state.userData);
   const clearAuthStore = useAuthStore((state) => state.clearUserData)
-
+  const clearNotifStore = useNotifStore((state) => state.clearNotifCounts)
   if (isSuccess) {
     window.location.reload();
   }
@@ -50,6 +51,7 @@ export default function AuthenticatedLayout() {
 
   const logoutUser = () => {
     clearAuthStore?.();
+    clearNotifStore();
     refetch()
   }
   return (

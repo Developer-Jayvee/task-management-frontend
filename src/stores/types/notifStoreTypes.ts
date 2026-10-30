@@ -6,4 +6,5 @@ export interface NotificationStoreData {
     appendRead: () => void;
     appendUnread: () => void;
     replaceUnreads: (unread: number) => void;
+    clearNotifCounts: () => void;
 }

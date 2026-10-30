@@ -10,6 +10,9 @@ export const useNotifStore = create(
       appendUnread: () => set((state) => ({ unread: state.unread + 1 })),
       appendRead: () => set((state) => ({ read: state.read + 1 })),
       replaceUnreads: (unread: number) => set({ unread }),
+      clearNotifCounts: () => {
+         useNotifStore.persist.clearStorage();
+      }
     }),
     { name: "notif-count" },
   ),
