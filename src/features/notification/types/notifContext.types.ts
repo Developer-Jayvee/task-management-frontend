@@ -1,8 +1,8 @@
-import type { NotificationData } from "./notif.types";
+import type { NotificationsData } from "./api.types";
 
 
 export interface NotificationContextData {
-    notifications: Array<NotificationData>;
+    notifications: Array<NotificationsData>;
     notifCount: number;
-
+    fetchNotifications:() => void;
 }

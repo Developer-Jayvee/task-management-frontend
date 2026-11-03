@@ -7,3 +7,8 @@ export const getNotificationCounts = async (): Promise<NotifiCountAPIData> => {
 
   return await response?.data;
 };
+
+export const getNotifications = async () => {
+  const response = await http.get(PREFIX);
+  return await response?.data;
+}
