@@ -1,10 +1,12 @@
 import useTicketNotif from "@/features/notification/hooks/useTIcketNotif";
-import type { NotificationContextData, NotificationPaginationData } from "@/features/notification/types/notifContext.types";
+import type {
+  NotificationContextData,
+  NotificationPaginationData,
+} from "@/features/notification/types/notifContext.types";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useNotif from "@/features/notification/hooks/useNotif";
 import { useNotifStore } from "@/stores/useNotifStore";
 import type { NotificationsData } from "@/features/notification/types/api.types";
-import type { PaginationData } from "@/features/common/types/paginationTypes";
 
 export const NotificationContext =
   createContext<NotificationContextData | null>(null);
@@ -21,13 +23,18 @@ export const NotificationContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [notifs,setNotifs] = useState<NotificationsData[]>([]);
+  const [notifs, setNotifs] = useState<NotificationsData[]>([]);
   const notifStore = useNotifStore((state) => state.unread);
   const setUnreads = useNotifStore((state) => state.replaceUnreads);
-  const { notifCounts,notifications, fetchNotifications,setPerPage } = useNotif();
+  const {
+    notifCounts,
+    notifications,
+    fetchNotifications,
+    setPerPage,
+    markAllRead,
+  } = useNotif();
   const ticketNotif = useTicketNotif({ setNotifs });
 
-  
   useEffect(() => {
     if (notifCounts) {
       setUnreads(notifCounts.unread);
@@ -35,17 +42,18 @@ export const NotificationContextProvider = ({
   }, [notifCounts]);
   useEffect(() => {
     setNotifs(notifications?.data);
-  },[notifications])
+  }, [notifications]);
 
-  
   return (
     <NotificationContext.Provider
       value={{
-        notifCount:  notifStore ?? 0, 
+        notifCount: notifStore ?? 0,
         notifications: notifs ?? [],
         fetchNotifications,
         setPerPage,
-        notificationPagination: notifications as unknown as NotificationPaginationData
+        notificationPagination:
+          notifications as unknown as NotificationPaginationData,
+        markAllRead,
       }}
     >
       {children}

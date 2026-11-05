@@ -14,3 +14,10 @@ export const getNotifications = async ({ perPage = 5 } : { perPage: number;}) =>
   
   return await response;
 }
+
+
+export const markAllNotifications = async () => {
+  const response = await http.patch(PREFIX + '/bulk-read');
+
+  return await response?.data;
+}

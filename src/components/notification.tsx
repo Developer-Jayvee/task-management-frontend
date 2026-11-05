@@ -8,11 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useNotifStore } from "@/stores/useNotifStore";
 
 
 export default function NotificationComponent() {
   const notifData = useNotificationContext();
-  
+  const notifStore = useNotifStore((state) => state.unread);
   
   return (
     <DropdownMenu>
@@ -45,8 +46,13 @@ export default function NotificationComponent() {
                 </p>
               </div>
               <button
+                onClick={() => notifData?.markAllRead()}
                 type="button"
-                className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium tracking-normal text-primary transition-colors hover:bg-accent normal-case"
+                disabled={notifStore === 0}
+                className={`
+                  ${notifStore === 0 ? 'text-gray-500!' : 'hover:bg-accent'}
+                  flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium tracking-normal text-primary transition-colors  normal-case
+                  `}
               >
                 <CheckCheck className="size-3.5" />
                 Mark all read
