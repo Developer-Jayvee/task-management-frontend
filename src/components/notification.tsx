@@ -12,6 +12,8 @@ import {
 
 export default function NotificationComponent() {
   const notifData = useNotificationContext();
+  
+  
   return (
     <DropdownMenu>
       <div className="flex items-center">
@@ -52,11 +54,11 @@ export default function NotificationComponent() {
             </div>
 
             <div className="max-h-90 overflow-y-auto py-1">
-              {notifData?.notifications && notifData?.notifications.map((notification) => {
+              {typeof notifData?.notifications === 'object' && notifData?.notifications.map((notification,index) => {
 
-                return (
+                return ( 
                   <DropdownMenuItem
-                    key={notification.title}
+                    key={index}
                     className="h-auto items-start gap-3 rounded-none px-4 py-3 text-left tracking-normal normal-case focus:bg-accent/70"
                   >
                     <span className={`mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600 dark:bg-violet-950 dark:text-violet-300`}>
@@ -65,7 +67,7 @@ export default function NotificationComponent() {
                     <span className="min-w-0 flex-1 whitespace-normal">
                       <span className="flex items-start justify-between gap-2">
                         <span className="text-xs font-semibold leading-4">{notification.title}</span>
-                        {notification.is_read && (
+                        {!notification.is_read && (
                           <span className="mt-1.5 size-2 shrink-0 rounded-full bg-primary" aria-label="Unread" />
                         )}
                       </span>
@@ -81,8 +83,11 @@ export default function NotificationComponent() {
               })}
             </div>
 
-            <div className="border-t p-2">
+            <div className={`${notifData?.notificationPagination?.next_page_url === null ? 'hidden' : ''} border-t p-2`} >
               <button
+                onClick={() => {
+                  notifData?.setPerPage(prev => prev + 5);
+                }}
                 type="button"
                 className="w-full rounded-md py-2 text-center text-xs font-medium tracking-normal text-muted-foreground transition-colors hover:bg-accent hover:text-foreground normal-case"
               >

@@ -20,6 +20,7 @@ export interface PaginationMetaData {
   per_page: number;
   to: number;
   total: number;
+  next_page_url : null|string;
 }
 export interface PaginationData<T = []> {
   data: T;

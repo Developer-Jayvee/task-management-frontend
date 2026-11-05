@@ -7,8 +7,11 @@ export const useGetNotifCount = () =>
     queryFn: () => getNotificationCounts(),
   });
 
-export const useGetNotifications = () =>
-  useQuery({
-    queryKey: ["notif-list"],
-    queryFn: () => getNotifications(),
+export const useGetNotifications = ({ perPage = 5 } : { perPage: number; }) => {
+  
+  return  useQuery({
+    queryKey: ["notif-list",perPage],
+    queryFn: () => getNotifications({ perPage }),
   });
+}
+ 

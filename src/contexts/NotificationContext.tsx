@@ -1,10 +1,10 @@
 import useTicketNotif from "@/features/notification/hooks/useTIcketNotif";
-import type { NotificationContextData } from "@/features/notification/types/notifContext.types";
-import type { NotificationData } from "@/features/notification/types/notif.types";
+import type { NotificationContextData, NotificationPaginationData } from "@/features/notification/types/notifContext.types";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useNotif from "@/features/notification/hooks/useNotif";
 import { useNotifStore } from "@/stores/useNotifStore";
 import type { NotificationsData } from "@/features/notification/types/api.types";
+import type { PaginationData } from "@/features/common/types/paginationTypes";
 
 export const NotificationContext =
   createContext<NotificationContextData | null>(null);
@@ -24,23 +24,28 @@ export const NotificationContextProvider = ({
   const [notifs,setNotifs] = useState<NotificationsData[]>([]);
   const notifStore = useNotifStore((state) => state.unread);
   const setUnreads = useNotifStore((state) => state.replaceUnreads);
-  const { notifCounts,notifications, fetchNotifications } = useNotif();
+  const { notifCounts,notifications, fetchNotifications,setPerPage } = useNotif();
   const ticketNotif = useTicketNotif({ setNotifs });
 
+  
   useEffect(() => {
     if (notifCounts) {
       setUnreads(notifCounts.unread);
     }
   }, [notifCounts]);
   useEffect(() => {
-    setNotifs(notifications);
+    setNotifs(notifications?.data);
   },[notifications])
+
+  
   return (
     <NotificationContext.Provider
       value={{
         notifCount:  notifStore ?? 0, 
         notifications: notifs ?? [],
-        fetchNotifications
+        fetchNotifications,
+        setPerPage,
+        notificationPagination: notifications as unknown as NotificationPaginationData
       }}
     >
       {children}
