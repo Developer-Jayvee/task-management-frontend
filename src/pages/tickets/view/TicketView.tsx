@@ -1,5 +1,6 @@
 import { useTicketViewContext } from "@/contexts/TicketViewContext";
 import EmptyTicketDetails from "@/features/tickets/components/ticket-detailed-empty";
+import TicketViewComment from "@/features/tickets/components/view/ticket-view-comment";
 import TicketViewDescription from "@/features/tickets/components/view/ticket-view-description";
 import TicketViewFooter from "@/features/tickets/components/view/ticket-view-footer";
 import TicketViewHeader from "@/features/tickets/components/view/ticket-view-header";
@@ -16,6 +17,7 @@ export default function TicketView() {
           <TicketViewFooter />
           <TicketViewHeader />
           <TicketViewDescription />
+          <TicketViewComment/>
           <TicketViewMetaData />
         </div>
       </div>
