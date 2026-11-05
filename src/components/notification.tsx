@@ -9,14 +9,19 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useNotifStore } from "@/stores/useNotifStore";
+import { useEffect, useState } from "react";
 
 
 export default function NotificationComponent() {
   const notifData = useNotificationContext();
   const notifStore = useNotifStore((state) => state.unread);
-  
+  const [isOpen,setIsOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    if(!isOpen) notifData?.resetPagination()
+  },[isOpen])
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <div className="flex items-center">
         <div className="relative">
           <DropdownMenuTrigger

@@ -32,6 +32,7 @@ export const NotificationContextProvider = ({
     fetchNotifications,
     setPerPage,
     markAllRead,
+    resetPagination
   } = useNotif();
   const ticketNotif = useTicketNotif({ setNotifs });
 
@@ -54,6 +55,7 @@ export const NotificationContextProvider = ({
         notificationPagination:
           notifications as unknown as NotificationPaginationData,
         markAllRead,
+        resetPagination,
       }}
     >
       {children}

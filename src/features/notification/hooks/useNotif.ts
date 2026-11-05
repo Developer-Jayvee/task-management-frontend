@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useGetNotifCount, useGetNotifications, useMarkAllReadMutation } from "../services/query.service";
 
+const INITIAL_PERPAGE = 4;
 
 export default function useNotif() {
-    const [perPage,setPerPage] = useState<number>(4);
+    const [perPage,setPerPage] = useState<number>(INITIAL_PERPAGE);
     const notifCount = useGetNotifCount();
     const notifications = useGetNotifications({ perPage })
     const mutateAllRead = useMarkAllReadMutation();
@@ -17,6 +18,7 @@ export default function useNotif() {
             console.warn('Error marking all read notification.');
         }
     }
+    const resetPagination = () => setPerPage(INITIAL_PERPAGE);
     
     return {
         notifCounts : notifCount.data,
@@ -25,6 +27,7 @@ export default function useNotif() {
             notifications.refetch()
         },
         setPerPage,
-        markAllRead
+        markAllRead,
+        resetPagination
     }
 }

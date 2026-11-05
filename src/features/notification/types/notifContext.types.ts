@@ -10,4 +10,5 @@ export interface NotificationContextData {
     setPerPage: Dispatch<SetStateAction<number>>;
     notificationPagination:NotificationPaginationData;
     markAllRead: () => Promise<void>;
+    resetPagination: () => void;
 }
