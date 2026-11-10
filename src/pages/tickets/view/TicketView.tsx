@@ -22,8 +22,8 @@ export default function TicketView() {
           <TicketViewFooter />
           <TicketViewHeader />
           <TicketViewDescription />
-          <TicketViewComment/>
           <TicketViewMetaData />
+          <TicketViewComment/>
         </div>
       </div>
     </div>
