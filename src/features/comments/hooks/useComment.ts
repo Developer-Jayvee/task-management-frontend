@@ -14,10 +14,11 @@ export default function useComment() {
 
 
     const createComment = async (data: CommentData) => {
+        
         try {
             if (!ticketId) return;
 
-            const response = await createCommentMutation.mutateAsync({ ticketId, data: { content: "" } });
+            const response = await createCommentMutation.mutateAsync({ ticketId, data: { content:data.content } });
             if (response) {
                 await queryClient.invalidateQueries({
                     queryKey: ['ticket-list', 1, 10]

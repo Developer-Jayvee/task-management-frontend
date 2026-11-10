@@ -1,5 +1,4 @@
 import http from "@/lib/axios";
-import { string } from "zod";
 import type { CommentData } from "../../types/commentApi.types";
 
 

@@ -5,10 +5,15 @@ import TicketViewDescription from "@/features/tickets/components/view/ticket-vie
 import TicketViewFooter from "@/features/tickets/components/view/ticket-view-footer";
 import TicketViewHeader from "@/features/tickets/components/view/ticket-view-header";
 import TicketViewMetaData from "@/features/tickets/components/view/ticket-view-metadata";
+import { useEffect } from "react";
 
 export default function TicketView() {
-  const { data } = useTicketViewContext();
+  const { data, commentsData } = useTicketViewContext();
   if (!data) return <EmptyTicketDetails />;
+
+  useEffect(() => {
+    if(data.id) commentsData.setTicketId(Number(data.id))
+  },[data]);
   return (
     <div className="min-w-0 font-sans text-slate-800">
       <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-200/60 ring-1 ring-slate-900/5">
