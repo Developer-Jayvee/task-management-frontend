@@ -48,10 +48,26 @@ export default function ProjectView() {
                 variant="line"
                 className="w-max min-w-full justify-start"
               >
-                <TabsTrigger value="all">All</TabsTrigger>
-                <TabsTrigger value="to-do">Open</TabsTrigger>
-                <TabsTrigger value="in-progress">In-progress</TabsTrigger>
-                <TabsTrigger value="completed"> Completed</TabsTrigger>
+                <TabsTrigger value="all" onClick={() => data_table_config.updatePage(
+                  data_table_config.perPage,
+                  data_table_config.page,
+                  "all"
+                )}>All</TabsTrigger>
+                <TabsTrigger value="to-do" onClick={() => data_table_config.updatePage(
+                  data_table_config.perPage,
+                  data_table_config.page,
+                  "to-do"
+                )}>Open</TabsTrigger>
+                <TabsTrigger value="in-progress" onClick={() => data_table_config.updatePage(
+                  data_table_config.perPage,
+                  data_table_config.page,
+                  "in-progress"
+                )}>In-progress</TabsTrigger>
+                <TabsTrigger value="completed" onClick={() => data_table_config.updatePage(
+                  data_table_config.perPage,
+                  data_table_config.page,
+                  "completed"
+                )}> Completed</TabsTrigger>
               </TabsList>
             </Tabs>
           </div>

@@ -45,7 +45,7 @@ export default function ProjectBaseView() {
         data_table_config: {
           data: ticketList,
           isLoading,
-          updatePage: (perPage, pageIndex) => updatePage(perPage, pageIndex),
+          updatePage: (perPage, pageIndex, status) => updatePage(perPage, pageIndex, status),
           page : ticketTableList?.meta.current_page ?? page,
           perPage: ticketTableList?.meta.per_page ?? perPage,
           paginationData: ticketTableList,

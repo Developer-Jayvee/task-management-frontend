@@ -5,15 +5,15 @@ import type { TicketStatus } from "../types/ticket-types";
 export default function useTicketDataTable() {
   const [page,setPage] = useState<number | undefined>();
   const [perPage,setPerPage] = useState<number | undefined>();
-  const listQuery = getTicketListQuery({ page , perPage});
+  const [status,setStatus] = useState<"all" | "to-do" | "in-progress" | "completed">("all");
+  const listQuery = getTicketListQuery({ page , perPage, status });
   const [tab, setTab] = useState<"all" | TicketStatus>("all");
-  const updatePage = (perPage ?: number , pageIndex ?: number) => {
+  const updatePage = (perPage ?: number , pageIndex ?: number , status ?: "all" | "to-do" | "in-progress" | "completed") => {
     if( pageIndex !== null) setPage(pageIndex);
     if(perPage !== null) setPerPage(perPage);
+    if(status || status !== undefined) setStatus(prev => status) 
   }
   const refetchTicketTable = () => { 
-    console.log(1);
-    
     listQuery.refetch();
    };
   return {
@@ -23,6 +23,7 @@ export default function useTicketDataTable() {
     updatePage,
     page,
     perPage,
-    refetchTicketTable
+    refetchTicketTable,
+    setStatus
   };
 }

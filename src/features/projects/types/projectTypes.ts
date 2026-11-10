@@ -54,7 +54,7 @@ export interface ProjectViewContextI {
   data_table_config: {
     data: TicketDataTableData[];
     isLoading: boolean;
-    updatePage: (page ?: number , perPage ?: number) => void;
+    updatePage: (page ?: number , perPage ?: number,status ?: "all" | "to-do" | "in-progress" | "completed") => void;
     page ?: number;
     perPage ?: number;
     paginationData?: PaginationData<TicketDataTableData[]>;

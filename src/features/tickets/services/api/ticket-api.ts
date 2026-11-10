@@ -16,16 +16,18 @@ export const createtTicket = async (data: TicketFormData) => {
 export const getTicketList = async ({
   page = 1,
   perPage = 10,
+  status = "all"
 }: {
   page ?: number;
   perPage ?: number;
+  status ?: "all" | "to-do" | "in-progress" | "completed"
 }): Promise<PaginationData> => {
   const response = await axios.get(
     `${import.meta.env.VITE_BASE_URL}/${PREFIX}`,
     { 
         headers: { Accept:'application/json' },
         withCredentials: true,
-        params: { page, perPage } },
+        params: { page, perPage, status } },
   );
   return response?.data;
 };
